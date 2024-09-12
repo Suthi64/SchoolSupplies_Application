@@ -3,7 +3,7 @@ class CoolSupplies {
 }
 
 class User {
-  immutable unique usersameXXXXXXXX;
+  immutable unique usersame;
   password;
 }
 
