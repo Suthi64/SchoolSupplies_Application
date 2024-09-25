@@ -1,32 +1,32 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 113 "uml.ump"
+/**
+ * changed from associationClass to class
+ */
+// line 109 "../../../../../../uml.ump"
 public class Order
 {
-
-  //------------------------
-  // ENUMERATIONS
-  //------------------------
-
-  public enum Status { Confirmed, Picked-up, Cancelled }
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Order Attributes
+  private Autounique orderNumber;
   private Date orderDate;
   private Date dueDate;
-  private int penalty;
-  private Status status;
+  private double totalAmount;
+  private double penalty;
+  private boolean isPickedUp;
 
   //Order Associations
   private Parent parent;
+  private List<Bundle> bundles;
   private CoolSupplies coolSupplies;
   private List<Payment> payments;
 
@@ -34,17 +34,20 @@ public class Order
   // CONSTRUCTOR
   //------------------------
 
-  public Order(Date aOrderDate, Date aDueDate, int aPenalty, Status aStatus, Parent aParent, CoolSupplies aCoolSupplies)
+  public Order(Autounique aOrderNumber, Date aOrderDate, Date aDueDate, double aTotalAmount, double aPenalty, boolean aIsPickedUp, Parent aParent, CoolSupplies aCoolSupplies)
   {
+    orderNumber = aOrderNumber;
     orderDate = aOrderDate;
     dueDate = aDueDate;
+    totalAmount = aTotalAmount;
     penalty = aPenalty;
-    status = aStatus;
+    isPickedUp = aIsPickedUp;
     boolean didAddParent = setParent(aParent);
     if (!didAddParent)
     {
       throw new RuntimeException("Unable to create order due to parent. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    bundles = new ArrayList<Bundle>();
     boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
     if (!didAddCoolSupplies)
     {
@@ -57,6 +60,14 @@ public class Order
   // INTERFACE
   //------------------------
 
+  public boolean setOrderNumber(Autounique aOrderNumber)
+  {
+    boolean wasSet = false;
+    orderNumber = aOrderNumber;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setDueDate(Date aDueDate)
   {
     boolean wasSet = false;
@@ -65,7 +76,15 @@ public class Order
     return wasSet;
   }
 
-  public boolean setPenalty(int aPenalty)
+  public boolean setTotalAmount(double aTotalAmount)
+  {
+    boolean wasSet = false;
+    totalAmount = aTotalAmount;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setPenalty(double aPenalty)
   {
     boolean wasSet = false;
     penalty = aPenalty;
@@ -73,12 +92,17 @@ public class Order
     return wasSet;
   }
 
-  public boolean setStatus(Status aStatus)
+  public boolean setIsPickedUp(boolean aIsPickedUp)
   {
     boolean wasSet = false;
-    status = aStatus;
+    isPickedUp = aIsPickedUp;
     wasSet = true;
     return wasSet;
+  }
+
+  public Autounique getOrderNumber()
+  {
+    return orderNumber;
   }
 
   public Date getOrderDate()
@@ -91,19 +115,59 @@ public class Order
     return dueDate;
   }
 
-  public int getPenalty()
+  public double getTotalAmount()
+  {
+    return totalAmount;
+  }
+
+  public double getPenalty()
   {
     return penalty;
   }
 
-  public Status getStatus()
+  public boolean getIsPickedUp()
   {
-    return status;
+    return isPickedUp;
+  }
+  /* Code from template attribute_IsBoolean */
+  public boolean isIsPickedUp()
+  {
+    return isPickedUp;
   }
   /* Code from template association_GetOne */
   public Parent getParent()
   {
     return parent;
+  }
+  /* Code from template association_GetMany */
+  public Bundle getBundle(int index)
+  {
+    Bundle aBundle = bundles.get(index);
+    return aBundle;
+  }
+
+  public List<Bundle> getBundles()
+  {
+    List<Bundle> newBundles = Collections.unmodifiableList(bundles);
+    return newBundles;
+  }
+
+  public int numberOfBundles()
+  {
+    int number = bundles.size();
+    return number;
+  }
+
+  public boolean hasBundles()
+  {
+    boolean has = bundles.size() > 0;
+    return has;
+  }
+
+  public int indexOfBundle(Bundle aBundle)
+  {
+    int index = bundles.indexOf(aBundle);
+    return index;
   }
   /* Code from template association_GetOne */
   public CoolSupplies getCoolSupplies()
@@ -159,6 +223,78 @@ public class Order
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfBundles()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Bundle addBundle(int aNumberOfItems)
+  {
+    return new Bundle(aNumberOfItems, this);
+  }
+
+  public boolean addBundle(Bundle aBundle)
+  {
+    boolean wasAdded = false;
+    if (bundles.contains(aBundle)) { return false; }
+    Order existingOrder = aBundle.getOrder();
+    boolean isNewOrder = existingOrder != null && !this.equals(existingOrder);
+    if (isNewOrder)
+    {
+      aBundle.setOrder(this);
+    }
+    else
+    {
+      bundles.add(aBundle);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeBundle(Bundle aBundle)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aBundle, as it must always have a order
+    if (!this.equals(aBundle.getOrder()))
+    {
+      bundles.remove(aBundle);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addBundleAt(Bundle aBundle, int index)
+  {  
+    boolean wasAdded = false;
+    if(addBundle(aBundle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBundles()) { index = numberOfBundles() - 1; }
+      bundles.remove(aBundle);
+      bundles.add(index, aBundle);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveBundleAt(Bundle aBundle, int index)
+  {
+    boolean wasAdded = false;
+    if(bundles.contains(aBundle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBundles()) { index = numberOfBundles() - 1; }
+      bundles.remove(aBundle);
+      bundles.add(index, aBundle);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addBundleAt(aBundle, index);
+    }
+    return wasAdded;
+  }
   /* Code from template association_SetOneToMany */
   public boolean setCoolSupplies(CoolSupplies aCoolSupplies)
   {
@@ -189,7 +325,7 @@ public class Order
     return 2;
   }
   /* Code from template association_AddOptionalNToOne */
-  public Payment addPayment(String aAuthorizationCode, Date aDate)
+  public Payment addPayment(String aAuthorizationCode, Date aPaymentDate)
   {
     if (numberOfPayments() >= maximumNumberOfPayments())
     {
@@ -197,7 +333,7 @@ public class Order
     }
     else
     {
-      return new Payment(aAuthorizationCode, aDate, this);
+      return new Payment(aAuthorizationCode, aPaymentDate, this);
     }
   }
 
@@ -276,6 +412,11 @@ public class Order
     {
       placeholderParent.removeOrder(this);
     }
+    for(int i=bundles.size(); i > 0; i--)
+    {
+      Bundle aBundle = bundles.get(i - 1);
+      aBundle.delete();
+    }
     CoolSupplies placeholderCoolSupplies = coolSupplies;
     this.coolSupplies = null;
     if(placeholderCoolSupplies != null)
@@ -293,19 +434,13 @@ public class Order
   public String toString()
   {
     return super.toString() + "["+
-            "penalty" + ":" + getPenalty()+ "]" + System.getProperties().getProperty("line.separator") +
+            "totalAmount" + ":" + getTotalAmount()+ "," +
+            "penalty" + ":" + getPenalty()+ "," +
+            "isPickedUp" + ":" + getIsPickedUp()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "orderNumber" + "=" + (getOrderNumber() != null ? !getOrderNumber().equals(this)  ? getOrderNumber().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "orderDate" + "=" + (getOrderDate() != null ? !getOrderDate().equals(this)  ? getOrderDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "dueDate" + "=" + (getDueDate() != null ? !getDueDate().equals(this)  ? getDueDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "status" + "=" + (getStatus() != null ? !getStatus().equals(this)  ? getStatus().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "parent = "+(getParent()!=null?Integer.toHexString(System.identityHashCode(getParent())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "coolSupplies = "+(getCoolSupplies()!=null?Integer.toHexString(System.identityHashCode(getCoolSupplies())):"null");
-  }  
-  //------------------------
-  // DEVELOPER CODE - PROVIDED AS-IS
-  //------------------------
-  
-  // line 117 "uml.ump"
-  immutable autounique Integer orderNumber ;
-
-  
+  }
 }

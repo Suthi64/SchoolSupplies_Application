@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 73 "uml.ump"
+// line 72 "../../../../../../uml.ump"
 public class School
 {
 
@@ -16,7 +16,7 @@ public class School
   private String name;
 
   //School Associations
-  private List<Admin> admins;
+  private Admin admins;
   private CoolSupplies coolSupplies;
   private List<Student> students;
   private List<Grade> grades;
@@ -25,10 +25,27 @@ public class School
   // CONSTRUCTOR
   //------------------------
 
+  public School(String aName, Admin aAdmins, CoolSupplies aCoolSupplies)
+  {
+    name = aName;
+    if (aAdmins == null || aAdmins.getSchool() != null)
+    {
+      throw new RuntimeException("Unable to create School due to aAdmins. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    admins = aAdmins;
+    boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
+    if (!didAddCoolSupplies)
+    {
+      throw new RuntimeException("Unable to create school due to coolSupplies. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    students = new ArrayList<Student>();
+    grades = new ArrayList<Grade>();
+  }
+
   public School(String aName, CoolSupplies aCoolSupplies)
   {
     name = aName;
-    admins = new ArrayList<Admin>();
+    admins = new Admin(this);
     boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
     if (!didAddCoolSupplies)
     {
@@ -54,50 +71,15 @@ public class School
   {
     return name;
   }
-  /* Code from template association_GetOne_relatedSpecialization */
-  public CoolSupplies getCoolSupplies_OneCoolSupplies()
+  /* Code from template association_GetOne */
+  public Admin getAdmins()
   {
-    return (CoolSupplies)coolSupplies;
-  } 
-  /* Code from template association_GetMany */
-  public Admin getAdmin(int index)
-  {
-    Admin aAdmin = admins.get(index);
-    return aAdmin;
-  }
-
-  public List<Admin> getAdmins()
-  {
-    List<Admin> newAdmins = Collections.unmodifiableList(admins);
-    return newAdmins;
-  }
-
-  public int numberOfAdmins()
-  {
-    int number = admins.size();
-    return number;
-  }
-
-  public boolean hasAdmins()
-  {
-    boolean has = admins.size() > 0;
-    return has;
-  }
-
-  public int indexOfAdmin(Admin aAdmin)
-  {
-    int index = admins.indexOf(aAdmin);
-    return index;
+    return admins;
   }
   /* Code from template association_GetOne */
   public CoolSupplies getCoolSupplies()
   {
     return coolSupplies;
-  }
-  /* Code from template association_GetOne_clear */
-  protected void clear_coolSupplies()
-  {
-    coolSupplies = null;
   }
   /* Code from template association_GetMany */
   public Student getStudent(int index)
@@ -159,117 +141,6 @@ public class School
     int index = grades.indexOf(aGrade);
     return index;
   }
-  /* Code from template association_set_specialization_reqCommonCode */  /* Code from template association_SetOneToMany_relatedSpecialization */
-  public boolean setCoolSupplies_CoolSupplies(CoolSupplies aCoolSupplies)
-  {
-    boolean wasSet = false;
-    if (aCoolSupplies == null)
-    {
-      return wasSet;
-    }
-
-    CoolSupplies existingCoolSupplies = (CoolSupplies)coolSupplies;
-    coolSupplies = aCoolSupplies;
-    if (existingCoolSupplies != null && !existingCoolSupplies.equals(aCoolSupplies))
-    {
-      existingCoolSupplies.removeSchool(this);
-    }
-    coolSupplies.addSchool(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_IsNumberOfValidMethod */
-  public boolean isNumberOfAdminsValid()
-  {
-    boolean isValid = numberOfAdmins() >= minimumNumberOfAdmins();
-    return isValid;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAdmins()
-  {
-    return 1;
-  }
-  /* Code from template association_AddMandatoryManyToOne */
-  public Admin addAdmin()
-  {
-    Admin aNewAdmin = new Admin(this);
-    return aNewAdmin;
-  }
-
-  public boolean addAdmin(Admin aAdmin)
-  {
-    boolean wasAdded = false;
-    if (admins.contains(aAdmin)) { return false; }
-    School existingSchool = aAdmin.getSchool();
-    boolean isNewSchool = existingSchool != null && !this.equals(existingSchool);
-
-    if (isNewSchool && existingSchool.numberOfAdmins() <= minimumNumberOfAdmins())
-    {
-      return wasAdded;
-    }
-    if (isNewSchool)
-    {
-      aAdmin.setSchool(this);
-    }
-    else
-    {
-      admins.add(aAdmin);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeAdmin(Admin aAdmin)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aAdmin, as it must always have a school
-    if (this.equals(aAdmin.getSchool()))
-    {
-      return wasRemoved;
-    }
-
-    //school already at minimum (1)
-    if (numberOfAdmins() <= minimumNumberOfAdmins())
-    {
-      return wasRemoved;
-    }
-
-    admins.remove(aAdmin);
-    wasRemoved = true;
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addAdminAt(Admin aAdmin, int index)
-  {  
-    boolean wasAdded = false;
-    if(addAdmin(aAdmin))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAdmins()) { index = numberOfAdmins() - 1; }
-      admins.remove(aAdmin);
-      admins.add(index, aAdmin);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveAdminAt(Admin aAdmin, int index)
-  {
-    boolean wasAdded = false;
-    if(admins.contains(aAdmin))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAdmins()) { index = numberOfAdmins() - 1; }
-      admins.remove(aAdmin);
-      admins.add(index, aAdmin);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addAdminAt(aAdmin, index);
-    }
-    return wasAdded;
-  }
   /* Code from template association_SetOneToMany */
   public boolean setCoolSupplies(CoolSupplies aCoolSupplies)
   {
@@ -295,9 +166,9 @@ public class School
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Student addStudent(String aName, int aId, Grade aGrade)
+  public Student addStudent(String aName, int aId, Parent aParent, Grade aGrade)
   {
-    return new Student(aName, aId, this, aGrade);
+    return new Student(aName, aId, this, aParent, aGrade);
   }
 
   public boolean addStudent(Student aStudent)
@@ -456,10 +327,11 @@ public class School
 
   public void delete()
   {
-    for(int i=admins.size(); i > 0; i--)
+    Admin existingAdmins = admins;
+    admins = null;
+    if (existingAdmins != null)
     {
-      Admin aAdmin = admins.get(i - 1);
-      aAdmin.delete();
+      existingAdmins.delete();
     }
     CoolSupplies placeholderCoolSupplies = coolSupplies;
     this.coolSupplies = null;
@@ -484,7 +356,7 @@ public class School
   {
     return super.toString() + "["+
             "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "coolSupplies = "+(getCoolSupplies()!=null?Integer.toHexString(System.identityHashCode(getCoolSupplies())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "admins = "+(getAdmins()!=null?Integer.toHexString(System.identityHashCode(getAdmins())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "coolSupplies = "+(getCoolSupplies()!=null?Integer.toHexString(System.identityHashCode(getCoolSupplies())):"null");
   }
 }

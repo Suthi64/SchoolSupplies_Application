@@ -1,11 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 1 "uml.ump"
+// line 3 "../../../../../../uml.ump"
 public class CoolSupplies
 {
 
@@ -43,13 +43,13 @@ public class CoolSupplies
     orders = new ArrayList<Order>();
   }
 
-  public CoolSupplies(int aSchoolYear, Date aStartSchoolYear, Date aEndSchoolYear)
+  public CoolSupplies(int aSchoolYear, Date aStartSchoolYear, Date aEndSchoolYear, double aPriceIncreasePercentForSchoolSupply)
   {
     schoolYear = aSchoolYear;
     startSchoolYear = aStartSchoolYear;
     endSchoolYear = aEndSchoolYear;
     users = new ArrayList<User>();
-    schoolSupply = new SchoolSupply(this);
+    schoolSupply = new SchoolSupply(aPriceIncreasePercentForSchoolSupply, this);
     schools = new ArrayList<School>();
     orders = new ArrayList<Order>();
   }
@@ -164,11 +164,6 @@ public class CoolSupplies
     int index = schools.indexOf(aSchool);
     return index;
   }
-  /* Code from template association_GetMany_clear */
-  protected void clear_schools()
-  {
-    schools.clear();
-  }
   /* Code from template association_GetMany */
   public Order getOrder(int index)
   {
@@ -198,20 +193,6 @@ public class CoolSupplies
   {
     int index = orders.indexOf(aOrder);
     return index;
-  }
-  /* Code from template association_GetMany_relatedSpecialization */
-  public School getSchool_School(int index)
-  {
-    School aSchool = (School)schools.get(index);
-    return aSchool;
-  }
-
-  /* required for Java 7. */
-  @SuppressWarnings("unchecked")
-  public List<School> getSchools_School()
-  {
-    List<? extends School> newSchools = Collections.unmodifiableList(schools);
-    return (List<School>)newSchools;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfUsers()
@@ -291,15 +272,14 @@ public class CoolSupplies
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public School addSchool(String aName)
+  public School addSchool(String aName, Admin aAdmins)
   {
-    return new School(aName, this);
+    return new School(aName, aAdmins, this);
   }
 
   public boolean addSchool(School aSchool)
   {
     boolean wasAdded = false;
-    if (schools.contains(aSchool)) { return false; }
     if (schools.contains(aSchool)) { return false; }
     CoolSupplies existingCoolSupplies = aSchool.getCoolSupplies();
     boolean isNewCoolSupplies = existingCoolSupplies != null && !this.equals(existingCoolSupplies);
@@ -364,9 +344,9 @@ public class CoolSupplies
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Order addOrder(Date aOrderDate, Date aDueDate, int aPenalty, Order.Status aStatus, Parent aParent)
+  public Order addOrder(Autounique aOrderNumber, Date aOrderDate, Date aDueDate, double aTotalAmount, double aPenalty, boolean aIsPickedUp, Parent aParent)
   {
-    return new Order(aOrderDate, aDueDate, aPenalty, aStatus, aParent, this);
+    return new Order(aOrderNumber, aOrderDate, aDueDate, aTotalAmount, aPenalty, aIsPickedUp, aParent, this);
   }
 
   public boolean addOrder(Order aOrder)
@@ -427,79 +407,6 @@ public class CoolSupplies
     else 
     {
       wasAdded = addOrderAt(aOrder, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_set_specialization_reqCommonCode */  /* Code from template association_MinimumNumberOfMethod_relatedSpecialization */
-  public static int minimumNumberOfSchools_School()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne_relatedSpecialization */
-  public School addSchool(String aName)
-  {
-    return new School(aName, this);
-  }
-
-  public boolean addSchool(School aSchool)
-  {
-    boolean wasAdded = false;
-    if (schools.contains(aSchool)) { return false; }
-    if (schools.contains(aSchool)) { return false; }
-    CoolSupplies existingCoolSupplies = aSchool.getCoolSupplies();
-    boolean isNewCoolSupplies = existingCoolSupplies != null && !this.equals(existingCoolSupplies);
-    if (isNewCoolSupplies)
-    {
-      aSchool.setCoolSupplies(this);
-    }
-    else
-    {
-      schools.add(aSchool);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeSchool(School aSchool)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aSchool, as it must always have a coolSupplies
-    if (!this.equals(aSchool.getCoolSupplies()))
-    {
-      schools.remove(aSchool);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions_relatedSpecialization */
-  public boolean addSchoolAt(School aSchool, int index)
-  {  
-    boolean wasAdded = false;
-    if(addSchool(aSchool))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSchools()) { index = numberOfSchools() - 1; }
-      schools.remove(aSchool);
-      schools.add(index, aSchool);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveSchoolAt(School aSchool, int index)
-  {
-    boolean wasAdded = false;
-    if(schools.contains(aSchool))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSchools()) { index = numberOfSchools() - 1; }
-      schools.remove(aSchool);
-      schools.add(index, aSchool);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addSchoolAt(aSchool, index);
     }
     return wasAdded;
   }

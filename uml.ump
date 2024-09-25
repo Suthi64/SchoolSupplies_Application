@@ -1,3 +1,5 @@
+namespace ca.mcgill.ecse.coolsupplies.model;
+
 class CoolSupplies
 {
   Integer schoolYear;
@@ -9,10 +11,9 @@ class CoolSupplies
   1 <@>- * School schools;
   1 <@>- * Order orders ;
 
-
-
 }
 
+// The following changes are proposed to accommodate for the features 1-5 especially the registration and the login portion 
 class User{
 * users -- 1..2 UserRole roles;
 }
@@ -24,10 +25,9 @@ class UserRole{
 class Admin{
   isA UserRole;
 }
-
 class Parent{
   isA UserRole;
- 1 -- * Student students
+1	-- * Student students ;
 }
 
 associationClass Registration{
@@ -61,70 +61,69 @@ Date loginDate;
   * logins -- 1 User user ;
   * logins -- 1 UserAccount userAccount;
 }
-
 class Student
 {
 
-  * -- 1 School;
+* students -- 1  School;
   String name;
   unique Integer id ;
 }
 
 class School
 {
-  * -<@> 1 CoolSupplies;
-  1 -- 1..* Admin admins;
+  1 -- 1 Admin admins;
   String name;
 }
 
 class Grade
 {
-1..* grades -- 1 School;
-1 -- * Student students;
+  1..* grades -- 1 School;
+  1 -- * Student students;
   
   unique String name;
 }
-
 class Bundle
 {
  1 -- * Grade grades;
-1 -- * Item items;
+1 -- 1..* Item items;
 Integer numberOfItems;
-  lazy Double discount;
+lazy Double discount;
 }
+
 
 class Item
 {
   String name;
   Double price;
-}
-class SchoolSupply {
-1 <@>- * Item items ;
-}
-
-class BundleItem
-{
- 0..1 type -- 1 Item  
   enum ItemType {Mandatory, Recommended, Optional};
   ItemType type;
-  Integer number;
 }
 
+
+class SchoolSupply {
+1 <@>- * Item items ;
+Double priceIncreasePercent;
+}
+
+//changed from associationClass to class
 class Order 
 {
 //Changed the two multiplicities
 * orders -- 1 Parent;
-  immutable autounique Integer orderNumber;
+ 1 --  * Bundle bundles;
+   Autounique orderNumber;
   immutable Date orderDate;
   Date dueDate;
-  int penalty;
-  enum Status {Confirmed, Picked-up, Cancelled};
-  Status status;
-}
+  Double totalAmount;
+  Double penalty;
+Boolean isPickedUp;}
+//To accommodate orders status 
+
 
 class Payment
 {
   immutable String authorizationCode;
-  immutable Date date;
-  0..2 -- 1 Order;
+  immutable Date paymentDate;
+  0..2 payments-- 1 Order;
 }
+

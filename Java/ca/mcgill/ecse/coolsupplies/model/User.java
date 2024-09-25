@@ -1,12 +1,15 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 16 "uml.ump"
+/**
+ * The following changes are proposed to accommodate for the features 1-5 especially the registration and the login portion
+ */
+// line 17 "../../../../../../uml.ump"
 public class User
 {
 

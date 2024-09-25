@@ -1,9 +1,9 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
+package ca.mcgill.ecse.coolsupplies.model;
 
-
-// line 33 "uml.ump"
+// line 33 "../../../../../uml.ump"
 public class Registration
 {
 

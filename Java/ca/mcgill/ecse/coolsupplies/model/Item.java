@@ -1,11 +1,17 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
+package ca.mcgill.ecse.coolsupplies.model;
 
-
-// line 96 "uml.ump"
+// line 94 "../../../../../../uml.ump"
 public class Item
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum ItemType { Mandatory, Recommended, Optional }
 
   //------------------------
   // MEMBER VARIABLES
@@ -14,6 +20,7 @@ public class Item
   //Item Attributes
   private String name;
   private double price;
+  private ItemType type;
 
   //Item Associations
   private Bundle bundle;
@@ -23,10 +30,11 @@ public class Item
   // CONSTRUCTOR
   //------------------------
 
-  public Item(String aName, double aPrice, Bundle aBundle, SchoolSupply aSchoolSupply)
+  public Item(String aName, double aPrice, ItemType aType, Bundle aBundle, SchoolSupply aSchoolSupply)
   {
     name = aName;
     price = aPrice;
+    type = aType;
     boolean didAddBundle = setBundle(aBundle);
     if (!didAddBundle)
     {
@@ -59,6 +67,14 @@ public class Item
     return wasSet;
   }
 
+  public boolean setType(ItemType aType)
+  {
+    boolean wasSet = false;
+    type = aType;
+    wasSet = true;
+    return wasSet;
+  }
+
   public String getName()
   {
     return name;
@@ -67,6 +83,11 @@ public class Item
   public double getPrice()
   {
     return price;
+  }
+
+  public ItemType getType()
+  {
+    return type;
   }
   /* Code from template association_GetOne */
   public Bundle getBundle()
@@ -78,11 +99,17 @@ public class Item
   {
     return schoolSupply;
   }
-  /* Code from template association_SetOneToMany */
+  /* Code from template association_SetOneToMandatoryMany */
   public boolean setBundle(Bundle aBundle)
   {
     boolean wasSet = false;
+    //Must provide bundle to item
     if (aBundle == null)
+    {
+      return wasSet;
+    }
+
+    if (bundle != null && bundle.numberOfItems() <= Bundle.minimumNumberOfItems())
     {
       return wasSet;
     }
@@ -91,7 +118,12 @@ public class Item
     bundle = aBundle;
     if (existingBundle != null && !existingBundle.equals(aBundle))
     {
-      existingBundle.removeItem(this);
+      boolean didRemove = existingBundle.removeItem(this);
+      if (!didRemove)
+      {
+        bundle = existingBundle;
+        return wasSet;
+      }
     }
     bundle.addItem(this);
     wasSet = true;
@@ -139,6 +171,7 @@ public class Item
     return super.toString() + "["+
             "name" + ":" + getName()+ "," +
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "type" + "=" + (getType() != null ? !getType().equals(this)  ? getType().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "bundle = "+(getBundle()!=null?Integer.toHexString(System.identityHashCode(getBundle())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "schoolSupply = "+(getSchoolSupply()!=null?Integer.toHexString(System.identityHashCode(getSchoolSupply())):"null");
   }

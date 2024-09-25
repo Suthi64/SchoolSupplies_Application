@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 65 "uml.ump"
+// line 64 "../../../../../../uml.ump"
 public class Student
 {
 
@@ -24,13 +24,14 @@ public class Student
 
   //Student Associations
   private School school;
+  private Parent parent;
   private Grade grade;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Student(String aName, int aId, School aSchool, Grade aGrade)
+  public Student(String aName, int aId, School aSchool, Parent aParent, Grade aGrade)
   {
     name = aName;
     if (!setId(aId))
@@ -41,6 +42,11 @@ public class Student
     if (!didAddSchool)
     {
       throw new RuntimeException("Unable to create student due to school. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    boolean didAddParent = setParent(aParent);
+    if (!didAddParent)
+    {
+      throw new RuntimeException("Unable to create student due to parent. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddGrade = setGrade(aGrade);
     if (!didAddGrade)
@@ -105,6 +111,11 @@ public class Student
     return school;
   }
   /* Code from template association_GetOne */
+  public Parent getParent()
+  {
+    return parent;
+  }
+  /* Code from template association_GetOne */
   public Grade getGrade()
   {
     return grade;
@@ -125,6 +136,25 @@ public class Student
       existingSchool.removeStudent(this);
     }
     school.addStudent(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setParent(Parent aParent)
+  {
+    boolean wasSet = false;
+    if (aParent == null)
+    {
+      return wasSet;
+    }
+
+    Parent existingParent = parent;
+    parent = aParent;
+    if (existingParent != null && !existingParent.equals(aParent))
+    {
+      existingParent.removeStudent(this);
+    }
+    parent.addStudent(this);
     wasSet = true;
     return wasSet;
   }
@@ -157,6 +187,12 @@ public class Student
     {
       placeholderSchool.removeStudent(this);
     }
+    Parent placeholderParent = parent;
+    this.parent = null;
+    if(placeholderParent != null)
+    {
+      placeholderParent.removeStudent(this);
+    }
     Grade placeholderGrade = grade;
     this.grade = null;
     if(placeholderGrade != null)
@@ -172,6 +208,7 @@ public class Student
             "name" + ":" + getName()+ "," +
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "school = "+(getSchool()!=null?Integer.toHexString(System.identityHashCode(getSchool())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "parent = "+(getParent()!=null?Integer.toHexString(System.identityHashCode(getParent())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "grade = "+(getGrade()!=null?Integer.toHexString(System.identityHashCode(getGrade())):"null");
   }
 }

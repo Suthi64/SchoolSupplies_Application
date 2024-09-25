@@ -1,17 +1,20 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 import java.sql.Date;
 
-// line 101 "uml.ump"
+// line 103 "../../../../../../uml.ump"
 public class SchoolSupply
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
+
+  //SchoolSupply Attributes
+  private double priceIncreasePercent;
 
   //SchoolSupply Associations
   private List<Item> items;
@@ -21,8 +24,9 @@ public class SchoolSupply
   // CONSTRUCTOR
   //------------------------
 
-  public SchoolSupply(CoolSupplies aCoolSupplies)
+  public SchoolSupply(double aPriceIncreasePercent, CoolSupplies aCoolSupplies)
   {
+    priceIncreasePercent = aPriceIncreasePercent;
     items = new ArrayList<Item>();
     if (aCoolSupplies == null || aCoolSupplies.getSchoolSupply() != null)
     {
@@ -31,8 +35,9 @@ public class SchoolSupply
     coolSupplies = aCoolSupplies;
   }
 
-  public SchoolSupply(int aSchoolYearForCoolSupplies, Date aStartSchoolYearForCoolSupplies, Date aEndSchoolYearForCoolSupplies)
+  public SchoolSupply(double aPriceIncreasePercent, int aSchoolYearForCoolSupplies, Date aStartSchoolYearForCoolSupplies, Date aEndSchoolYearForCoolSupplies)
   {
+    priceIncreasePercent = aPriceIncreasePercent;
     items = new ArrayList<Item>();
     coolSupplies = new CoolSupplies(aSchoolYearForCoolSupplies, aStartSchoolYearForCoolSupplies, aEndSchoolYearForCoolSupplies, this);
   }
@@ -40,6 +45,19 @@ public class SchoolSupply
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setPriceIncreasePercent(double aPriceIncreasePercent)
+  {
+    boolean wasSet = false;
+    priceIncreasePercent = aPriceIncreasePercent;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public double getPriceIncreasePercent()
+  {
+    return priceIncreasePercent;
+  }
   /* Code from template association_GetMany */
   public Item getItem(int index)
   {
@@ -81,9 +99,9 @@ public class SchoolSupply
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Item addItem(String aName, double aPrice, Bundle aBundle)
+  public Item addItem(String aName, double aPrice, Item.ItemType aType, Bundle aBundle)
   {
-    return new Item(aName, aPrice, aBundle, this);
+    return new Item(aName, aPrice, aType, aBundle, this);
   }
 
   public boolean addItem(Item aItem)
@@ -165,4 +183,11 @@ public class SchoolSupply
     }
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "priceIncreasePercent" + ":" + getPriceIncreasePercent()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "coolSupplies = "+(getCoolSupplies()!=null?Integer.toHexString(System.identityHashCode(getCoolSupplies())):"null");
+  }
 }

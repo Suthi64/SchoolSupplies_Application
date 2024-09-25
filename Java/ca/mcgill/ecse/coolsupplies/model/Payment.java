@@ -1,10 +1,13 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.sql.Date;
 
-// line 125 "uml.ump"
+/**
+ * To accommodate orders status
+ */
+// line 123 "../../../../../../uml.ump"
 public class Payment
 {
 
@@ -14,7 +17,7 @@ public class Payment
 
   //Payment Attributes
   private String authorizationCode;
-  private Date date;
+  private Date paymentDate;
 
   //Payment Associations
   private Order order;
@@ -23,10 +26,10 @@ public class Payment
   // CONSTRUCTOR
   //------------------------
 
-  public Payment(String aAuthorizationCode, Date aDate, Order aOrder)
+  public Payment(String aAuthorizationCode, Date aPaymentDate, Order aOrder)
   {
     authorizationCode = aAuthorizationCode;
-    date = aDate;
+    paymentDate = aPaymentDate;
     boolean didAddOrder = setOrder(aOrder);
     if (!didAddOrder)
     {
@@ -43,9 +46,9 @@ public class Payment
     return authorizationCode;
   }
 
-  public Date getDate()
+  public Date getPaymentDate()
   {
-    return date;
+    return paymentDate;
   }
   /* Code from template association_GetOne */
   public Order getOrder()
@@ -99,7 +102,7 @@ public class Payment
   {
     return super.toString() + "["+
             "authorizationCode" + ":" + getAuthorizationCode()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "paymentDate" + "=" + (getPaymentDate() != null ? !getPaymentDate().equals(this)  ? getPaymentDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null");
   }
 }

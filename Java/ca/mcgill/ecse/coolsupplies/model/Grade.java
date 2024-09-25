@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 80 "uml.ump"
+// line 78 "../../../../../../uml.ump"
 public class Grade
 {
 
@@ -162,9 +162,9 @@ public class Grade
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Student addStudent(String aName, int aId, School aSchool)
+  public Student addStudent(String aName, int aId, School aSchool, Parent aParent)
   {
-    return new Student(aName, aId, aSchool, this);
+    return new Student(aName, aId, aSchool, aParent, this);
   }
 
   public boolean addStudent(Student aStudent)

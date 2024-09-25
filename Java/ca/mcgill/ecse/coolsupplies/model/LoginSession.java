@@ -1,11 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 57 "uml.ump"
+// line 57 "../../../../../../uml.ump"
 public class LoginSession
 {
 

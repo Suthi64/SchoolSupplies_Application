@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
 
-
+package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 88 "uml.ump"
+// line 85 "../../../../../../uml.ump"
 public class Bundle
 {
 
@@ -19,17 +19,23 @@ public class Bundle
   //Bundle Associations
   private List<Grade> grades;
   private List<Item> items;
+  private Order order;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Bundle(int aNumberOfItems)
+  public Bundle(int aNumberOfItems, Order aOrder)
   {
     numberOfItems = aNumberOfItems;
     discount = 0;
     grades = new ArrayList<Grade>();
     items = new ArrayList<Item>();
+    boolean didAddOrder = setOrder(aOrder);
+    if (!didAddOrder)
+    {
+      throw new RuntimeException("Unable to create bundle due to order. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
   }
 
   //------------------------
@@ -121,6 +127,11 @@ public class Bundle
     int index = items.indexOf(aItem);
     return index;
   }
+  /* Code from template association_GetOne */
+  public Order getOrder()
+  {
+    return order;
+  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfGrades()
   {
@@ -193,15 +204,22 @@ public class Bundle
     }
     return wasAdded;
   }
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfItemsValid()
+  {
+    boolean isValid = numberOfItems() >= minimumNumberOfItems();
+    return isValid;
+  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfItems()
   {
-    return 0;
+    return 1;
   }
-  /* Code from template association_AddManyToOne */
-  public Item addItem(String aName, double aPrice, SchoolSupply aSchoolSupply)
+  /* Code from template association_AddMandatoryManyToOne */
+  public Item addItem(String aName, double aPrice, Item.ItemType aType, SchoolSupply aSchoolSupply)
   {
-    return new Item(aName, aPrice, this, aSchoolSupply);
+    Item aNewItem = new Item(aName, aPrice, aType, this, aSchoolSupply);
+    return aNewItem;
   }
 
   public boolean addItem(Item aItem)
@@ -210,6 +228,11 @@ public class Bundle
     if (items.contains(aItem)) { return false; }
     Bundle existingBundle = aItem.getBundle();
     boolean isNewBundle = existingBundle != null && !this.equals(existingBundle);
+
+    if (isNewBundle && existingBundle.numberOfItems() <= minimumNumberOfItems())
+    {
+      return wasAdded;
+    }
     if (isNewBundle)
     {
       aItem.setBundle(this);
@@ -226,11 +249,19 @@ public class Bundle
   {
     boolean wasRemoved = false;
     //Unable to remove aItem, as it must always have a bundle
-    if (!this.equals(aItem.getBundle()))
+    if (this.equals(aItem.getBundle()))
     {
-      items.remove(aItem);
-      wasRemoved = true;
+      return wasRemoved;
     }
+
+    //bundle already at minimum (1)
+    if (numberOfItems() <= minimumNumberOfItems())
+    {
+      return wasRemoved;
+    }
+
+    items.remove(aItem);
+    wasRemoved = true;
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
@@ -265,6 +296,25 @@ public class Bundle
     }
     return wasAdded;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setOrder(Order aOrder)
+  {
+    boolean wasSet = false;
+    if (aOrder == null)
+    {
+      return wasSet;
+    }
+
+    Order existingOrder = order;
+    order = aOrder;
+    if (existingOrder != null && !existingOrder.equals(aOrder))
+    {
+      existingOrder.removeBundle(this);
+    }
+    order.addBundle(this);
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -278,6 +328,12 @@ public class Bundle
       Item aItem = items.get(i - 1);
       aItem.delete();
     }
+    Order placeholderOrder = order;
+    this.order = null;
+    if(placeholderOrder != null)
+    {
+      placeholderOrder.removeBundle(this);
+    }
   }
 
 
@@ -285,6 +341,7 @@ public class Bundle
   {
     return super.toString() + "["+
             "numberOfItems" + ":" + getNumberOfItems()+ "," +
-            "discount" + ":" + getDiscount()+ "]";
+            "discount" + ":" + getDiscount()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null");
   }
 }
