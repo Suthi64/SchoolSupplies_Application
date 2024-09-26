@@ -1,0 +1,131 @@
+namespace ca.mcgill.ecse.coolsupplies.model;
+
+class CoolSupplies
+{
+  Integer schoolYear;
+  Date startSchoolYear;
+  Date endSchoolYear;
+//Added top-level compositions
+  1 <@>- * User users; 
+  1 <@>- 1 SchoolSupply ; 
+  1 <@>- * School schools;
+  1 <@>- * Order orders ;
+
+}
+
+// The following changes are proposed to accommodate for the features 1-5 especially the registration and the login portion 
+class User{
+* users -- 1..2 UserRole roles;
+}
+
+class UserRole{
+  abstract;
+}
+
+class Admin{
+  isA UserRole;
+}
+class Parent{
+  isA UserRole;
+1	-- * Student students ;
+}
+
+associationClass Registration{
+  1 ParentAccount accountOf;
+  0..1 Parent parent ; 
+}
+
+class UserAccount{
+  abstract;
+  unique immutable email;
+  password;
+}
+
+class AdminAccount{
+  isA UserAccount;
+unique immutable email="admin@cool.ca"; // I added unique since there are multiple admins and they all have different emails
+
+password = “admin”;
+}
+
+class ParentAccount{
+  isA UserAccount;
+  lazy name;
+  lazy Integer phoneNumber;
+}
+
+class LoginSession{
+Date loginDate;
+  Time startLogin;
+  Time endLogin;
+  * logins -- 1 User user ;
+  * logins -- 1 UserAccount userAccount;
+}
+class Student
+{
+
+* students -- 1  School;
+  String name;
+  unique Integer id ;
+}
+
+class School
+{
+  1 -- 1 Admin admins;
+  String name;
+}
+
+class Grade
+{
+  1..* grades -- 1 School;
+  1 -- * Student students;
+  
+  unique String name;
+}
+class Bundle
+{
+ 1 -- * Grade grades;
+1 -- 1..* Item items;
+Integer numberOfItems;
+lazy Double discount;
+}
+
+
+class Item
+{
+  String name;
+  Double price;
+  enum ItemType {Mandatory, Recommended, Optional, NotApplicable};
+  ItemType type;
+}
+
+
+class SchoolSupply {
+1 <@>- * Item items ;
+Double priceIncreasePercent;
+}
+
+//changed from associationClass to class
+class Order 
+{
+//Changed the two multiplicities
+* orders -- 1 Parent;
+ 1 --  * Bundle bundles;
+   Autounique orderNumber;
+  immutable Date orderDate;
+  Date dueDate;
+  Double totalAmount;
+  Double penalty;
+Boolean isPickedUp;}
+//To accommodate orders status 
+
+
+class Payment
+{
+  immutable String authorizationCode;
+  immutable Date paymentDate;
+  0..2 payments-- 1 Order;
+}
+
+
+
