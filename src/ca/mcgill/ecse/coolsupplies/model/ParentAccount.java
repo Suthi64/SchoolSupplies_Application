@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 51 "../../../../../uml.ump"
+// line 51 "../../../../../CoolSupplies.ump"
 public class ParentAccount extends UserAccount
 {
 
@@ -30,7 +30,7 @@ public class ParentAccount extends UserAccount
     phoneNumber = 0;
     if (aRegistration == null || aRegistration.getAccountOf() != null)
     {
-      throw new RuntimeException("Unable to create ParentAccount due to aRegistration. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create ParentAccount due to aRegistration. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     registration = aRegistration;
   }

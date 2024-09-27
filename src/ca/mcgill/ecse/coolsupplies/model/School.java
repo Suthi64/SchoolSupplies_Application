@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 72 "../../../../../uml.ump"
+// line 72 "../../../../../CoolSupplies.ump"
 public class School
 {
 
@@ -30,13 +30,13 @@ public class School
     name = aName;
     if (aAdmins == null || aAdmins.getSchool() != null)
     {
-      throw new RuntimeException("Unable to create School due to aAdmins. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create School due to aAdmins. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     admins = aAdmins;
     boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
     if (!didAddCoolSupplies)
     {
-      throw new RuntimeException("Unable to create school due to coolSupplies. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create school due to coolSupplies. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     students = new ArrayList<Student>();
     grades = new ArrayList<Grade>();
@@ -49,7 +49,7 @@ public class School
     boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
     if (!didAddCoolSupplies)
     {
-      throw new RuntimeException("Unable to create school due to coolSupplies. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create school due to coolSupplies. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     students = new ArrayList<Student>();
     grades = new ArrayList<Grade>();

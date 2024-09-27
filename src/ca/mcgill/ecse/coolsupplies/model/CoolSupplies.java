@@ -1,11 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 3 "../../../../../uml.ump"
+// line 3 "../../../../../CoolSupplies.ump"
 public class CoolSupplies
 {
 
@@ -36,7 +36,7 @@ public class CoolSupplies
     users = new ArrayList<User>();
     if (aSchoolSupply == null || aSchoolSupply.getCoolSupplies() != null)
     {
-      throw new RuntimeException("Unable to create CoolSupplies due to aSchoolSupply. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create CoolSupplies due to aSchoolSupply. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     schoolSupply = aSchoolSupply;
     schools = new ArrayList<School>();

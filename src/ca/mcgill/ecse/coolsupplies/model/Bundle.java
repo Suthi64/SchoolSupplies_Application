@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 85 "../../../../../uml.ump"
+// line 85 "../../../../../CoolSupplies.ump"
 public class Bundle
 {
 
@@ -20,6 +20,7 @@ public class Bundle
   private List<Grade> grades;
   private List<Item> items;
   private Order order;
+  private List<OrderBundle> orderBundles;
 
   //------------------------
   // CONSTRUCTOR
@@ -34,8 +35,9 @@ public class Bundle
     boolean didAddOrder = setOrder(aOrder);
     if (!didAddOrder)
     {
-      throw new RuntimeException("Unable to create bundle due to order. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create bundle due to order. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    orderBundles = new ArrayList<OrderBundle>();
   }
 
   //------------------------
@@ -131,6 +133,36 @@ public class Bundle
   public Order getOrder()
   {
     return order;
+  }
+  /* Code from template association_GetMany */
+  public OrderBundle getOrderBundle(int index)
+  {
+    OrderBundle aOrderBundle = orderBundles.get(index);
+    return aOrderBundle;
+  }
+
+  public List<OrderBundle> getOrderBundles()
+  {
+    List<OrderBundle> newOrderBundles = Collections.unmodifiableList(orderBundles);
+    return newOrderBundles;
+  }
+
+  public int numberOfOrderBundles()
+  {
+    int number = orderBundles.size();
+    return number;
+  }
+
+  public boolean hasOrderBundles()
+  {
+    boolean has = orderBundles.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrderBundle(OrderBundle aOrderBundle)
+  {
+    int index = orderBundles.indexOf(aOrderBundle);
+    return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfGrades()
@@ -315,6 +347,78 @@ public class Bundle
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrderBundles()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public OrderBundle addOrderBundle(int aRepetition, Order aOrder)
+  {
+    return new OrderBundle(aRepetition, aOrder, this);
+  }
+
+  public boolean addOrderBundle(OrderBundle aOrderBundle)
+  {
+    boolean wasAdded = false;
+    if (orderBundles.contains(aOrderBundle)) { return false; }
+    Bundle existingBundle = aOrderBundle.getBundle();
+    boolean isNewBundle = existingBundle != null && !this.equals(existingBundle);
+    if (isNewBundle)
+    {
+      aOrderBundle.setBundle(this);
+    }
+    else
+    {
+      orderBundles.add(aOrderBundle);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOrderBundle(OrderBundle aOrderBundle)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOrderBundle, as it must always have a bundle
+    if (!this.equals(aOrderBundle.getBundle()))
+    {
+      orderBundles.remove(aOrderBundle);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOrderBundleAt(OrderBundle aOrderBundle, int index)
+  {  
+    boolean wasAdded = false;
+    if(addOrderBundle(aOrderBundle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderBundles()) { index = numberOfOrderBundles() - 1; }
+      orderBundles.remove(aOrderBundle);
+      orderBundles.add(index, aOrderBundle);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOrderBundleAt(OrderBundle aOrderBundle, int index)
+  {
+    boolean wasAdded = false;
+    if(orderBundles.contains(aOrderBundle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderBundles()) { index = numberOfOrderBundles() - 1; }
+      orderBundles.remove(aOrderBundle);
+      orderBundles.add(index, aOrderBundle);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addOrderBundleAt(aOrderBundle, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
@@ -333,6 +437,11 @@ public class Bundle
     if(placeholderOrder != null)
     {
       placeholderOrder.removeBundle(this);
+    }
+    for(int i=orderBundles.size(); i > 0; i--)
+    {
+      OrderBundle aOrderBundle = orderBundles.get(i - 1);
+      aOrderBundle.delete();
     }
   }
 

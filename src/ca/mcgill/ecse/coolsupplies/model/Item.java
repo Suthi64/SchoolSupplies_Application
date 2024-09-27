@@ -1,9 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
+import java.util.*;
 
-// line 94 "../../../../../uml.ump"
+// line 94 "../../../../../CoolSupplies.ump"
 public class Item
 {
 
@@ -25,6 +26,7 @@ public class Item
   //Item Associations
   private Bundle bundle;
   private SchoolSupply schoolSupply;
+  private List<OrderItem> orderItems;
 
   //------------------------
   // CONSTRUCTOR
@@ -38,13 +40,14 @@ public class Item
     boolean didAddBundle = setBundle(aBundle);
     if (!didAddBundle)
     {
-      throw new RuntimeException("Unable to create item due to bundle. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create item due to bundle. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddSchoolSupply = setSchoolSupply(aSchoolSupply);
     if (!didAddSchoolSupply)
     {
-      throw new RuntimeException("Unable to create item due to schoolSupply. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create item due to schoolSupply. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    orderItems = new ArrayList<OrderItem>();
   }
 
   //------------------------
@@ -99,6 +102,36 @@ public class Item
   {
     return schoolSupply;
   }
+  /* Code from template association_GetMany */
+  public OrderItem getOrderItem(int index)
+  {
+    OrderItem aOrderItem = orderItems.get(index);
+    return aOrderItem;
+  }
+
+  public List<OrderItem> getOrderItems()
+  {
+    List<OrderItem> newOrderItems = Collections.unmodifiableList(orderItems);
+    return newOrderItems;
+  }
+
+  public int numberOfOrderItems()
+  {
+    int number = orderItems.size();
+    return number;
+  }
+
+  public boolean hasOrderItems()
+  {
+    boolean has = orderItems.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrderItem(OrderItem aOrderItem)
+  {
+    int index = orderItems.indexOf(aOrderItem);
+    return index;
+  }
   /* Code from template association_SetOneToMandatoryMany */
   public boolean setBundle(Bundle aBundle)
   {
@@ -148,6 +181,78 @@ public class Item
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrderItems()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public OrderItem addOrderItem(int aRepetition, Order aOrder)
+  {
+    return new OrderItem(aRepetition, aOrder, this);
+  }
+
+  public boolean addOrderItem(OrderItem aOrderItem)
+  {
+    boolean wasAdded = false;
+    if (orderItems.contains(aOrderItem)) { return false; }
+    Item existingItem = aOrderItem.getItem();
+    boolean isNewItem = existingItem != null && !this.equals(existingItem);
+    if (isNewItem)
+    {
+      aOrderItem.setItem(this);
+    }
+    else
+    {
+      orderItems.add(aOrderItem);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOrderItem(OrderItem aOrderItem)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOrderItem, as it must always have a item
+    if (!this.equals(aOrderItem.getItem()))
+    {
+      orderItems.remove(aOrderItem);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOrderItemAt(OrderItem aOrderItem, int index)
+  {  
+    boolean wasAdded = false;
+    if(addOrderItem(aOrderItem))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderItems()) { index = numberOfOrderItems() - 1; }
+      orderItems.remove(aOrderItem);
+      orderItems.add(index, aOrderItem);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOrderItemAt(OrderItem aOrderItem, int index)
+  {
+    boolean wasAdded = false;
+    if(orderItems.contains(aOrderItem))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderItems()) { index = numberOfOrderItems() - 1; }
+      orderItems.remove(aOrderItem);
+      orderItems.add(index, aOrderItem);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addOrderItemAt(aOrderItem, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
@@ -162,6 +267,11 @@ public class Item
     if(placeholderSchoolSupply != null)
     {
       placeholderSchoolSupply.removeItem(this);
+    }
+    for(int i=orderItems.size(); i > 0; i--)
+    {
+      OrderItem aOrderItem = orderItems.get(i - 1);
+      aOrderItem.delete();
     }
   }
 

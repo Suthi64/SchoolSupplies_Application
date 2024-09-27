@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
@@ -9,7 +9,7 @@ import java.sql.Time;
 /**
  * The following changes are proposed to accommodate for the features 1-5 especially the registration and the login portion
  */
-// line 17 "../../../../../uml.ump"
+// line 17 "../../../../../CoolSupplies.ump"
 public class User
 {
 
@@ -32,12 +32,12 @@ public class User
     boolean didAddRoles = setRoles(allRoles);
     if (!didAddRoles)
     {
-      throw new RuntimeException("Unable to create User, must have 1 to 2 roles. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create User, must have 1 to 2 roles. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
     if (!didAddCoolSupplies)
     {
-      throw new RuntimeException("Unable to create user due to coolSupplies. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create user due to coolSupplies. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     logins = new ArrayList<LoginSession>();
   }

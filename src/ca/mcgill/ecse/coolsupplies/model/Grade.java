@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 78 "../../../../../uml.ump"
+// line 78 "../../../../../CoolSupplies.ump"
 public class Grade
 {
 
@@ -34,18 +34,18 @@ public class Grade
   {
     if (!setName(aName))
     {
-      throw new RuntimeException("Cannot create due to duplicate name. See https://manual.umple.org?RE003ViolationofUniqueness.html");
+      throw new RuntimeException("Cannot create due to duplicate name. See http://manual.umple.org?RE003ViolationofUniqueness.html");
     }
     boolean didAddSchool = setSchool(aSchool);
     if (!didAddSchool)
     {
-      throw new RuntimeException("Unable to create grade due to school. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create grade due to school. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     students = new ArrayList<Student>();
     boolean didAddBundle = setBundle(aBundle);
     if (!didAddBundle)
     {
-      throw new RuntimeException("Unable to create grade due to bundle. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create grade due to bundle. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 

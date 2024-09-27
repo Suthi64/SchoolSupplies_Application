@@ -1,11 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 57 "../../../../../uml.ump"
+// line 57 "../../../../../CoolSupplies.ump"
 public class LoginSession
 {
 
@@ -34,12 +34,12 @@ public class LoginSession
     boolean didAddUser = setUser(aUser);
     if (!didAddUser)
     {
-      throw new RuntimeException("Unable to create login due to user. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create login due to user. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddUserAccount = setUserAccount(aUserAccount);
     if (!didAddUserAccount)
     {
-      throw new RuntimeException("Unable to create login due to userAccount. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create login due to userAccount. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 

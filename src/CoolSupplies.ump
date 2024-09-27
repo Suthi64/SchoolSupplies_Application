@@ -127,5 +127,17 @@ class Payment
   0..2 payments-- 1 Order;
 }
 
+associationClass OrderBundle{
+* Order ;
+* Bundle ;
+Integer repetition ;
+}
+
+associationClass OrderItem{
+* Order ;
+* Item ;
+Integer repetition ;
+}
+
 
 

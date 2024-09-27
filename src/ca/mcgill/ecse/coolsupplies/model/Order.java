@@ -1,5 +1,5 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.sql.Date;
@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * changed from associationClass to class
  */
-// line 109 "../../../../../uml.ump"
+// line 109 "../../../../../CoolSupplies.ump"
 public class Order
 {
 
@@ -29,6 +29,8 @@ public class Order
   private List<Bundle> bundles;
   private CoolSupplies coolSupplies;
   private List<Payment> payments;
+  private List<OrderBundle> orderBundles;
+  private List<OrderItem> orderItems;
 
   //------------------------
   // CONSTRUCTOR
@@ -45,15 +47,17 @@ public class Order
     boolean didAddParent = setParent(aParent);
     if (!didAddParent)
     {
-      throw new RuntimeException("Unable to create order due to parent. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create order due to parent. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     bundles = new ArrayList<Bundle>();
     boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
     if (!didAddCoolSupplies)
     {
-      throw new RuntimeException("Unable to create order due to coolSupplies. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create order due to coolSupplies. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     payments = new ArrayList<Payment>();
+    orderBundles = new ArrayList<OrderBundle>();
+    orderItems = new ArrayList<OrderItem>();
   }
 
   //------------------------
@@ -202,6 +206,66 @@ public class Order
   public int indexOfPayment(Payment aPayment)
   {
     int index = payments.indexOf(aPayment);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public OrderBundle getOrderBundle(int index)
+  {
+    OrderBundle aOrderBundle = orderBundles.get(index);
+    return aOrderBundle;
+  }
+
+  public List<OrderBundle> getOrderBundles()
+  {
+    List<OrderBundle> newOrderBundles = Collections.unmodifiableList(orderBundles);
+    return newOrderBundles;
+  }
+
+  public int numberOfOrderBundles()
+  {
+    int number = orderBundles.size();
+    return number;
+  }
+
+  public boolean hasOrderBundles()
+  {
+    boolean has = orderBundles.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrderBundle(OrderBundle aOrderBundle)
+  {
+    int index = orderBundles.indexOf(aOrderBundle);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public OrderItem getOrderItem(int index)
+  {
+    OrderItem aOrderItem = orderItems.get(index);
+    return aOrderItem;
+  }
+
+  public List<OrderItem> getOrderItems()
+  {
+    List<OrderItem> newOrderItems = Collections.unmodifiableList(orderItems);
+    return newOrderItems;
+  }
+
+  public int numberOfOrderItems()
+  {
+    int number = orderItems.size();
+    return number;
+  }
+
+  public boolean hasOrderItems()
+  {
+    boolean has = orderItems.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrderItem(OrderItem aOrderItem)
+  {
+    int index = orderItems.indexOf(aOrderItem);
     return index;
   }
   /* Code from template association_SetOneToMany */
@@ -403,6 +467,150 @@ public class Order
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrderBundles()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public OrderBundle addOrderBundle(int aRepetition, Bundle aBundle)
+  {
+    return new OrderBundle(aRepetition, this, aBundle);
+  }
+
+  public boolean addOrderBundle(OrderBundle aOrderBundle)
+  {
+    boolean wasAdded = false;
+    if (orderBundles.contains(aOrderBundle)) { return false; }
+    Order existingOrder = aOrderBundle.getOrder();
+    boolean isNewOrder = existingOrder != null && !this.equals(existingOrder);
+    if (isNewOrder)
+    {
+      aOrderBundle.setOrder(this);
+    }
+    else
+    {
+      orderBundles.add(aOrderBundle);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOrderBundle(OrderBundle aOrderBundle)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOrderBundle, as it must always have a order
+    if (!this.equals(aOrderBundle.getOrder()))
+    {
+      orderBundles.remove(aOrderBundle);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOrderBundleAt(OrderBundle aOrderBundle, int index)
+  {  
+    boolean wasAdded = false;
+    if(addOrderBundle(aOrderBundle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderBundles()) { index = numberOfOrderBundles() - 1; }
+      orderBundles.remove(aOrderBundle);
+      orderBundles.add(index, aOrderBundle);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOrderBundleAt(OrderBundle aOrderBundle, int index)
+  {
+    boolean wasAdded = false;
+    if(orderBundles.contains(aOrderBundle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderBundles()) { index = numberOfOrderBundles() - 1; }
+      orderBundles.remove(aOrderBundle);
+      orderBundles.add(index, aOrderBundle);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addOrderBundleAt(aOrderBundle, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrderItems()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public OrderItem addOrderItem(int aRepetition, Item aItem)
+  {
+    return new OrderItem(aRepetition, this, aItem);
+  }
+
+  public boolean addOrderItem(OrderItem aOrderItem)
+  {
+    boolean wasAdded = false;
+    if (orderItems.contains(aOrderItem)) { return false; }
+    Order existingOrder = aOrderItem.getOrder();
+    boolean isNewOrder = existingOrder != null && !this.equals(existingOrder);
+    if (isNewOrder)
+    {
+      aOrderItem.setOrder(this);
+    }
+    else
+    {
+      orderItems.add(aOrderItem);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOrderItem(OrderItem aOrderItem)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOrderItem, as it must always have a order
+    if (!this.equals(aOrderItem.getOrder()))
+    {
+      orderItems.remove(aOrderItem);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOrderItemAt(OrderItem aOrderItem, int index)
+  {  
+    boolean wasAdded = false;
+    if(addOrderItem(aOrderItem))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderItems()) { index = numberOfOrderItems() - 1; }
+      orderItems.remove(aOrderItem);
+      orderItems.add(index, aOrderItem);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOrderItemAt(OrderItem aOrderItem, int index)
+  {
+    boolean wasAdded = false;
+    if(orderItems.contains(aOrderItem))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrderItems()) { index = numberOfOrderItems() - 1; }
+      orderItems.remove(aOrderItem);
+      orderItems.add(index, aOrderItem);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addOrderItemAt(aOrderItem, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
@@ -427,6 +635,16 @@ public class Order
     {
       Payment aPayment = payments.get(i - 1);
       aPayment.delete();
+    }
+    for(int i=orderBundles.size(); i > 0; i--)
+    {
+      OrderBundle aOrderBundle = orderBundles.get(i - 1);
+      aOrderBundle.delete();
+    }
+    for(int i=orderItems.size(); i > 0; i--)
+    {
+      OrderItem aOrderItem = orderItems.get(i - 1);
+      aOrderItem.delete();
     }
   }
 

@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 25 "../../../../../uml.ump"
+// line 25 "../../../../../CoolSupplies.ump"
 public class Admin extends UserRole
 {
 
@@ -24,7 +24,7 @@ public class Admin extends UserRole
     super();
     if (aSchool == null || aSchool.getAdmins() != null)
     {
-      throw new RuntimeException("Unable to create Admin due to aSchool. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Admin due to aSchool. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     school = aSchool;
   }

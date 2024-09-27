@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 44 "../../../../../uml.ump"
+// line 44 "../../../../../CoolSupplies.ump"
 public class AdminAccount extends UserAccount
 {
 
@@ -36,7 +36,7 @@ public class AdminAccount extends UserAccount
     password = “admin”;
     if (!setEmail(aEmail))
     {
-      throw new RuntimeException("Cannot create due to duplicate email. See https://manual.umple.org?RE003ViolationofUniqueness.html");
+      throw new RuntimeException("Cannot create due to duplicate email. See http://manual.umple.org?RE003ViolationofUniqueness.html");
     }
   }
 

@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 33 "../../../../../uml.ump"
+// line 33 "../../../../../CoolSupplies.ump"
 public class Registration
 {
 
@@ -32,13 +32,13 @@ public class Registration
     canSetParent = true;
     if (aAccountOf == null || aAccountOf.getRegistration() != null)
     {
-      throw new RuntimeException("Unable to create Registration due to aAccountOf. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Registration due to aAccountOf. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     accountOf = aAccountOf;
     boolean didAddParent = setParent(aParent);
     if (!didAddParent)
     {
-      throw new RuntimeException("Unable to create registration due to parent. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create registration due to parent. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -48,7 +48,7 @@ public class Registration
     boolean didAddParent = setParent(aParent);
     if (!didAddParent)
     {
-      throw new RuntimeException("Unable to create registration due to parent. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create registration due to parent. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
