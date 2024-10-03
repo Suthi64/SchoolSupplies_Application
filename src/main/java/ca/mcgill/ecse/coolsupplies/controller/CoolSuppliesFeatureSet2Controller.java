@@ -13,7 +13,8 @@ public class CoolSuppliesFeatureSet2Controller {
   private CoolSuppliesFeatureSet2Controller() {}
 
   /*
-   * adding a Student to CoolSupplies including its grade author: Brian Yang
+   * adding a Student to CoolSupplies including its grade ;
+   *  Author: Brian Yang
    */
   public static String addStudent(String name, String gradeLevel) {
     // input validation
@@ -51,15 +52,16 @@ public class CoolSuppliesFeatureSet2Controller {
   }
 
   /*
-   * updating a student (including it grade) : Brian Yang
+   * updating a student (including it grade) 
+   * Author: Brian Yang
    */
   public static String updateStudent(String name, String newName, String newGradeLevel) {
     // input validation
     var error = "";
     if (newName == null) {
-      error = "The name must not be null";
+      error = "The name must not be null.";
     } else if (newName.isEmpty()) {
-      error = "The name must not be empty";
+      error = "The name must not be empty.";
     }
     Student student = null;
     for (Student studentI : coolSupplies.getStudents()) {
@@ -69,7 +71,7 @@ public class CoolSuppliesFeatureSet2Controller {
       }
     }
     if (student == null) {
-      error = "The student does not exist";
+      error = "The student does not exist.";
     }
     Grade grade = null;
     for (Grade gradei : coolSupplies.getGrades()) {
@@ -79,7 +81,7 @@ public class CoolSuppliesFeatureSet2Controller {
       }
     }
     if (grade == null) {
-      error = "The grade does not exist";
+      error = "The grade does not exist.";
     }
     if (!error.isEmpty()) {
       return error.trim();
@@ -92,7 +94,7 @@ public class CoolSuppliesFeatureSet2Controller {
     } catch (RuntimeException e) {
       error = e.getMessage();
       if (error.startsWith("Cannot create due to duplicate name")) {
-        error = "The name must be unique";
+        error = "The name must be unique.";
       }
       return error;
     }
@@ -100,7 +102,8 @@ public class CoolSuppliesFeatureSet2Controller {
   }
 
   /*
-   * deleting a student author : Brian Yang
+   * deleting a student from CoolSupplies
+   * Author : Brian Yang
    */
   public static String deleteStudent(String name) {
     var error = "";
@@ -111,7 +114,7 @@ public class CoolSuppliesFeatureSet2Controller {
       }
     }
     if (student == null) {
-      error = "The student does not exist";
+      error = "The student does not exist.";
       return error.trim();
     }
     try {
@@ -124,7 +127,8 @@ public class CoolSuppliesFeatureSet2Controller {
   }
 
   /*
-   * get a student : Brian Yang
+   * get a student from CoolSupplies
+   * Author: Brian Yang
    */
   public static TOStudent getStudent(String name) {
     Student student = null;
@@ -141,7 +145,10 @@ public class CoolSuppliesFeatureSet2Controller {
     }
   }
 
-  // returns all students
+  /*
+   * get all the students in CoolSupplies
+   * Author: Brian Yang
+   */
   public static List<TOStudent> getStudents() {
     List<TOStudent> students = new ArrayList<TOStudent>();
     for (Student student : coolSupplies.getStudents()) {
