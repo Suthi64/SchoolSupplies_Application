@@ -7,6 +7,7 @@ import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
 import ca.mcgill.ecse.coolsupplies.model.Student;
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Parent;
+import ca.mcgill.ecse.coolsupplies.model.Order;
 import ca.mcgill.ecse.coolsupplies.model.BundleItem.PurchaseLevel;
 
 public class CoolSuppliesFeatureSet6Controller {
@@ -98,7 +99,7 @@ public class CoolSuppliesFeatureSet6Controller {
     for (Parent parentX : coolSupplies.getParents()) {
       if (parentX.getEmail().equals(parentEmail)) {
         parent = parentX;
-        break
+        break;
       }
     }
 
@@ -107,11 +108,10 @@ public class CoolSuppliesFeatureSet6Controller {
     }
 
     Student student = null;
-    TOStudent students = new TOStudent();
     for (Student studentX : parent.getStudents()) {
       if (studentX.getName().equals(studentName)) {
         student = studentX;
-        break
+        break;
       }
     }
 
@@ -129,7 +129,7 @@ public class CoolSuppliesFeatureSet6Controller {
     for (Parent parentX : coolSupplies.getParents()) {
       if (parentX.getEmail().equals(parentEmail)) {
         parent = parentX;
-        break
+        break;
       }
     }
 
@@ -179,8 +179,8 @@ public class CoolSuppliesFeatureSet6Controller {
     }
   
     PurchaseLevel purchaseLevel = null;
-    for (PurchaseLevel purchaseLevelX : coolSupplies.getStudents()) {
-      if (purchaseLevelX.equals(level)) { // to change since for now i did not found how to compare them
+    for (PurchaseLevel purchaseLevelX : PurchaseLevel.values()) {
+      if (purchaseLevelX.name().equals(level)) { 
         purchaseLevel = purchaseLevelX;
         break;
       }
@@ -192,10 +192,13 @@ public class CoolSuppliesFeatureSet6Controller {
     }
 
   try {
-    Order order = new Order(number, date, level, parent, student, coolSupplies);
+    Order order = new Order(number, date, purchaseLevel, parent, student, coolSupplies);
   }
   catch (RuntimeException e) {
     error = e.getMessage();
   }
     return error;
+
+  }
+
 }
