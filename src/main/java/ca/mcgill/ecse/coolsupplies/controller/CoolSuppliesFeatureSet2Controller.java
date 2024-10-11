@@ -12,9 +12,14 @@ public class CoolSuppliesFeatureSet2Controller {
 
   private CoolSuppliesFeatureSet2Controller() {}
 
-  /*
-   * adding a Student to CoolSupplies including its grade ;
-   *  Author: Brian Yang
+  /**
+   * <p>
+   * Adds a student including its grade to CoolSupplies
+   * </p>
+   * 
+   * @param name the name of the student
+   * @return an error string if there is any
+   * @author Brian Yang
    */
   public static String addStudent(String name, String gradeLevel) {
     // input validation
@@ -51,9 +56,16 @@ public class CoolSuppliesFeatureSet2Controller {
     return "";
   }
 
-  /*
-   * updating a student (including it grade) 
-   * Author: Brian Yang
+  /**
+   * <p>
+   * Updates a student in CoolSupplies including its grade.
+   * </p>
+   * 
+   * @param name the current name of the student 
+   * @param newName the new name of the student
+   * @param newGradeLevel the new grade level of the student
+   * @return an error string if there is any
+   * @author Brian Yang
    */
   public static String updateStudent(String name, String newName, String newGradeLevel) {
     // input validation
@@ -101,9 +113,14 @@ public class CoolSuppliesFeatureSet2Controller {
     return "";
   }
 
-  /*
-   * deleting a student from CoolSupplies
-   * Author : Brian Yang
+  /**
+   * <p>
+   * Delete a student from CoolSupplies.
+   * </p>
+   * 
+   * @param name the name of the student 
+   * @return an error string if there is any
+   * @author Brian Yang
    */
   public static String deleteStudent(String name) {
     var error = "";
@@ -126,9 +143,14 @@ public class CoolSuppliesFeatureSet2Controller {
     return "";
   }
 
-  /*
-   * get a student from CoolSupplies
-   * Author: Brian Yang
+  /**
+   * <p>
+   * Getting a student in CoolSupplies using their name
+   * </p>
+   * 
+   * @param name the name of the student 
+   * @return TOStudent
+   * @author Brian Yang
    */
   public static TOStudent getStudent(String name) {
     Student student = null;
@@ -145,9 +167,13 @@ public class CoolSuppliesFeatureSet2Controller {
     }
   }
 
-  /*
-   * get all the students in CoolSupplies
-   * Author: Brian Yang
+  /**
+   * <p>
+   * Getting all student in CoolSupplies 
+   * </p>
+   * 
+   * @return List<TOStudent>
+   * @author Brian Yang
    */
   public static List<TOStudent> getStudents() {
     List<TOStudent> students = new ArrayList<TOStudent>();
