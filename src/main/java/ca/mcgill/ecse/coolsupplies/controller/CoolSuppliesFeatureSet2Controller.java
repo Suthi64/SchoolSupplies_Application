@@ -31,13 +31,7 @@ public class CoolSuppliesFeatureSet2Controller {
     }
 
     // call model
-    Grade grade = null;
-    for (Grade gradei : coolSupplies.getGrades()) {
-      if (gradei.getLevel().equals(gradeLevel)) {
-        grade = gradei;
-        break;
-      }
-    }
+    Grade grade = Grade.getWithLevel(gradeLevel);
     if (grade == null) {
       error = "The grade does not exist.";
     }
@@ -112,12 +106,7 @@ public class CoolSuppliesFeatureSet2Controller {
    */
   public static String deleteStudent(String name) {
     var error = "";
-    Student student = null;
-    for (Student studenti : coolSupplies.getStudents()) {
-      if (studenti.getName().equals(name)) {
-        student = studenti;
-      }
-    }
+    Student student = Student.getWithName(name);
     if (student == null) {
       error = "The student does not exist.";
       return error.trim();
@@ -141,12 +130,7 @@ public class CoolSuppliesFeatureSet2Controller {
    * @author Brian Yang
    */
   public static TOStudent getStudent(String name) {
-    Student student = null;
-    for (Student studenti : coolSupplies.getStudents()) {
-      if (studenti.getName().equals(name)) {
-        student = studenti;
-      }
-    }
+    Student student = Student.getWithName(name);
     if (student == null) {
       return null;
     } else {
