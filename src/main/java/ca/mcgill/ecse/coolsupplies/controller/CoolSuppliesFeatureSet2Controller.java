@@ -75,23 +75,11 @@ public class CoolSuppliesFeatureSet2Controller {
     } else if (newName.isEmpty()) {
       error = "The name must not be empty.";
     }
-    Student student = null;
-    for (Student studentI : coolSupplies.getStudents()) {
-      if (studentI.getName().equals(name)) {
-        student = studentI;
-        break;
-      }
-    }
+    Student student = Student.getWithName(name);
     if (student == null) {
       error = "The student does not exist.";
     }
-    Grade grade = null;
-    for (Grade gradei : coolSupplies.getGrades()) {
-      if (gradei.getLevel().equals(newGradeLevel)) {
-        grade = gradei;
-        break;
-      }
-    }
+    Grade grade = Grade.getWithLevel(newGradeLevel);
     if (grade == null) {
       error = "The grade does not exist.";
     }
