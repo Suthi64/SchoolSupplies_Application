@@ -89,7 +89,7 @@ public class CoolSuppliesFeatureSet2Controller {
 
     // call model
     try {
-      coolSupplies.removeStudent(student);
+      student.delete();
       coolSupplies.addStudent(newName, grade);
     } catch (RuntimeException e) {
       error = e.getMessage();
