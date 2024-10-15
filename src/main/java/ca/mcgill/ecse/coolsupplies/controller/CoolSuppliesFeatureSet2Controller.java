@@ -25,9 +25,9 @@ public class CoolSuppliesFeatureSet2Controller {
     // input validation
     var error = "";
     if (name == null) {
-      error = "The name must not be null";
+      error = "The name must not be null.";
     } else if (name.isEmpty()) {
-      error = "The name must not be empty";
+      error = "The name must not be empty.";
     }
 
     // call model
@@ -39,7 +39,7 @@ public class CoolSuppliesFeatureSet2Controller {
       }
     }
     if (grade == null) {
-      error = "The grade does not exist";
+      error = "The grade does not exist.";
     }
     if (!error.isEmpty()) {
       return error.trim();
@@ -49,7 +49,7 @@ public class CoolSuppliesFeatureSet2Controller {
     } catch (RuntimeException e) {
       error = e.getMessage();
       if (error.startsWith("Cannot create due to duplicate name")) {
-        error = "The name must be unique";
+        error = "The name must be unique.";
       }
       return error;
     }
