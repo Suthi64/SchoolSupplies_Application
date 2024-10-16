@@ -15,7 +15,7 @@ public class CoolSuppliesFeatureSet4Controller {
     var error = "";
     //Check if name is empty
     if (name.isEmpty()){
-      error = "The name must not be empty";
+      error = "The name must not be empty.";
       return error.trim();
     }
 
@@ -101,9 +101,11 @@ public class CoolSuppliesFeatureSet4Controller {
     }
 
     // Validate newName
-    error = isValidName(newName);
-    if (!error.isEmpty()){
-      return error.trim();
+    if (!newName.equals(name)){
+      error = isValidName(newName);
+      if (!error.isEmpty()){
+        return error.trim();
+      }
     }
 
     // Validate newDiscount
@@ -114,13 +116,15 @@ public class CoolSuppliesFeatureSet4Controller {
 
     // Validate newGradeLevel
     Grade newGrade = findGrade(newGradeLevel);
-    if (newGrade == null){
-      error =  "The grade does not exist.";
-      return error.trim();
-    }
-    else if (newGrade.hasBundle()){
-      error = "A bundle already exists for the grade.";
-      return error.trim();
+    if (!myBundle.getGrade().getLevel().equals(newGradeLevel)){
+      if (newGrade == null){
+        error =  "The grade does not exist.";
+        return error.trim();
+      }
+      else if (newGrade.hasBundle()){
+        error = "A bundle already exists for the grade.";
+        return error.trim();
+      }
     }
 
     // Update Bundle
