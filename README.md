@@ -13,7 +13,7 @@ For more information about the CoolSupplies application, please consult the [wik
 | Name          | GitHub username |
 | ------------- | --------------- |
 | Team Member A | ...             |
-| Team Member B | ...             |
+| Team Member B | snowqc          |
 | Team Member C | ...             |
 | Team Member D | ...             |
 | Team Member E | ...             |
