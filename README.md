@@ -1,4 +1,4 @@
-# :triangular_ruler::books: ECSE223 CoolSupplies Project: Team N
+# :triangular_ruler::books: ECSE223 CoolSupplies Project: Team 5
 
 _(Edit this file as needed, then remove this sentence)._
 
