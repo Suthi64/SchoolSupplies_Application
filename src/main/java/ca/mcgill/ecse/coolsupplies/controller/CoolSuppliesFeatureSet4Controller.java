@@ -11,7 +11,7 @@ import java.util.List;
 public class CoolSuppliesFeatureSet4Controller {
   private static final CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
 
-  public static String isValidName(String name){
+  private static String isValidName(String name){
     var error = "";
     //Check if name is empty
     if (name.isEmpty()){
@@ -28,7 +28,7 @@ public class CoolSuppliesFeatureSet4Controller {
     }
     return error.trim();
   }
-  public static String isValidDiscount(int discount){
+  private static String isValidDiscount(int discount){
     var error = "";
     if (discount < 0 || discount > 100){
       error = "The discount must be greater than or equal to 0 and less than or equal to 100.";
@@ -36,7 +36,7 @@ public class CoolSuppliesFeatureSet4Controller {
     return error.trim();
   }
 
-  public static Grade findGrade(String gradeLevel){
+  private static Grade findGrade(String gradeLevel){
     Grade myGrade = null;
     for (Grade grade : coolSupplies.getGrades()){
       if (grade.getLevel().equals(gradeLevel)){
@@ -45,7 +45,7 @@ public class CoolSuppliesFeatureSet4Controller {
     }
     return myGrade;
   }
-  public static GradeBundle findBundle(String name){
+  private static GradeBundle findBundle(String name){
     GradeBundle myBundle = null;
     for (GradeBundle bundle : coolSupplies.getBundles()){
       if (bundle.getName().equals(name)){
