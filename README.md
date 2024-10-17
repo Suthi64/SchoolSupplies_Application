@@ -10,11 +10,11 @@ For more information about the CoolSupplies application, please consult the [wik
 
 ## Team Members
 
-| Name          | GitHub username |
-| ------------- | --------------- |
-| Team Member A | ...             |
-| Team Member B | snowqc          |
-| Team Member C | ...             |
-| Team Member D | ...             |
-| Team Member E | ...             |
-| Team Member F | ...             |
+| Name           | GitHub username |
+|----------------|-----------------|
+| Team Member A  | ...             |
+| Team Member B  | snowqc          |
+| Team Member C  | ...             |
+| Doddy Yang Qiu | DontDieThankYou |
+| Team Member E  | ...             |
+| Team Member F  | ...             |
