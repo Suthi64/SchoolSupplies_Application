@@ -14,6 +14,7 @@ public class CoolSuppliesFeatureSet6Controller {
 
   private static CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
 
+
   public static String addStudentToParent(String studentName, String parentEmail) {
 
     var error = "";
@@ -93,6 +94,7 @@ public class CoolSuppliesFeatureSet6Controller {
 
   }
 
+  
   public static TOStudent getStudentOfParent(String studentName, String parentEmail) {
     
     Parent parent = null;
@@ -122,7 +124,7 @@ public class CoolSuppliesFeatureSet6Controller {
     return new TOStudent(student.getName(), student.getGrade().getLevel());
   }
 
-  // returns all students of a parent
+
   public static List<TOStudent> getStudentsOfParent(String parentEmail) {
 
     Parent parent = null;
@@ -134,7 +136,7 @@ public class CoolSuppliesFeatureSet6Controller {
     }
 
     if (parent == null) {
-      return null;
+      return new ArrayList<TOStudent>();
     }
 
     List<TOStudent> students = new ArrayList<TOStudent>();
@@ -144,12 +146,20 @@ public class CoolSuppliesFeatureSet6Controller {
     return students;
   }
 
+
   public static String startOrder(int number, Date date, String level, String parentEmail, String studentName) {
         
     var error = "";
     if (number <= 0) {
-      error = "The order should have items.";
+      error = "The number must be greater than 0.";
       return error.trim();
+    }
+
+    for (Order orderX : coolSupplies.getOrders()) {
+      if (orderX.getNumber() == number) {
+        error = "The number must be unique.";
+        return error.trim();
+      }
     }
 
     Parent parent = null;
@@ -187,7 +197,7 @@ public class CoolSuppliesFeatureSet6Controller {
     }
 
     if (purchaseLevel == null) {
-      error = "The purchase level does not exist.";
+      error = "The level must be Mandatory, Recommended, or Optional.";
       return error.trim();
     }
 
