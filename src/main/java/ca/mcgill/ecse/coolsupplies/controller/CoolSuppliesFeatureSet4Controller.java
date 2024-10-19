@@ -35,16 +35,6 @@ public class CoolSuppliesFeatureSet4Controller {
     }
     return error.trim();
   }
-
-  private static Grade findGrade(String gradeLevel){
-    Grade myGrade = null;
-    for (Grade grade : coolSupplies.getGrades()){
-      if (grade.getLevel().equals(gradeLevel)){
-        myGrade = grade;
-      }
-    }
-    return myGrade;
-  }
   private static GradeBundle findBundle(String name){
     GradeBundle myBundle = null;
     for (GradeBundle bundle : coolSupplies.getBundles()){
@@ -70,7 +60,7 @@ public class CoolSuppliesFeatureSet4Controller {
     }
 
     // Validate gradeLevel
-    Grade myGrade = findGrade(gradeLevel);
+    Grade myGrade = Grade.getWithLevel(gradeLevel);
     if (myGrade == null){
       error =  "The grade does not exist.";
       return error.trim();
@@ -115,7 +105,7 @@ public class CoolSuppliesFeatureSet4Controller {
     }
 
     // Validate newGradeLevel
-    Grade newGrade = findGrade(newGradeLevel);
+    Grade newGrade = Grade.getWithLevel(newGradeLevel);
     if (!myBundle.getGrade().getLevel().equals(newGradeLevel)){
       if (newGrade == null){
         error =  "The grade does not exist.";
