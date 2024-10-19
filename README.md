@@ -13,7 +13,7 @@ For more information about the CoolSupplies application, please consult the [wik
 | Name           | GitHub username |
 |----------------|-----------------|
 | Team Member A  | ...             |
-| Team Member B  | snowqc          |
+| Brian Yang     | snowqc          |
 | Team Member C  | ...             |
 | Doddy Yang Qiu | DontDieThankYou |
 | Team Member E  | ...             |
