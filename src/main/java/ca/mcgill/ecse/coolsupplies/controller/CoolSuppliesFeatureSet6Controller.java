@@ -10,10 +10,21 @@ import ca.mcgill.ecse.coolsupplies.model.Parent;
 import ca.mcgill.ecse.coolsupplies.model.Order;
 import ca.mcgill.ecse.coolsupplies.model.BundleItem.PurchaseLevel;
 
+/**
+ * The feature set 6 handles student-parent methods as well as starting orders
+ * @author Baptiste Didier
+ */
+
 public class CoolSuppliesFeatureSet6Controller {
 
   private static CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
 
+  /**
+   * <p> Adds a student with its name to a parent with its email
+   * @param studentName the name which identifies the student
+   * @param parentEmail the email which identifies the parent
+   * @return The error message
+   */
 
   public static String addStudentToParent(String studentName, String parentEmail) {
 
@@ -54,6 +65,12 @@ public class CoolSuppliesFeatureSet6Controller {
 
     }
   
+  /**
+   * <p> Deletes a student with their name from its parent with their name
+   * @param studentName The name which identifies the student
+   * @param parentEmail The email which identifies the parent
+   * @return The error message
+   */
 
   public static String deleteStudentFromParent(String studentName, String parentEmail) {
 
@@ -94,7 +111,13 @@ public class CoolSuppliesFeatureSet6Controller {
 
   }
 
-  
+  /**
+   * <p> Gets the student from their name from their parent with their email
+   * @param studentName The name which identifies the student
+   * @param parentEmail The email which identifies the parent
+   * @return A reference to the student
+   */
+
   public static TOStudent getStudentOfParent(String studentName, String parentEmail) {
     
     Parent parent = null;
@@ -124,6 +147,11 @@ public class CoolSuppliesFeatureSet6Controller {
     return new TOStudent(student.getName(), student.getGrade().getLevel());
   }
 
+  /**
+   * <p> Gets all the students from a parent with their email
+   * @param parentEmail The email that identifies the parent
+   * @return A reference to the list of students associated with the parent
+   */
 
   public static List<TOStudent> getStudentsOfParent(String parentEmail) {
 
@@ -146,6 +174,15 @@ public class CoolSuppliesFeatureSet6Controller {
     return students;
   }
 
+  /**
+   * <p> Creates an order
+   * @param number The unique number that identifies the order
+   * @param date The date when the order was placed
+   * @param level The level of requirement of the order
+   * @param parentEmail The email which identifies the parent
+   * @param studentName The name which identifies the student
+   * @return The error message
+   */
 
   public static String startOrder(int number, Date date, String level, String parentEmail, String studentName) {
         
