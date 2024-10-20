@@ -45,6 +45,17 @@ public class CoolSuppliesFeatureSet4Controller {
     }
     return myBundle;
   }
+
+  /**
+   * The addBundle method adds a GradeBundle to the list of Bundles using the
+   * given name, discount, and gradeLevel.
+   *
+   * @author Doddy Yang Qiu
+   * @param name The name of the new GradeBundle.
+   * @param discount The discount of the new GradeBundle.
+   * @param gradeLevel The gradeLevel of the new GradeBundle.
+   * @return an empty string if successful, or an error message otherwise.
+   */
   public static String addBundle(String name, int discount, String gradeLevel) {
     // Validate name
     var error = "";
@@ -79,6 +90,17 @@ public class CoolSuppliesFeatureSet4Controller {
     return error;
   }
 
+  /**
+   * The updateBundle method finds a specified GradeBundle by name and updates
+   * its name, discount, and grade to the specified values.
+   *
+   * @author Doddy Yang Qiu
+   * @param name The name of the GradeBundle to update.
+   * @param newName The name to update to.
+   * @param newDiscount The discount to update to.
+   * @param newGradeLevel The Grade to update to.
+   * @return an empty string if successful, or an error message otherwise.
+   */
   public static String updateBundle(String name, String newName, int newDiscount,
       String newGradeLevel) {
     var error = "";
@@ -130,6 +152,14 @@ public class CoolSuppliesFeatureSet4Controller {
     return error;
   }
 
+  /**
+   * The deleteBundle method finds a specified GradeBundle by name
+   * and deletes it.
+   *
+   * @author Doddy Yang Qiu
+   * @param name The name of the GradeBundle to delete.
+   * @return an empty string if it successful, or an error message otherwise.
+   */
   public static String deleteBundle(String name) {
     var error = "";
 
@@ -149,6 +179,15 @@ public class CoolSuppliesFeatureSet4Controller {
     return error;
   }
 
+  /**
+   * The getBundle method finds a specified Bundle by name and returns
+   * relevant data about it if found.
+   *
+   * @author Doddy Yang Qiu
+   * @param name The name of the GradeBundle to retrieve.
+   * @return a TOGradeBundle.
+   * @see ca.mcgill.ecse.coolsupplies.controller.TOGradeBundle
+   */
   public static TOGradeBundle getBundle(String name) {
     var error = "";
     TOGradeBundle result = null;
@@ -163,7 +202,14 @@ public class CoolSuppliesFeatureSet4Controller {
     return result;
   }
 
-  // returns all bundles
+  /**
+   * The getBundles method returns a list of TOGradeBundle corresponding
+   * to the list of Bundles in the system.
+   *
+   * @author Doddy Yang Qiu
+   * @return a list of TOGradeBundle.
+   * @see ca.mcgill.ecse.coolsupplies.controller.TOGradeBundle
+   */
   public static List<TOGradeBundle> getBundles() {
     List<TOGradeBundle> list = new ArrayList<TOGradeBundle>();
     for (GradeBundle bundle : coolSupplies.getBundles()){
