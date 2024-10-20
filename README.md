@@ -14,7 +14,7 @@ For more information about the CoolSupplies application, please consult the [wik
 |----------------|-----------------|
 | Team Member A  | ...             |
 | Brian Yang     | snowqc          |
-| Team Member C  | ...             |
+| Jiaduo Xing    | JiaduoXing      |
 | Doddy Yang Qiu | DontDieThankYou |
 | Team Member E  | ...             |
 | Team Member F  | ...             |
