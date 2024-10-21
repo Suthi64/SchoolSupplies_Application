@@ -1,4 +1,4 @@
-package ca.mcgill.ecse.coolsupplies.controller;
+package ca.mcgill.ecse.coolsupplies.controller; 
 
 import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
@@ -9,17 +9,24 @@ import java.util.List;
 
 public class CoolSuppliesFeatureSet7Controller {
 
-	private static CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
+	private static final CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
 	
 	
   public static String addGrade(String level) {
     
     if (level == null) {
-    	return "The grade level must not be null.";
+    	return "The level must not be null.";
     }
     if (level.isEmpty()) {
-    	return "The grade level must not be empty.";
+    	return "The level must not be empty.";
     }
+
+		// Check if the grade level already exists
+    for (Grade existingGrade : coolSupplies.getGrades()) {
+			if (existingGrade.getLevel().equals(level)) {
+					return "The level must be unique."; // Ensure this matches your Cucumber test
+			}
+	}
     
 	try {
 		    coolSupplies.addGrade(level);
@@ -32,33 +39,35 @@ public class CoolSuppliesFeatureSet7Controller {
   public static String updateGrade(String level, String newLevel) {
     
     if (level == null) {
-    	return "The grade level must not be null.";
+    	return "The level must not be null.";
     }
-    if (level.isEmpty()) {
-    	return "The grade level must not be empty.";
-    }
+
+		boolean levelExists = false; //Flag to check if level to be updated exists
+    for (Grade existingGrade : coolSupplies.getGrades()) {
+			if (existingGrade.getLevel().equals(newLevel)) { //Check if the updatedLevel already exists in the database
+				return "The level must be unique.";
+			}
+			else if (existingGrade.getLevel().equals(level)) { //Check if the level to be updated  exists in the database
+					levelExists = true;
+					break; //The level exists in the database
+			}
+		}
+		if (!levelExists) {
+			return "The grade does not exist."; //Level to be updated does not exist in the first place
+		}
     
-    Grade grade = Grade.getWithLevel(level); //Get the grade object to be updated
-    if (grade == null) {
-    	return "The grade does not exist.";
-    }
-    
-    
+
+    //Check errors with the new updated level
     if (newLevel == null) {
-    	return "The new grade level must not be null.";
+    	return "The level must not be null.";
     }
     if (newLevel.isEmpty()) {
-    	return "The new grade level must not be empty.";
-    }
-    
-    Grade newGrade = Grade.getWithLevel(newLevel); //Create a grade object to replace the "old" grade
-    if (newGrade == null){
-    	return "The new grade does not exist.";
+    	return "The level must not be empty.";
     }
     
 	try {
-    	grade.delete();
-    	coolSupplies.addGrade(newGrade);
+			Grade grade = Grade.getWithLevel(level); //Get the grade object to be updated
+    	grade.setLevel(newLevel); //update the level
     } catch(RuntimeException e) {
     	return e.getMessage(); //Error during run time
     }
@@ -70,10 +79,10 @@ public class CoolSuppliesFeatureSet7Controller {
   public static String deleteGrade(String level) {
     
     if (level == null) {
-    	return "The grade level must not be null.";
+    	return "The level must not be null.";
     }
     if (level.isEmpty()) {
-    	return "The grade level must not be empty.";
+    	return "The level must not be empty.";
     }
     
 	Grade grade = Grade.getWithLevel(level); //Get grade to be deleted
@@ -111,5 +120,4 @@ public class CoolSuppliesFeatureSet7Controller {
 	  }
 	  return grades; 
   }
-
-}
+} 
