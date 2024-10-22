@@ -84,14 +84,15 @@ public class CoolSuppliesFeatureSet2Controller {
     // call model
     try {
       student.setName(newName);
+      student.setGrade(grade);
     } catch (RuntimeException e) {
       error = e.getMessage();
       if (error.startsWith("Cannot create due to duplicate name")) {
         error = "The name must be unique.";
+        student.setName(name);
       }
       return error;
     }
-    student.setGrade(grade);
     return "";
   }
 
