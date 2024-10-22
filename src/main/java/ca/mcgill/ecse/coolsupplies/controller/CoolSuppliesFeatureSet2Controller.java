@@ -84,7 +84,6 @@ public class CoolSuppliesFeatureSet2Controller {
     // call model
     try {
       student.setName(newName);
-      student.setGrade(grade);
     } catch (RuntimeException e) {
       error = e.getMessage();
       if (error.startsWith("Cannot create due to duplicate name")) {
@@ -92,6 +91,7 @@ public class CoolSuppliesFeatureSet2Controller {
       }
       return error;
     }
+    student.setGrade(grade);
     return "";
   }
 
