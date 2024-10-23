@@ -22,7 +22,7 @@ public class CoolSuppliesFeatureSet1Controller {
     private static CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
     
     /*
-     * Helper methods for identifying Parent from list of parents, and to help in validating emails.
+     * Helper methods to help in validating emails requirements.
      */
     
     private static boolean containsUpperCase(String str) {
@@ -66,12 +66,12 @@ public class CoolSuppliesFeatureSet1Controller {
             return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
           }
 
-        // Validate Password Uppercase requirement
+        // Validate Password uppercase requirement
         if (!containsUpperCase(password)){
           return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
         }
 
-        // Validate Password Lowercase requirement
+        // Validate Password lowercase requirement
         if(!containsLowerCase(password)){
           return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
         }
@@ -108,7 +108,7 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The email must not be admin@cool.ca.";
           }
       
-      if (!(email.indexOf("@") > 0)) {
+      if (!(email.indexOf("@") > 0)) { //ensures email handle exists
             return "The email must be well-formed.";
           }
       
@@ -144,7 +144,7 @@ public class CoolSuppliesFeatureSet1Controller {
           }catch(RuntimeException e) {
             var error = e.getMessage();
             if(error.startsWith("Cannot create due to duplicate email")){
-              error = "The email must be unique.";
+              error = "The email must be unique."; //unique email attribute captured by umple
             }
             return error;
           }
@@ -199,9 +199,9 @@ public class CoolSuppliesFeatureSet1Controller {
                 return error.trim();
             }
         
-        // Update Parent fields.
+        // Update Parent fields and catch runtime errors.
         try {
-          User.getWithEmail(email).setPassword(newPassword);
+          parent.setPassword(newPassword);
           parent.setName(newName);
           parent.setPhoneNumber(newPhoneNumber);
         } catch(RuntimeException e){
@@ -251,8 +251,6 @@ public class CoolSuppliesFeatureSet1Controller {
     String password = parent.getPassword();
     return new TOParent(email, password, parent.getName(), parent.getPhoneNumber());
 }
-  
-  
 
     /* 
      * Retrieves a list of all parents in the system.
