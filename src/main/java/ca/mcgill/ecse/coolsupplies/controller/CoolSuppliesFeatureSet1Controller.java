@@ -194,7 +194,7 @@ public class CoolSuppliesFeatureSet1Controller {
         }
  
         // Validate if newPhoneNumber fits constraints.
-        if (!(newPhoneNumber > 9999999 && newPhoneNumber < 10000000)) {
+        if (!(newPhoneNumber > 999999 && newPhoneNumber < 10000000)) {
                 error = "The phone number must be seven digits.";
                 return error.trim();
             }
