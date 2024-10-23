@@ -46,9 +46,11 @@ public class CoolSuppliesFeatureSet1Controller {
     /*
      * Updating the admin's password.
      * 
-     * @param password    The new password entered to be updated. If the password is less than the minimum length and doesn't contain the appropriate characters an error message is returned.
+     * @param password    The new password entered to be updated. 
+     *                    If the password is less than the minimum length or doesn't contain the appropriate characters an error message is returned.
      * 
-     * @return      A string indicating if the operation was successful or not.
+     * @return            A string indicating if the operation was successful or not.
+     * @author            Sanad Abu Baker
      */
     public static String updateAdmin(String password) {
         SchoolAdmin admin = coolSupplies.getAdmin();
@@ -86,7 +88,8 @@ public class CoolSuppliesFeatureSet1Controller {
     }
 
     /*
-     * Method to add a new Parent with fields of email, password, name, and phone number. This method also adds the created parent to our initialized array of parents.
+     * Method to add a new Parent with fields of email, password, name, and phone number. 
+     * This method adds the created parent to our CoolSupplies system.
      * 
      * @param email         This email must be checked against various character constraints and if it's already taken.
      * @param password      The password must not be empty or null.
@@ -94,6 +97,7 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param phoneNumber   The phone number must be 7 digits long and cannot contain trailing zeroes.
      * 
      * @return              A string indicating if the operation was successful or not.
+     * @author              Sanad Abu Baker
      */
     public static String addParent(String email, String password, String name, int phoneNumber) {
         
@@ -152,14 +156,19 @@ public class CoolSuppliesFeatureSet1Controller {
     }
 
     /*
-     * This method is used to update the various fields of the Parent object such as the email, password, name, and phone number.
+     * This method is used to update the various fields of the Parent object 
+     * such as the password, name, and phone number while validating the entered parameters.
      * 
-     * @param email           The email/username of the parent. The email cannot be changed and is thus used to perform checks such as making sure the entered email corresponds to an existing parent.
-     * @param newPassword     The new password of the parent. This password cannot be null or empty and we thus perform a check for that.
+     * @param email           The email of the parent. The email is not updated and is used to make sure it corresponds to an existing parent.
+     * @param newPassword     The new password of the parent. We validate that this password is not null or empty.
      * @param newName         The new name of the parent. The name cannot be null or empty and we thus perform a check for that.
-     * @param newPhoneNumber  The new phone number of the parent. The new phone number must be exactly 7 digits and cannot have trailing zeroes (1000000).
+     * @param newPhoneNumber  The new phone number of the parent. Phone numbers must be exactly 7 digits and cannot have trailing zeroes.
      * 
      * @return                A string indicating if the operation was successful.
+     * 
+     * @throws                RuntimeException in case anything unexpectedly goes wrong.
+     * 
+     * @author                Sanad Abu Baker
      */
     public static String updateParent(String email, String newPassword, String newName, int newPhoneNumber) {
         var error = "";
@@ -199,7 +208,7 @@ public class CoolSuppliesFeatureSet1Controller {
                 return error.trim();
             }
         
-        // Update Parent fields and catch runtime errors.
+        // Update Parent fields and catch any runtime errors.
         try {
           parent.setPassword(newPassword);
           parent.setName(newName);
@@ -207,7 +216,7 @@ public class CoolSuppliesFeatureSet1Controller {
         } catch(RuntimeException e){
           return e.getMessage();}
         
-        return ""; // Success Message
+        return ""; // Return an empty string to indicate success.
     }
 
 
@@ -217,6 +226,7 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param email     We use this email to find the parent object in our list of parents
      * 
      * @return      A string indicating if the operation was successful.
+     * @author      Sanad Abu Baker
      */
     public static String deleteParent(String email) {
         Parent parent = (Parent) User.getWithEmail(email);
@@ -238,6 +248,7 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param email     The email of the parent used to identify them.
      * 
      * @return          TOParent transfer object containng their information.
+     * @author          Sanad Abu Baker
      */
     public static TOParent getParent(String email) {
       Parent parent = (Parent) User.getWithEmail(email);
@@ -258,6 +269,7 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param none
      * 
      * @return    A list of TOParent transfer objects.
+     * @          Sanad Abu Baker
     */
     public static List<TOParent> getParents() {
         List<TOParent> toParents = new ArrayList<TOParent>();
