@@ -22,7 +22,7 @@ public class CoolSuppliesFeatureSet1Controller {
     private static CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
     
     /*
-     * Helper methods for validating emails.
+     * Helper methods to help in validating emails requirements.
      */
     
     private static boolean containsUpperCase(String str) {
@@ -46,9 +46,11 @@ public class CoolSuppliesFeatureSet1Controller {
     /*
      * Updating the admin's password.
      * 
-     * @param password    The new password entered to be updated. If the password is less than the minimum length and doesn't contain the appropriate characters an error message is returned.
+     * @param password    The new password entered to be updated. 
+     *                    If the password is less than the minimum length or doesn't contain the appropriate characters an error message is returned.
      * 
-     * @return      A string indicating if the operation was successful or not.
+     * @return            A string indicating if the operation was successful or not.
+     * @author            Sanad Abu Baker
      */
     public static String updateAdmin(String password) {
         SchoolAdmin admin = coolSupplies.getAdmin();
@@ -57,15 +59,24 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The admin does not exist";
           }
 
-        // Validate Password lengtj requirements
+        // Validate Password length requirements
         if (!(password.length() > 3)) {
             return "Password must be at least four characters long.";
         }
-        // Validate Password character requirements
-        if (!(password.contains("!") || password.contains("#") || password.contains("$")
-                || containsUpperCase(password) || containsLowerCase(password))) {
+        // Validate Password special character requirements
+        if (!(password.contains("!") || password.contains("#") || password.contains("$"))) {
             return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
           }
+
+        // Validate Password uppercase requirement
+        if (!containsUpperCase(password)){
+          return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
+        }
+
+        // Validate Password lowercase requirement
+        if(!containsLowerCase(password)){
+          return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
+        }
 
         try {
           admin.setPassword(password);
@@ -77,7 +88,8 @@ public class CoolSuppliesFeatureSet1Controller {
     }
 
     /*
-     * Method to add a new Parent with fields of email, password, name, and phone number. This method also adds the created parent to our initialized array of parents.
+     * Method to add a new Parent with fields of email, password, name, and phone number. 
+     * This method adds the created parent to our CoolSupplies system.
      * 
      * @param email         This email must be checked against various character constraints and if it's already taken.
      * @param password      The password must not be empty or null.
@@ -85,25 +97,32 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param phoneNumber   The phone number must be 7 digits long and cannot contain trailing zeroes.
      * 
      * @return              A string indicating if the operation was successful or not.
+     * @author              Sanad Abu Baker
      */
     public static String addParent(String email, String password, String name, int phoneNumber) {
-        if (email.contains(" ")) {
+        
+      if (email.isEmpty()){
+        return "The email must not be empty.";
+      }
+      if (email.contains(" ")) {
             return "The email must not contain spaces.";
           }
       
-          if (email.equals("admin@cool.ca")) { // admin's email cannot be taken.
+      if (email.equals("admin@cool.ca")) { // admin's email cannot be taken.
             return "The email must not be admin@cool.ca.";
           }
       
-          if (!(email.indexOf("@") > 0)) {
-            return "The email must not be empty.";
-          }
-      
-          if (!((email.indexOf("@") == email.lastIndexOf("@"))
-              || (email.lastIndexOf(".") < email.length() - 1))) {
+      if (!(email.indexOf("@") > 0)) { //ensures email handle exists
             return "The email must be well-formed.";
           }
-          if (!(email.lastIndexOf(".") < email.length() - 1)) {
+      
+      if (!(email.indexOf("@") == email.lastIndexOf("@"))) {
+            return "The email must be well-formed.";
+          }
+      if (!(email.lastIndexOf(".") < email.length() - 1)){
+            return "The email must be well-formed.";
+          }
+          if (!(email.indexOf("@") < email.lastIndexOf(".") - 1)) {
             return "The email must be well-formed.";
           }
           if (password == null) {
@@ -120,27 +139,36 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The name must not be empty.";
           }
       
-          if (!(phoneNumber < 1000000 && phoneNumber > 9999999)) {
-            return "The phone number must be 7 digits.";
+          if (!(phoneNumber < 10000000 && phoneNumber > 999999)) {
+            return "The phone number must be seven digits.";
           }
       
           try {
             coolSupplies.addParent(email, password, name, phoneNumber);
           }catch(RuntimeException e) {
-            return e.getMessage();
+            var error = e.getMessage();
+            if(error.startsWith("Cannot create due to duplicate email")){
+              error = "The email must be unique."; //unique email attribute captured by umple
+            }
+            return error;
           }
           return "";
     }
 
     /*
-     * This method is used to update the various fields of the Parent object such as the email, password, name, and phone number.
+     * This method is used to update the various fields of the Parent object 
+     * such as the password, name, and phone number while validating the entered parameters.
      * 
-     * @param email           The email/username of the parent. The email cannot be changed and is thus used to perform checks such as making sure the entered email corresponds to an existing parent.
-     * @param newPassword     The new password of the parent. This password cannot be null or empty and we thus perform a check for that.
+     * @param email           The email of the parent. The email is not updated and is used to make sure it corresponds to an existing parent.
+     * @param newPassword     The new password of the parent. We validate that this password is not null or empty.
      * @param newName         The new name of the parent. The name cannot be null or empty and we thus perform a check for that.
-     * @param newPhoneNumber  The new phone number of the parent. The new phone number must be exactly 7 digits and cannot have trailing zeroes (1000000).
+     * @param newPhoneNumber  The new phone number of the parent. Phone numbers must be exactly 7 digits and cannot have trailing zeroes.
      * 
      * @return                A string indicating if the operation was successful.
+     * 
+     * @throws                RuntimeException in case anything unexpectedly goes wrong.
+     * 
+     * @author                Sanad Abu Baker
      */
     public static String updateParent(String email, String newPassword, String newName, int newPhoneNumber) {
         var error = "";
@@ -153,24 +181,34 @@ public class CoolSuppliesFeatureSet1Controller {
         }
 
         // Validate if newPassword is empty or not.
-        if (newPassword == null || !newPassword.equals("")) {
-            error = "Password must not be empty or null.";
+        if (newPassword == null) {
+            error = "The password must not be null.";
             return error.trim();
         }
 
+        if (newPassword.equals("")){
+          error = "The password must not be empty.";
+          return error.trim();
+        }
+
         // Validate if newName is empty or not.
-        if (newName == null || newName.equals("")) {
-            error = "Name must not be empty or null.";
+        if (newName == null) {
+            error = "The name must not be null.";
             return error.trim();
+        }
+
+        if (newName.equals("")){
+          error = "The name must not be empty.";
+          return error.trim();
         }
  
         // Validate if newPhoneNumber fits constraints.
-        if (!(newPhoneNumber > 9999999 && newPhoneNumber < 1000000)) {
-                error = "phoneNumber must be 7 digits and not have any leading 0s";
+        if (!(newPhoneNumber > 999999 && newPhoneNumber < 10000000)) {
+                error = "The phone number must be seven digits.";
                 return error.trim();
             }
         
-        // Update Parent fields.
+        // Update Parent fields and catch any runtime errors.
         try {
           parent.setPassword(newPassword);
           parent.setName(newName);
@@ -178,7 +216,7 @@ public class CoolSuppliesFeatureSet1Controller {
         } catch(RuntimeException e){
           return e.getMessage();}
         
-        return ""; // Success Message
+        return ""; // Return an empty string to indicate success.
     }
 
 
@@ -188,6 +226,7 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param email     We use this email to find the parent object in our list of parents
      * 
      * @return      A string indicating if the operation was successful.
+     * @author      Sanad Abu Baker
      */
     public static String deleteParent(String email) {
         Parent parent = (Parent) User.getWithEmail(email);
@@ -209,6 +248,7 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param email     The email of the parent used to identify them.
      * 
      * @return          TOParent transfer object containng their information.
+     * @author          Sanad Abu Baker
      */
     public static TOParent getParent(String email) {
       Parent parent = (Parent) User.getWithEmail(email);
@@ -218,12 +258,10 @@ public class CoolSuppliesFeatureSet1Controller {
         throw new IllegalArgumentException("The parent does not exist.");
     }
 
-    // If parent exists, get password and other details
+    // If parent exists, get password and other details.
     String password = parent.getPassword();
     return new TOParent(email, password, parent.getName(), parent.getPhoneNumber());
 }
-  
-  
 
     /* 
      * Retrieves a list of all parents in the system.
@@ -231,6 +269,7 @@ public class CoolSuppliesFeatureSet1Controller {
      * @param none
      * 
      * @return    A list of TOParent transfer objects.
+     * @          Sanad Abu Baker
     */
     public static List<TOParent> getParents() {
         List<TOParent> toParents = new ArrayList<TOParent>();
