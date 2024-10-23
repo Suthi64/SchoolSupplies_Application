@@ -98,7 +98,7 @@ public class CoolSuppliesFeatureSet1Controller {
     public static String addParent(String email, String password, String name, int phoneNumber) {
         
       if (email.isEmpty()){
-        return "The email must not be empty";
+        return "The email must not be empty.";
       }
       if (email.contains(" ")) {
             return "The email must not contain spaces.";
@@ -112,11 +112,13 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The email must be well-formed.";
           }
       
-          if (!((email.indexOf("@") == email.lastIndexOf("@"))
-              && (email.lastIndexOf(".") < email.length() - 1))) {
+          if (!(email.indexOf("@") == email.lastIndexOf("@"))) {
             return "The email must be well-formed.";
           }
-          if (!(email.indexOf("@") < email.indexOf(".") - 1)) {
+          if (!(email.lastIndexOf(".") < email.length() - 1)){
+            return "The email must be well-formed.";
+          }
+          if (!(email.indexOf("@") < email.lastIndexOf(".") - 1)) {
             return "The email must be well-formed.";
           }
           if (password == null) {
