@@ -97,7 +97,9 @@ public class CoolSuppliesFeatureSet1Controller {
      */
     public static String addParent(String email, String password, String name, int phoneNumber) {
         
-      
+      if (email.isEmpty()){
+        return "The email must not be empty";
+      }
       if (email.contains(" ")) {
             return "The email must not contain spaces.";
           }
