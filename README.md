@@ -12,7 +12,7 @@ For more information about the CoolSupplies application, please consult the [wik
 
 | Name            | GitHub username |
 |-----------------|-----------------|
-| Sanad Abu Bake  | sanadi3         |
+| Sanad Abu Baker | sanadi3         |
 | Brian Yang      | snowqc          |
 | Jiaduo Xing     | JiaduoXing      |
 | Doddy Yang Qiu  | DontDieThankYou |
