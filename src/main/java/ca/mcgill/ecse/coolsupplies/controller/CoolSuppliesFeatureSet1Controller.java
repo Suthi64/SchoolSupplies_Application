@@ -57,7 +57,7 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The admin does not exist";
           }
 
-        // Validate Password lengtj requirements
+        // Validate Password length requirements
         if (!(password.length() > 3)) {
             return "Password must be at least four characters long.";
         }
@@ -153,20 +153,30 @@ public class CoolSuppliesFeatureSet1Controller {
         }
 
         // Validate if newPassword is empty or not.
-        if (newPassword == null || !newPassword.equals("")) {
-            error = "Password must not be empty or null.";
+        if (newPassword == null) {
+            error = "The password must not be null.";
             return error.trim();
         }
 
+        if (newPassword.equals("")){
+          error = "The password must not be empty.";
+          return error.trim();
+        }
+
         // Validate if newName is empty or not.
-        if (newName == null || newName.equals("")) {
-            error = "Name must not be empty or null.";
+        if (newName == null) {
+            error = "The name must not be null.";
             return error.trim();
+        }
+
+        if (newName.equals("")){
+          error = "The name must not be empty.";
+          return error.trim();
         }
  
         // Validate if newPhoneNumber fits constraints.
-        if (!(newPhoneNumber > 9999999 && newPhoneNumber < 1000000)) {
-                error = "phoneNumber must be 7 digits and not have any leading 0s";
+        if (!(newPhoneNumber > 9999999 && newPhoneNumber < 10000000)) {
+                error = "The phone number must be seven digits.";
                 return error.trim();
             }
         
@@ -218,7 +228,7 @@ public class CoolSuppliesFeatureSet1Controller {
         throw new IllegalArgumentException("The parent does not exist.");
     }
 
-    // If parent exists, get password and other details
+    // If parent exists, get password and other details.
     String password = parent.getPassword();
     return new TOParent(email, password, parent.getName(), parent.getPhoneNumber());
 }
