@@ -107,14 +107,14 @@ public class CoolSuppliesFeatureSet1Controller {
           }
       
           if (!(email.indexOf("@") > 0)) {
-            return "The email must not be empty.";
+            return "The email must be well-formed.";
           }
       
           if (!((email.indexOf("@") == email.lastIndexOf("@"))
               && (email.lastIndexOf(".") < email.length() - 1))) {
             return "The email must be well-formed.";
           }
-          if (!(email.lastIndexOf(".") < email.length() - 1)) {
+          if (!(email.indexOf("@") < email.indexOf(".") - 1)) {
             return "The email must be well-formed.";
           }
           if (password == null) {
