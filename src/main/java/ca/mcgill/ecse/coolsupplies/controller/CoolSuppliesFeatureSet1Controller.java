@@ -104,18 +104,18 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The email must not contain spaces.";
           }
       
-          if (email.equals("admin@cool.ca")) { // admin's email cannot be taken.
+      if (email.equals("admin@cool.ca")) { // admin's email cannot be taken.
             return "The email must not be admin@cool.ca.";
           }
       
-          if (!(email.indexOf("@") > 0)) {
+      if (!(email.indexOf("@") > 0)) {
             return "The email must be well-formed.";
           }
       
-          if (!(email.indexOf("@") == email.lastIndexOf("@"))) {
+      if (!(email.indexOf("@") == email.lastIndexOf("@"))) {
             return "The email must be well-formed.";
           }
-          if (!(email.lastIndexOf(".") < email.length() - 1)){
+      if (!(email.lastIndexOf(".") < email.length() - 1)){
             return "The email must be well-formed.";
           }
           if (!(email.indexOf("@") < email.lastIndexOf(".") - 1)) {
@@ -201,7 +201,7 @@ public class CoolSuppliesFeatureSet1Controller {
         
         // Update Parent fields.
         try {
-          parent.setPassword(newPassword);
+          User.getWithEmail(email).setPassword(newPassword);
           parent.setName(newName);
           parent.setPhoneNumber(newPhoneNumber);
         } catch(RuntimeException e){
