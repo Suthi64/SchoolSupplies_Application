@@ -62,10 +62,17 @@ public class CoolSuppliesFeatureSet1Controller {
             return "Password must be at least four characters long.";
         }
         // Validate Password character requirements
-        if (!(password.contains("!") || password.contains("#") || password.contains("$")
-                || containsUpperCase(password) || containsLowerCase(password))) {
+        if (!(password.contains("!") || password.contains("#") || password.contains("$"))) {
             return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
           }
+
+        if (!containsUpperCase(password)){
+          return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
+        }
+
+        if(!containsLowerCase(password)){
+          return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
+        }
 
         try {
           admin.setPassword(password);
@@ -120,8 +127,8 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The name must not be empty.";
           }
       
-          if (!(phoneNumber < 1000000 && phoneNumber > 9999999)) {
-            return "The phone number must be 7 digits.";
+          if (!(phoneNumber < 10000000 && phoneNumber > 9999999)) {
+            return "The phone number must be seven digits.";
           }
       
           try {
