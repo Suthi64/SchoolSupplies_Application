@@ -61,15 +61,17 @@ public class CoolSuppliesFeatureSet1Controller {
         if (!(password.length() > 3)) {
             return "Password must be at least four characters long.";
         }
-        // Validate Password character requirements
+        // Validate Password special character requirements
         if (!(password.contains("!") || password.contains("#") || password.contains("$"))) {
             return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
           }
 
+        // Validate Password Uppercase requirement
         if (!containsUpperCase(password)){
           return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
         }
 
+        // Validate Password Lowercase requirement
         if(!containsLowerCase(password)){
           return "Password must contain a special character out of !#$, an upper case character, and a lower case character.";
         }
@@ -94,7 +96,9 @@ public class CoolSuppliesFeatureSet1Controller {
      * @return              A string indicating if the operation was successful or not.
      */
     public static String addParent(String email, String password, String name, int phoneNumber) {
-        if (email.contains(" ")) {
+        
+      
+      if (email.contains(" ")) {
             return "The email must not contain spaces.";
           }
       
@@ -107,7 +111,7 @@ public class CoolSuppliesFeatureSet1Controller {
           }
       
           if (!((email.indexOf("@") == email.lastIndexOf("@"))
-              || (email.lastIndexOf(".") < email.length() - 1))) {
+              && (email.lastIndexOf(".") < email.length() - 1))) {
             return "The email must be well-formed.";
           }
           if (!(email.lastIndexOf(".") < email.length() - 1)) {
@@ -127,14 +131,18 @@ public class CoolSuppliesFeatureSet1Controller {
             return "The name must not be empty.";
           }
       
-          if (!(phoneNumber < 10000000 && phoneNumber > 9999999)) {
+          if (!(phoneNumber < 10000000 && phoneNumber > 999999)) {
             return "The phone number must be seven digits.";
           }
       
           try {
             coolSupplies.addParent(email, password, name, phoneNumber);
           }catch(RuntimeException e) {
-            return e.getMessage();
+            var error = e.getMessage();
+            if(error.startsWith("Cannot create due to duplicate email")){
+              error = "The email must be unique.";
+            }
+            return error;
           }
           return "";
     }
