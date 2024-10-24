@@ -1,4 +1,4 @@
-# :triangular_ruler::books: ECSE223 CoolSupplies Project: Team N
+# :triangular_ruler::books: ECSE223 CoolSupplies Project: Team 5
 
 _(Edit this file as needed, then remove this sentence)._
 
@@ -10,11 +10,11 @@ For more information about the CoolSupplies application, please consult the [wik
 
 ## Team Members
 
-| Name          | GitHub username |
-| ------------- | --------------- |
-| Team Member A | ...             |
-| Team Member B | ...             |
-| Team Member C | ...             |
-| Team Member D | ...             |
-| Team Member E | ...             |
-| Team Member F | ...             |
+| Name            | GitHub username |
+|-----------------|-----------------|
+| Sanad Abu Baker | sanadi3         |
+| Brian Yang      | snowqc          |
+| Jiaduo Xing     | JiaduoXing      |
+| Doddy Yang Qiu  | DontDieThankYou |
+| Suthiesan Subramaniam| Suthi64            |
+| Baptiste Didier | BaptisteDidier  |
