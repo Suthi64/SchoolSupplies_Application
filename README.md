@@ -12,9 +12,9 @@ For more information about the CoolSupplies application, please consult the [wik
 
 | Name            | GitHub username |
 |-----------------|-----------------|
-| Team Member A   | ...             |
+| Sanad Abu Baker | sanadi3         |
 | Brian Yang      | snowqc          |
 | Jiaduo Xing     | JiaduoXing      |
 | Doddy Yang Qiu  | DontDieThankYou |
-| Team Member E   | ...             |
+| Suthiesan Subramaniam| Suthi64            |
 | Baptiste Didier | BaptisteDidier  |
