@@ -21,9 +21,7 @@ public class CoolsuppliesPersistence {
     if (coolSupplies == null) {
       coolSupplies = new CoolSupplies();
     } else {
-      // not sure if it is the same as 'coolSupplies.reinitialize();'
-      coolSupplies.delete();
-      coolSupplies = new CoolSupplies();
+      coolSupplies.reinitialize();
     }
     return coolSupplies;
   }
