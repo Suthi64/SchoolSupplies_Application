@@ -1,0 +1,58 @@
+class CoolSupplies {
+	public void reinitialize() {
+		User.reinitializeUniqueEmail(getUsers());
+		Student.reinitializeUniqueStudentName(getStudents());
+		Order.reinitializeUniqueNumber(getOrders());
+		InventoryItem.reinitializeUniqueInventoryItemName(getInventoryItems());
+		Grade.reinitializeUniqueLevel(getGrades());
+	}
+}
+
+class User {
+	public static void reinitializeUniqueEmail(List<User> users) {
+		usersByEmail.clear();
+    		for (var user : users) {
+      			usersByEmail.put(user.getEmail(), user);
+    		}
+	}
+}
+
+
+class Student {
+	public static void reinitializeUniqueStudentName(List<Student> students) {
+		studentsByName.clear();
+    		for (var student : students) {
+      			studentsByName.put(student.getName(), student);
+    		}
+	}
+}
+
+
+class Order {
+	public static void reinitializeUniqueNumber(List<Order> orders) {
+		ordersByNumber.clear();
+    		for (var order : orders) {
+      			ordersByNumber.put(order.getNumber(), order);
+    		}
+	}	
+}
+
+
+class InventoryItem {
+	public static void reinitializeUniqueInventoryItemName(List<InventoryItem> inventoryItems) {
+		inventoryItemsByName.clear();
+    		for (var inventoryItem : inventoryItems) {
+      			inventoryItemsByName.put(inventoryItem.getName(), inventoryItem);
+    		}
+	}
+}
+
+class Grade {
+	public static void reinitializeUniqueLevel(List<Grade> grades) {
+		gradesByLevel.clear();
+    		for (var grade : grades) {
+      			gradesByLevel.put(grade.getLevel(), grade);
+    		}
+	}
+}
+
