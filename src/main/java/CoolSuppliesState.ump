@@ -1,0 +1,139 @@
+class Order{
+  status{
+    Started{
+    addItemToOrder(InventoryItem aItem, int aQuantity)/{doAddOrderItem(aItem, aQuantity);} -> Started;
+    deleteItemOfOrder(InventoryItem aItem )/{doDeleteItemOfOrder(aItem);} -> Started;
+     updateOrderItemQuantity(InventoryItem aItem, int newQuantity)/{doUpdateOrderItemQuantity(aItem , newQuantity);} -> Started;
+     updateOrder(PurchaseLevel aLevel, Student aStudent) /{doUpdateOrder(aLevel, aStudent);}-> Started;
+      cancelOrder() -> Final;   
+    payOrder(String authorizationCode)/{doPayOrder(authorizationCode);} -> Paid;
+     startSchoolYear() -> Penalized ;
+    payPenaltyOrder(String penaltyAuthCode, String authCode)/{rejectPayPenaltyOrder("started");}-> Started;  
+      pickUpOrder()/{rejectPickUpOrder("started");} -> Started;      
+    }                                                    
+    Paid{
+     cancelOrder() -> Final;
+      startSchoolYear() -> Prepared;
+      updateOrder(PurchaseLevel aLevel, Student aStudent) /{rejectUpdateOrder("paid");}-> Paid;
+      addItemToOrder(InventoryItem aItem, int aQuantity)/{rejectAddItemToOrder("paid");} -> Paid;
+     updateOrderItemQuantity(InventoryItem aItem, int newQuantity)/{rejectUpdateOrderItemQuantity("paid");} -> Paid;;
+    deleteItemOfOrder(InventoryItem aItem)/{rejectDeleteItemOfOrder("paid");} -> Paid; 
+    payOrder(String authorizationCode)/{rejectPayOrder("paid");} -> Paid;
+    payPenaltyOrder(String penaltyAuthCode, String authCode)/{rejectPayPenaltyOrder("paid");}-> Paid;  
+      pickUpOrder()/{rejectPickUpOrder("paid");} -> Paid;       
+    }       
+    Penalized{
+      payPenaltyOrder(String penaltyAuthCode,String authCode)/{doPayPenaltyOrder(penaltyAuthCode, authCode);}-> Prepared;
+        updateOrder(PurchaseLevel aLevel, Student aStudent) /{rejectUpdateOrder("penalized");}-> Penalized;
+     addItemToOrder(InventoryItem aItem, int aQuantity)/{rejectAddItemToOrder("penalized");} -> Penalized;
+     updateOrderItemQuantity(InventoryItem aItem, int newQuantity)/{rejectUpdateOrderItemQuantity("penalized");} -> Penalized;
+       deleteItemOfOrder(InventoryItem aItem)/{rejectDeleteItemOfOrder("penalized");} -> Penalized;    
+   payOrder(String authorizationCode)/{rejectPayOrder("penalized");} -> Penalized; 
+     cancelOrder()/{rejectCancelOrder("penalized");} -> Penalized; 
+     startSchoolYear()/{rejectStartSchoolYear();} -> Penalized ;  
+     pickUpOrder()/{rejectPickUpOrder("penalized");} -> Penalized;   
+    }
+    Prepared{
+      pickUpOrder() -> PickedUp;
+       updateOrder(PurchaseLevel aLevel, Student aStudent) /{rejectUpdateOrder("prepared");}-> Prepared;
+     addItemToOrder(InventoryItem aItem, int aQuantity)/{rejectAddItemToOrder("prepared");} -> Prepared;  
+     updateOrderItemQuantity(InventoryItem aItem, int newQuantity)/{rejectUpdateOrderItemQuantity("prepared");} -> Prepared;
+    deleteItemOfOrder(InventoryItem aItem)/{rejectDeleteItemOfOrder("prepared");} -> Prepared;
+   payOrder(String authorizationCode)/{rejectPayOrder("prepared");} -> Prepared;   
+   cancelOrder()/{rejectCancelOrder("prepared");} -> Prepared;
+     startSchoolYear()/{rejectStartSchoolYear();} -> Prepared ; 
+    payPenaltyOrder(String penaltyAuthCode, String authCode)/{rejectPayPenaltyOrder("prepared");}-> Prepared;       
+    }
+    PickedUp{
+          updateOrder(PurchaseLevel aLevel, Student aStudent) /{rejectUpdateOrder("picked up");}-> PickedUp;
+     addItemToOrder(InventoryItem aItem, int aQuantity)/{rejectAddItemToOrder("picked up");} -> PickedUp;   
+     updateOrderItemQuantity(InventoryItem aItem, int newQuantity)/{rejectUpdateOrderItemQuantity("pickedUp");} -> PickedUp;
+    deleteItemOfOrder(InventoryItem aItem)/{rejectDeleteItemOfOrder("picked up");} -> PickedUp;   
+   payOrder(String authorizationCode)/{rejectPayOrder("picked up");} -> PickedUp;     
+     cancelOrder()/{rejectCancelOrder("picked up");} -> PickedUp;  
+     startSchoolYear()/{rejectStartSchoolYear();} -> PickedUp ; 
+    payPenaltyOrder(String penaltyAuthCode, String authCode)/{rejectPayPenaltyOrder("picked up");}-> PickedUp;
+  pickUpOrder()/{rejectPickUpOrder("picked up");} -> PickedUp;       
+    }
+  } 
+   private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
+     this.setLevel(aLevel);
+     this.setStudent(aStudent);
+  }
+
+   private void doAddOrderItem(InventoryItem aItem, int aQuantity){
+     this.getCoolSupplies().addOrderItem(aQuantity, this, aItem);
+    
+  }
+
+   private void doUpdateOrderItemQuantity(InventoryItem aItem, int newQuantity){
+    for (OrderItem aOrderItem:this.getCoolSupplies().getOrderItems()) {
+      if (aOrderItem.getItem().getName().equals(aItem.getName())) {
+        aOrderItem.setQuantity(newQuantity);
+        break;
+      }
+    }
+  }
+
+   private void doDeleteItemOfOrder(InventoryItem aItem){
+    for(OrderItem aOrderItem: this.getCoolSupplies().getOrderItems()) {
+      if (aOrderItem.getItem().getName().equals(aItem.getName())) {
+        aOrderItem.delete();
+        break;
+      }
+    }
+  }
+
+   private void doPayOrder(String authorizationCode){
+    this.setAuthorizationCode(authorizationCode);
+  }
+
+   private void doPayPenaltyOrder(String penaltyAuthCode, String authCode){
+    this.setAuthorizationCode(authCode);
+    this.setPenaltyAuthorizationCode(penaltyAuthCode);
+  }
+
+   private void rejectUpdateOrder(String aState){
+    throw new RuntimeException("Cannot update a "+aState+" order");
+  }
+
+   private void rejectAddItemToOrder(String aState){
+     throw new RuntimeException("Cannot add items to a "+aState+" order");
+  }
+
+   private void rejectUpdateOrderItemQuantity(String aState){
+     throw new RuntimeException("Cannot update items to a "+aState+" order");
+  }
+
+   private void rejectDeleteItemOfOrder(String aState){
+     throw new RuntimeException("Cannot delete items from a "+aState+" order");
+  }
+
+   private void rejectPayOrder(String aState){
+    if (aState.equals("paid")) {
+      throw new RuntimeException("The order is already paid");
+    }
+    throw new RuntimeException("Cannot pay for a "+aState+" order");
+  }
+
+   private void rejectCancelOrder(String aState){
+     throw new RuntimeException("Cannot cancel a "+aState+" order");
+  }
+
+   private void rejectStartSchoolYear(){
+     throw new RuntimeException("The school year has already been started");
+  }
+
+   private void rejectPayPenaltyOrder(String aState){
+     throw new RuntimeException("Cannot pay penalty for a "+aState+" order");
+  }
+
+   private void rejectPickUpOrder(String aState){
+    if (aState.equals("picked up")) {
+      throw new RuntimeException("The order is already picked up");
+    }
+    throw new RuntimeException("Cannot pickup a "+aState+" order");
+  }
+  
+  
+}

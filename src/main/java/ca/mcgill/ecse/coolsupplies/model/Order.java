@@ -1,12 +1,13 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import ca.mcgill.ecse.coolsupplies.model.BundleItem.PurchaseLevel;
 import java.util.*;
 import java.sql.Date;
 
-// line 39 "../../../../../CoolSupplies.ump"
+// line 1 "../../../../../CoolSuppliesState.ump"
+// line 40 "../../../../../CoolSupplies.ump"
 public class Order
 {
 
@@ -27,6 +28,10 @@ public class Order
   private String authorizationCode;
   private String penaltyAuthorizationCode;
 
+  //Order State Machines
+  public enum Status { Started, Final, Paid, Penalized, Prepared, PickedUp }
+  private Status status;
+
   //Order Associations
   private Parent parent;
   private Student student;
@@ -45,24 +50,25 @@ public class Order
     penaltyAuthorizationCode = null;
     if (!setNumber(aNumber))
     {
-      throw new RuntimeException("Cannot create due to duplicate number. See https://manual.umple.org?RE003ViolationofUniqueness.html");
+      throw new RuntimeException("Cannot create due to duplicate number. See http://manual.umple.org?RE003ViolationofUniqueness.html");
     }
     boolean didAddParent = setParent(aParent);
     if (!didAddParent)
     {
-      throw new RuntimeException("Unable to create order due to parent. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create order due to parent. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddStudent = setStudent(aStudent);
     if (!didAddStudent)
     {
-      throw new RuntimeException("Unable to create order due to student. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create order due to student. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     boolean didAddCoolSupplies = setCoolSupplies(aCoolSupplies);
     if (!didAddCoolSupplies)
     {
-      throw new RuntimeException("Unable to create order due to coolSupplies. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create order due to coolSupplies. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     orderItems = new ArrayList<OrderItem>();
+    setStatus(Status.Started);
   }
 
   //------------------------
@@ -153,6 +159,416 @@ public class Order
   public String getPenaltyAuthorizationCode()
   {
     return penaltyAuthorizationCode;
+  }
+
+  public String getStatusFullName()
+  {
+    String answer = status.toString();
+    return answer;
+  }
+
+  public Status getStatus()
+  {
+    return status;
+  }
+
+  public boolean addItemToOrder(InventoryItem aItem,int aQuantity)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        // line 4 "../../../../../CoolSuppliesState.ump"
+        doAddOrderItem(aItem, aQuantity);
+        setStatus(Status.Started);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        // line 18 "../../../../../CoolSuppliesState.ump"
+        rejectAddItemToOrder("paid");
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 28 "../../../../../CoolSuppliesState.ump"
+        rejectAddItemToOrder("penalized");
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 39 "../../../../../CoolSuppliesState.ump"
+        rejectAddItemToOrder("prepared");
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 49 "../../../../../CoolSuppliesState.ump"
+        rejectAddItemToOrder("picked up");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean deleteItemOfOrder(InventoryItem aItem)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        // line 5 "../../../../../CoolSuppliesState.ump"
+        doDeleteItemOfOrder(aItem);
+        setStatus(Status.Started);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        // line 20 "../../../../../CoolSuppliesState.ump"
+        rejectDeleteItemOfOrder("paid");
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 30 "../../../../../CoolSuppliesState.ump"
+        rejectDeleteItemOfOrder("penalized");
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 41 "../../../../../CoolSuppliesState.ump"
+        rejectDeleteItemOfOrder("prepared");
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 51 "../../../../../CoolSuppliesState.ump"
+        rejectDeleteItemOfOrder("picked up");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean updateOrderItemQuantity(InventoryItem aItem,int newQuantity)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        // line 6 "../../../../../CoolSuppliesState.ump"
+        doUpdateOrderItemQuantity(aItem , newQuantity);
+        setStatus(Status.Started);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        // line 19 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrderItemQuantity("paid");
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 29 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrderItemQuantity("penalized");
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 40 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrderItemQuantity("prepared");
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 50 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrderItemQuantity("pickedUp");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean updateOrder(PurchaseLevel aLevel,Student aStudent)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        // line 7 "../../../../../CoolSuppliesState.ump"
+        doUpdateOrder(aLevel, aStudent);
+        setStatus(Status.Started);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        // line 17 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrder("paid");
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 27 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrder("penalized");
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 38 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrder("prepared");
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 48 "../../../../../CoolSuppliesState.ump"
+        rejectUpdateOrder("picked up");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean cancelOrder()
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        setStatus(Status.Final);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        setStatus(Status.Final);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 32 "../../../../../CoolSuppliesState.ump"
+        rejectCancelOrder("penalized");
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 43 "../../../../../CoolSuppliesState.ump"
+        rejectCancelOrder("prepared");
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 53 "../../../../../CoolSuppliesState.ump"
+        rejectCancelOrder("picked up");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean payOrder(String authorizationCode)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        // line 9 "../../../../../CoolSuppliesState.ump"
+        doPayOrder(authorizationCode);
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        // line 21 "../../../../../CoolSuppliesState.ump"
+        rejectPayOrder("paid");
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 31 "../../../../../CoolSuppliesState.ump"
+        rejectPayOrder("penalized");
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 42 "../../../../../CoolSuppliesState.ump"
+        rejectPayOrder("prepared");
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 52 "../../../../../CoolSuppliesState.ump"
+        rejectPayOrder("picked up");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean startSchoolYear()
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 33 "../../../../../CoolSuppliesState.ump"
+        rejectStartSchoolYear();
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 44 "../../../../../CoolSuppliesState.ump"
+        rejectStartSchoolYear();
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 54 "../../../../../CoolSuppliesState.ump"
+        rejectStartSchoolYear();
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean payPenaltyOrder(String penaltyAuthCode,String authCode)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        // line 11 "../../../../../CoolSuppliesState.ump"
+        rejectPayPenaltyOrder("started");
+        setStatus(Status.Started);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        // line 22 "../../../../../CoolSuppliesState.ump"
+        rejectPayPenaltyOrder("paid");
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 26 "../../../../../CoolSuppliesState.ump"
+        doPayPenaltyOrder(penaltyAuthCode, authCode);
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        // line 45 "../../../../../CoolSuppliesState.ump"
+        rejectPayPenaltyOrder("prepared");
+        setStatus(Status.Prepared);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 55 "../../../../../CoolSuppliesState.ump"
+        rejectPayPenaltyOrder("picked up");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean pickUpOrder()
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Started:
+        // line 12 "../../../../../CoolSuppliesState.ump"
+        rejectPickUpOrder("started");
+        setStatus(Status.Started);
+        wasEventProcessed = true;
+        break;
+      case Paid:
+        // line 23 "../../../../../CoolSuppliesState.ump"
+        rejectPickUpOrder("paid");
+        setStatus(Status.Paid);
+        wasEventProcessed = true;
+        break;
+      case Penalized:
+        // line 34 "../../../../../CoolSuppliesState.ump"
+        rejectPickUpOrder("penalized");
+        setStatus(Status.Penalized);
+        wasEventProcessed = true;
+        break;
+      case Prepared:
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      case PickedUp:
+        // line 56 "../../../../../CoolSuppliesState.ump"
+        rejectPickUpOrder("picked up");
+        setStatus(Status.PickedUp);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  private void setStatus(Status aStatus)
+  {
+    status = aStatus;
+
+    // entry actions and do activities
+    switch(status)
+    {
+      case Final:
+        delete();
+        break;
+    }
   }
   /* Code from template association_GetOne */
   public Parent getParent()
@@ -355,6 +771,99 @@ public class Order
       OrderItem aOrderItem = orderItems.get(i - 1);
       aOrderItem.delete();
     }
+  }
+
+  // line 60 "../../../../../CoolSuppliesState.ump"
+   private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
+    this.setLevel(aLevel);
+     this.setStudent(aStudent);
+  }
+
+  // line 65 "../../../../../CoolSuppliesState.ump"
+   private void doAddOrderItem(InventoryItem aItem, int aQuantity){
+    this.getCoolSupplies().addOrderItem(aQuantity, this, aItem);
+  }
+
+  // line 70 "../../../../../CoolSuppliesState.ump"
+   private void doUpdateOrderItemQuantity(InventoryItem aItem, int newQuantity){
+    for (OrderItem aOrderItem:this.getCoolSupplies().getOrderItems()) {
+      if (aOrderItem.getItem().getName().equals(aItem.getName())) {
+        aOrderItem.setQuantity(newQuantity);
+        break;
+      }
+    }
+  }
+
+  // line 79 "../../../../../CoolSuppliesState.ump"
+   private void doDeleteItemOfOrder(InventoryItem aItem){
+    for(OrderItem aOrderItem: this.getCoolSupplies().getOrderItems()) {
+      if (aOrderItem.getItem().getName().equals(aItem.getName())) {
+        aOrderItem.delete();
+        break;
+      }
+    }
+  }
+
+  // line 88 "../../../../../CoolSuppliesState.ump"
+   private void doPayOrder(String authorizationCode){
+    this.setAuthorizationCode(authorizationCode);
+  }
+
+  // line 92 "../../../../../CoolSuppliesState.ump"
+   private void doPayPenaltyOrder(String penaltyAuthCode, String authCode){
+    this.setAuthorizationCode(authCode);
+    this.setPenaltyAuthorizationCode(penaltyAuthCode);
+  }
+
+  // line 97 "../../../../../CoolSuppliesState.ump"
+   private void rejectUpdateOrder(String aState){
+    throw new RuntimeException("Cannot update a "+aState+" order");
+  }
+
+  // line 101 "../../../../../CoolSuppliesState.ump"
+   private void rejectAddItemToOrder(String aState){
+    throw new RuntimeException("Cannot add items to a "+aState+" order");
+  }
+
+  // line 105 "../../../../../CoolSuppliesState.ump"
+   private void rejectUpdateOrderItemQuantity(String aState){
+    throw new RuntimeException("Cannot update items to a "+aState+" order");
+  }
+
+  // line 109 "../../../../../CoolSuppliesState.ump"
+   private void rejectDeleteItemOfOrder(String aState){
+    throw new RuntimeException("Cannot delete items from a "+aState+" order");
+  }
+
+  // line 113 "../../../../../CoolSuppliesState.ump"
+   private void rejectPayOrder(String aState){
+    if (aState.equals("paid")) {
+      throw new RuntimeException("The order is already paid");
+    }
+    throw new RuntimeException("Cannot pay for a "+aState+" order");
+  }
+
+  // line 120 "../../../../../CoolSuppliesState.ump"
+   private void rejectCancelOrder(String aState){
+    throw new RuntimeException("Cannot cancel a "+aState+" order");
+  }
+
+  // line 124 "../../../../../CoolSuppliesState.ump"
+   private void rejectStartSchoolYear(){
+    throw new RuntimeException("The school year has already been started");
+  }
+
+  // line 128 "../../../../../CoolSuppliesState.ump"
+   private void rejectPayPenaltyOrder(String aState){
+    throw new RuntimeException("Cannot pay penalty for a "+aState+" order");
+  }
+
+  // line 132 "../../../../../CoolSuppliesState.ump"
+   private void rejectPickUpOrder(String aState){
+    if (aState.equals("picked up")) {
+      throw new RuntimeException("The order is already picked up");
+    }
+    throw new RuntimeException("Cannot pickup a "+aState+" order");
   }
 
 
