@@ -1,10 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.35.0.7523.c616a4dce modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 56 "../../../../../CoolSupplies.ump"
+// line 42 "../../../../../../CoolSuppliesPersistence.ump"
+// line 59 "../../../../../../CoolSupplies.ump"
 public abstract class InventoryItem
 {
 
@@ -185,6 +186,18 @@ public abstract class InventoryItem
       OrderItem aOrderItem = orderItems.get(i - 1);
       aOrderItem.delete();
     }
+  }
+
+  // line 44 "../../../../../../CoolSuppliesPersistence.ump"
+   public static  void reinitializeUniqueItemName(List<Item> items, List<GradeBundle> gradeBundles){
+    inventoryitemsByName.clear();
+     	for (var item : items) {
+        	inventoryitemsByName.put(item.getName(), item);
+    	}
+    
+    	for (var gradeBundle : gradeBundles) {
+        	inventoryitemsByName.put(gradeBundle.getName(), gradeBundle);
+    	}
   }
 
 

@@ -1,10 +1,11 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.34.0.7242.6b8819789 modeling language!*/
+/*This code was generated using the UMPLE 1.35.0.7523.c616a4dce modeling language!*/
 
 package ca.mcgill.ecse.coolsupplies.model;
 import java.util.*;
 
-// line 79 "../../../../../CoolSupplies.ump"
+// line 55 "../../../../../../CoolSuppliesPersistence.ump"
+// line 82 "../../../../../../CoolSupplies.ump"
 public class Grade
 {
 
@@ -266,6 +267,14 @@ public class Grade
     {
       placeholderCoolSupplies.removeGrade(this);
     }
+  }
+
+  // line 57 "../../../../../../CoolSuppliesPersistence.ump"
+   public static  void reinitializeUniqueLevel(List<Grade> grades){
+    gradesByLevel.clear();
+    	for (var grade : grades) {
+      		gradesByLevel.put(grade.getLevel(), grade);
+    	}
   }
 
 
