@@ -11,10 +11,10 @@ class CoolSupplies {
 class User {
 	public static void reinitializeUniqueEmail(List<Parent> parents, SchoolAdmin admin) {
    		usersByEmail.clear();
-    	for (var parent : parents) {
-        	usersByEmail.put(parent.getEmail(), parent);
-    	}
-    	usersByEmail.put(admin.getEmail(), admin);
+    		for (var parent : parents) {
+        		usersByEmail.put(parent.getEmail(), parent);
+    		}
+    		usersByEmail.put(admin.getEmail(), admin);
 	}
 }
 
@@ -22,9 +22,9 @@ class User {
 class Student {
 	public static void reinitializeUniqueStudentName(List<Student> students) {
 		studentsByName.clear();
-    	for (var student : students) {
-      		studentsByName.put(student.getName(), student);
-    	}
+    		for (var student : students) {
+      			studentsByName.put(student.getName(), student);
+    		}
 	}
 }
 
@@ -32,9 +32,9 @@ class Student {
 class Order {
 	public static void reinitializeUniqueNumber(List<Order> orders) {
 		ordersByNumber.clear();
-    	for (var order : orders) {
-      		ordersByNumber.put(order.getNumber(), order);
-    	}
+    		for (var order : orders) {
+      			ordersByNumber.put(order.getNumber(), order);
+    		}
 	}	
 }
 
@@ -42,22 +42,22 @@ class Order {
 class InventoryItem {
 	public static void reinitializeUniqueItemName(List<Item> items, List<GradeBundle> gradeBundles) {
    		inventoryitemsByName.clear();
-     	for (var item : items) {
-        	inventoryitemsByName.put(item.getName(), item);
-    	}
+     		for (var item : items) {
+        		inventoryitemsByName.put(item.getName(), item);
+    		}
     
-    	for (var gradeBundle : gradeBundles) {
-        	inventoryitemsByName.put(gradeBundle.getName(), gradeBundle);
-    	}
+    		for (var gradeBundle : gradeBundles) {
+        		inventoryitemsByName.put(gradeBundle.getName(), gradeBundle);
+    		}
 	}
 }
 
 class Grade {
 	public static void reinitializeUniqueLevel(List<Grade> grades) {
 		gradesByLevel.clear();
-    	for (var grade : grades) {
-      		gradesByLevel.put(grade.getLevel(), grade);
-    	}
+    		for (var grade : grades) {
+      			gradesByLevel.put(grade.getLevel(), grade);
+    		}
 	}
 }
 
