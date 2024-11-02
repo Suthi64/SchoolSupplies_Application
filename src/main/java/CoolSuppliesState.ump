@@ -57,38 +57,77 @@ class Order{
     }
   } 
    private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
-     this.setLevel(aLevel);
+    this.setLevel(aLevel);
+    if (aStudent.getParent()==null) {
+      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getName()+".");
+    }
+    if (!(this.getParent().getName().equals(aStudent.getParent().getName()))) {
+      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getName()+".");
+    }
      this.setStudent(aStudent);
   }
 
    private void doAddOrderItem(InventoryItem aItem, int aQuantity){
-     this.getCoolSupplies().addOrderItem(aQuantity, this, aItem);
-    
+     if (!(aQuantity>0)) {
+       throw new RuntimeException("Quantity must be greater than 0.");
+     }
+    this.getCoolSupplies().addOrderItem(aQuantity, this, aItem);
   }
 
    private void doUpdateOrderItemQuantity(InventoryItem aItem, int newQuantity){
+     if (!(newQuantity>0)) {
+       throw new RuntimeException("Quantity must be greater than 0.");
+     }
+     boolean existsInOrder=false;
     for (OrderItem aOrderItem:this.getCoolSupplies().getOrderItems()) {
       if (aOrderItem.getItem().getName().equals(aItem.getName())) {
         aOrderItem.setQuantity(newQuantity);
+        existsInOrder=true;
         break;
       }
+    }
+    if (!existsInOrder) {
+      throw new RuntimeException("Item "+aItem.getName()+" does not exist in the order "+this.number+".");
     }
   }
 
    private void doDeleteItemOfOrder(InventoryItem aItem){
+    boolean existsInOrder=false; 
     for(OrderItem aOrderItem: this.getCoolSupplies().getOrderItems()) {
       if (aOrderItem.getItem().getName().equals(aItem.getName())) {
         aOrderItem.delete();
+        existsInOrder=true;
         break;
       }
+    }
+    if (!existsInOrder) {
+      throw new RuntimeException("Item "+aItem.getName()+" does not exist in the order "+this.number+".");
     }
   }
 
    private void doPayOrder(String authorizationCode){
+     if (authorizationCode== null) {
+       throw new RuntimeException("Authorization code is invalid");
+     }
+     if (authorizationCode.length()!=4) {
+       throw new RuntimeException("Authorization code is invalid");
+     }
     this.setAuthorizationCode(authorizationCode);
   }
 
    private void doPayPenaltyOrder(String penaltyAuthCode, String authCode){
+     if (penaltyAuthCode== null) {
+       throw new RuntimeException("Authorization code is invalid");
+     }
+     if (penaltyAuthCode.length()!=4) {
+       throw new RuntimeException("Authorization code is invalid");
+     }
+     if (authCode== null) {
+       throw new RuntimeException("Authorization code is invalid");
+     }
+     if (authCode.length()!=4) {
+       throw new RuntimeException("Authorization code is invalid");
+     }
     this.setAuthorizationCode(authCode);
     this.setPenaltyAuthorizationCode(penaltyAuthCode);
   }
@@ -98,15 +137,15 @@ class Order{
   }
 
    private void rejectAddItemToOrder(String aState){
-     throw new RuntimeException("Cannot add items to a "+aState+" order");
+    throw new RuntimeException("Cannot add items to a "+aState+" order");
   }
 
    private void rejectUpdateOrderItemQuantity(String aState){
-     throw new RuntimeException("Cannot update items to a "+aState+" order");
+    throw new RuntimeException("Cannot update items to a "+aState+" order");
   }
 
    private void rejectDeleteItemOfOrder(String aState){
-     throw new RuntimeException("Cannot delete items from a "+aState+" order");
+    throw new RuntimeException("Cannot delete items from a "+aState+" order");
   }
 
    private void rejectPayOrder(String aState){
@@ -117,15 +156,15 @@ class Order{
   }
 
    private void rejectCancelOrder(String aState){
-     throw new RuntimeException("Cannot cancel a "+aState+" order");
+    throw new RuntimeException("Cannot cancel a "+aState+" order");
   }
 
    private void rejectStartSchoolYear(){
-     throw new RuntimeException("The school year has already been started");
+    throw new RuntimeException("The school year has already been started");
   }
 
    private void rejectPayPenaltyOrder(String aState){
-     throw new RuntimeException("Cannot pay penalty for a "+aState+" order");
+    throw new RuntimeException("Cannot pay penalty for a "+aState+" order");
   }
 
    private void rejectPickUpOrder(String aState){
