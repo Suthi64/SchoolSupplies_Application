@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
 import ca.mcgill.ecse.coolsupplies.model.Student;
+import ca.mcgill.ecse.coolsupplies.persistence.CoolsuppliesPersistence;
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Parent;
 import ca.mcgill.ecse.coolsupplies.model.Order;
@@ -57,6 +58,7 @@ public class CoolSuppliesFeatureSet6Controller {
 
     try {
       parent.addStudent(student);
+      CoolsuppliesPersistence.save();
     } 
     catch (RuntimeException e) {
       error = e.getMessage();
@@ -103,6 +105,7 @@ public class CoolSuppliesFeatureSet6Controller {
 
     try {
       parent.removeStudent(student);
+      CoolsuppliesPersistence.save();
     } 
     catch (RuntimeException e) {
       error = e.getMessage();
@@ -240,6 +243,7 @@ public class CoolSuppliesFeatureSet6Controller {
 
   try {
     Order order = new Order(number, date, purchaseLevel, parent, student, coolSupplies);
+    CoolsuppliesPersistence.save();
   }
   catch (RuntimeException e) {
     error = e.getMessage();

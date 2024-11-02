@@ -101,10 +101,10 @@ public abstract class User
   // line 13 "../../../../../../CoolSuppliesPersistence.ump"
    public static  void reinitializeUniqueEmail(List<Parent> parents, SchoolAdmin admin){
     usersByEmail.clear();
-    	for (var parent : parents) {
-        	usersByEmail.put(parent.getEmail(), parent);
-    	}
-    	usersByEmail.put(admin.getEmail(), admin);
+    		for (var parent : parents) {
+        		usersByEmail.put(parent.getEmail(), parent);
+    		}
+    		usersByEmail.put(admin.getEmail(), admin);
   }
 
 

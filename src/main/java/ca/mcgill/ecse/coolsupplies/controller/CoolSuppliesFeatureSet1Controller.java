@@ -5,6 +5,7 @@ import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Parent;
 import ca.mcgill.ecse.coolsupplies.model.User;
 import ca.mcgill.ecse.coolsupplies.model.SchoolAdmin;
+import ca.mcgill.ecse.coolsupplies.persistence.CoolsuppliesPersistence;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -78,6 +79,7 @@ public class CoolSuppliesFeatureSet1Controller {
 
         try {
           admin.setPassword(password);
+          CoolsuppliesPersistence.save();
         } catch (RuntimeException e) {
           return e.getMessage();
         }
@@ -141,6 +143,7 @@ public class CoolSuppliesFeatureSet1Controller {
       
           try {
             coolSupplies.addParent(email, password, name, phoneNumber);
+            CoolsuppliesPersistence.save();
           }catch(RuntimeException e) {
             var error = e.getMessage();
             if(error.startsWith("Cannot create due to duplicate email")){
@@ -204,6 +207,7 @@ public class CoolSuppliesFeatureSet1Controller {
           parent.setPassword(newPassword);
           parent.setName(newName);
           parent.setPhoneNumber(newPhoneNumber);
+          CoolsuppliesPersistence.save();
         } catch(RuntimeException e){
           return e.getMessage();}
         
@@ -225,7 +229,8 @@ public class CoolSuppliesFeatureSet1Controller {
         }
 
         try {
-        parent.delete();
+          parent.delete();
+          CoolsuppliesPersistence.save();
         } catch (RuntimeException e){
           return e.getMessage();
         }

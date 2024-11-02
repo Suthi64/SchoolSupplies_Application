@@ -300,9 +300,9 @@ public class Student
   // line 24 "../../../../../../CoolSuppliesPersistence.ump"
    public static  void reinitializeUniqueStudentName(List<Student> students){
     studentsByName.clear();
-    	for (var student : students) {
-      		studentsByName.put(student.getName(), student);
-    	}
+    		for (var student : students) {
+      			studentsByName.put(student.getName(), student);
+    		}
   }
 
 

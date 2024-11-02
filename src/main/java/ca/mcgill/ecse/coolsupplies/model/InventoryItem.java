@@ -191,13 +191,13 @@ public abstract class InventoryItem
   // line 44 "../../../../../../CoolSuppliesPersistence.ump"
    public static  void reinitializeUniqueItemName(List<Item> items, List<GradeBundle> gradeBundles){
     inventoryitemsByName.clear();
-     	for (var item : items) {
-        	inventoryitemsByName.put(item.getName(), item);
-    	}
+     		for (var item : items) {
+        		inventoryitemsByName.put(item.getName(), item);
+    		}
     
-    	for (var gradeBundle : gradeBundles) {
-        	inventoryitemsByName.put(gradeBundle.getName(), gradeBundle);
-    	}
+    		for (var gradeBundle : gradeBundles) {
+        		inventoryitemsByName.put(gradeBundle.getName(), gradeBundle);
+    		}
   }
 
 

@@ -3,7 +3,7 @@ package ca.mcgill.ecse.coolsupplies.controller;
 import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Grade;
-
+import ca.mcgill.ecse.coolsupplies.persistence.CoolsuppliesPersistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,10 +44,11 @@ public class CoolSuppliesFeatureSet7Controller {
 	}
     
 	try {
-		    coolSupplies.addGrade(level);
+		coolSupplies.addGrade(level);
+		CoolsuppliesPersistence.save();
 	} catch (RuntimeException e) {
 		return e.getMessage(); //Error during run time
-		}
+	}
 	return ""; //The grade was successfully added
   }
 
@@ -93,6 +94,7 @@ public class CoolSuppliesFeatureSet7Controller {
 	try {
 			Grade grade = Grade.getWithLevel(level); //Get the grade object to be updated
     	grade.setLevel(newLevel); //update the level
+			CoolsuppliesPersistence.save();
     } catch(RuntimeException e) {
     	return e.getMessage(); //Error during run time
     }
@@ -126,6 +128,7 @@ public class CoolSuppliesFeatureSet7Controller {
    
 	try {
 		grade.delete();
+		CoolsuppliesPersistence.save();
 	}
 	catch (RuntimeException e) {
 		return e.getMessage(); //Error during run time
