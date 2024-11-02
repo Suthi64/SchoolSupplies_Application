@@ -51,6 +51,7 @@ class TOOrder{
   authorizationCode;
   penaltyAuthorizationCode;
   Double totalPrice;
+  1 -> * TOOrderItem orderItems;
 }
 
 class TOOrderItem{
@@ -61,4 +62,5 @@ class TOOrderItem{
   Integer price;
   Double discount;
 }
+strictness allow 36; 
 

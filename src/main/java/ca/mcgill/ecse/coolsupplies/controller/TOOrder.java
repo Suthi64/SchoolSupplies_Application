@@ -3,6 +3,7 @@
 
 package ca.mcgill.ecse.coolsupplies.controller;
 import java.sql.Date;
+import java.util.*;
 
 // line 43 "../../../../../CoolSuppliesTransferObjects.ump"
 public class TOOrder
@@ -23,11 +24,17 @@ public class TOOrder
   private String penaltyAuthorizationCode;
   private double totalPrice;
 
+  //TOOrder Associations
+  private List<TOOrderItem> orderItems;
+
+  //Helper Variables
+  private boolean canSetOrderItems;
+
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public TOOrder(String aParentEmail, String aStudentName, String aStatus, String aNumber, Date aDate, String aLevel, String aAuthorizationCode, String aPenaltyAuthorizationCode, double aTotalPrice)
+  public TOOrder(String aParentEmail, String aStudentName, String aStatus, String aNumber, Date aDate, String aLevel, String aAuthorizationCode, String aPenaltyAuthorizationCode, double aTotalPrice, TOOrderItem... allOrderItems)
   {
     parentEmail = aParentEmail;
     studentName = aStudentName;
@@ -38,6 +45,13 @@ public class TOOrder
     authorizationCode = aAuthorizationCode;
     penaltyAuthorizationCode = aPenaltyAuthorizationCode;
     totalPrice = aTotalPrice;
+    canSetOrderItems = true;
+    orderItems = new ArrayList<TOOrderItem>();
+    boolean didAddOrderItems = setOrderItems(allOrderItems);
+    if (!didAddOrderItems)
+    {
+      throw new RuntimeException("Unable to create TOOrder, must not have duplicate orderItems. See http://manual.umple.org?RE001ViolationofImmutability.html");
+    }
   }
 
   //------------------------
@@ -87,6 +101,67 @@ public class TOOrder
   public double getTotalPrice()
   {
     return totalPrice;
+  }
+  /* Code from template association_GetMany */
+  public TOOrderItem getOrderItem(int index)
+  {
+    TOOrderItem aOrderItem = orderItems.get(index);
+    return aOrderItem;
+  }
+
+  public List<TOOrderItem> getOrderItems()
+  {
+    List<TOOrderItem> newOrderItems = Collections.unmodifiableList(orderItems);
+    return newOrderItems;
+  }
+
+  public int numberOfOrderItems()
+  {
+    int number = orderItems.size();
+    return number;
+  }
+
+  public boolean hasOrderItems()
+  {
+    boolean has = orderItems.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrderItem(TOOrderItem aOrderItem)
+  {
+    int index = orderItems.indexOf(aOrderItem);
+    return index;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrderItems()
+  {
+    return 0;
+  }
+  /* Code from template association_SetUnidirectionalMany */
+  private boolean setOrderItems(TOOrderItem... newOrderItems)
+  {
+    boolean wasSet = false;
+    if (!canSetOrderItems) { return false; }
+    canSetOrderItems = false;
+    ArrayList<TOOrderItem> verifiedOrderItems = new ArrayList<TOOrderItem>();
+    for (TOOrderItem aOrderItem : newOrderItems)
+    {
+      if (verifiedOrderItems.contains(aOrderItem))
+      {
+        continue;
+      }
+      verifiedOrderItems.add(aOrderItem);
+    }
+
+    if (verifiedOrderItems.size() != newOrderItems.length)
+    {
+      return wasSet;
+    }
+
+    orderItems.clear();
+    orderItems.addAll(verifiedOrderItems);
+    wasSet = true;
+    return wasSet;
   }
 
   public void delete()
