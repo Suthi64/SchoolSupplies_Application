@@ -272,9 +272,9 @@ public class Grade
   // line 57 "../../../../../../CoolSuppliesPersistence.ump"
    public static  void reinitializeUniqueLevel(List<Grade> grades){
     gradesByLevel.clear();
-    	for (var grade : grades) {
-      		gradesByLevel.put(grade.getLevel(), grade);
-    	}
+    		for (var grade : grades) {
+      			gradesByLevel.put(grade.getLevel(), grade);
+    		}
   }
 
 

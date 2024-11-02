@@ -6,6 +6,7 @@ import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Student;
 import ca.mcgill.ecse.coolsupplies.model.Grade;
+import ca.mcgill.ecse.coolsupplies.persistence.CoolsuppliesPersistence;
 
 public class CoolSuppliesFeatureSet2Controller {
   private static CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
@@ -40,6 +41,7 @@ public class CoolSuppliesFeatureSet2Controller {
     }
     try {
       coolSupplies.addStudent(name, grade);
+      CoolsuppliesPersistence.save();
     } catch (RuntimeException e) {
       error = e.getMessage();
       if (error.startsWith("Cannot create due to duplicate name")) {
@@ -88,6 +90,11 @@ public class CoolSuppliesFeatureSet2Controller {
       return error;
     }
     student.setGrade(grade);
+    try {
+      CoolsuppliesPersistence.save();
+    } catch (RuntimeException e) {
+      return e.getMessage();
+    }
     return "";
   }
 
@@ -109,6 +116,7 @@ public class CoolSuppliesFeatureSet2Controller {
     }
     try {
       student.delete();
+      CoolsuppliesPersistence.save();
     } catch (RuntimeException e) {
       error = e.getMessage();
       return error;

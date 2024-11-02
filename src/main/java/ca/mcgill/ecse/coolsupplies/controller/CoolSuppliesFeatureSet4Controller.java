@@ -4,6 +4,7 @@ import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Grade;
 import ca.mcgill.ecse.coolsupplies.model.GradeBundle;
+import ca.mcgill.ecse.coolsupplies.persistence.CoolsuppliesPersistence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,7 @@ public class CoolSuppliesFeatureSet4Controller {
     //Add GradeBundle
     try {
       coolSupplies.addBundle(name, discount, myGrade);
+      CoolsuppliesPersistence.save();
     } catch (RuntimeException e){
       error = e.getMessage();
     }
@@ -146,6 +148,7 @@ public class CoolSuppliesFeatureSet4Controller {
       Grade oldGrade = myBundle.getGrade();
       myBundle.setGrade(newGrade);
       oldGrade.setBundle(null);
+      CoolsuppliesPersistence.save();
     }catch (Exception e){
       error = e.getMessage();
     }
@@ -173,6 +176,7 @@ public class CoolSuppliesFeatureSet4Controller {
     // Remove Bundle
     try{
       myBundle.delete();
+      CoolsuppliesPersistence.save();
     }catch (Exception e){
       error = e.getMessage();
     }

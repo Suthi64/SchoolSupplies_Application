@@ -8,6 +8,7 @@ import ca.mcgill.ecse.coolsupplies.model.GradeBundle;
 import ca.mcgill.ecse.coolsupplies.model.Item;
 import ca.mcgill.ecse.coolsupplies.model.BundleItem;
 import ca.mcgill.ecse.coolsupplies.model.BundleItem.PurchaseLevel;
+import ca.mcgill.ecse.coolsupplies.persistence.CoolsuppliesPersistence;
 
 /**
 *This class manages the bundle item entities in the Cool Supplies application
@@ -83,11 +84,11 @@ public class CoolSuppliesFeatureSet5Controller {
       }
     try {
       coolSupplies.addBundleItem(quantity, purchaseLevel, myBundle, item);
+      CoolsuppliesPersistence.save();
     } catch (RuntimeException e) {
       error = e.getMessage();
-      return error;
     }
-    return "";
+    return error;
     }
 /**
  * This method update an existing bundle item in a specified  grade bundle with new quantity and new level
@@ -142,10 +143,11 @@ public class CoolSuppliesFeatureSet5Controller {
       try{
         item.setQuantity(newQuantity);
         item.setLevel(purchaseLevel);
+        CoolsuppliesPersistence.save();
       }catch (Exception e){
         error = e.getMessage();
       }
-      }
+    }
     }
     return error;
   }
@@ -185,11 +187,11 @@ public class CoolSuppliesFeatureSet5Controller {
 
     try {
       item.delete();
+      CoolsuppliesPersistence.save();
     } catch (RuntimeException e) {
       error = e.getMessage();
-      return error;
     }
-    return "";
+    return error;
   }
 
 /**

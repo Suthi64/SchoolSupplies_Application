@@ -2,6 +2,7 @@ package ca.mcgill.ecse.coolsupplies.controller;
 
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Item;
+import ca.mcgill.ecse.coolsupplies.persistence.CoolsuppliesPersistence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,15 @@ public class CoolSuppliesFeatureSet3Controller {
           return "The name must be unique.";
         }
       }
+
+      try {
+        coolSupplies.addItem(name, price);
+        CoolsuppliesPersistence.save();
+      } catch (RuntimeException e) {
+        return e.getMessage();
+      }
       
-      return coolSupplies.addItem(name, price).toString();
+      return "";
   }
 
     /**
@@ -66,10 +74,15 @@ public class CoolSuppliesFeatureSet3Controller {
     }
 
     for (Item item : items) {
-      if(item.getName().equals(name)) {
-        item.setName(newName);
-        item.setPrice(newPrice);
-        return item.toString();
+      if (item.getName().equals(name)) {
+        try {
+          item.setName(newName);
+          item.setPrice(newPrice);
+          CoolsuppliesPersistence.save();
+        } catch (RuntimeException e) {
+          return e.getMessage();
+        }
+        return "";
       }
     }
     return "The item does not exist.";
@@ -86,8 +99,13 @@ public class CoolSuppliesFeatureSet3Controller {
       List<Item> items = coolSupplies.getItems();
       for (Item item : items) {
         if(item.getName().equals(name)) {
-          item.delete();
-          return item.toString();
+          try {
+            item.delete();
+            CoolsuppliesPersistence.save();
+          } catch (RuntimeException e) {
+            return e.getMessage();
+          }
+          return "";
         }
       }
       return "The item does not exist.";
