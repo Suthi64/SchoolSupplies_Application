@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderStepDefinitions {
   static String error = "";
-  int errorCntr;
+  int errorCntr = 0;
   private List<TOOrder> toOrdersList = new ArrayList<>();
   private CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
 
@@ -172,7 +172,7 @@ public class OrderStepDefinitions {
   @When("the parent attempts to update an order with number {string} to purchase level {string} and student with name {string}")
   public void the_parent_attempts_to_update_an_order_with_number_to_purchase_level_and_student_with_name(
       String orderNumber, String purchaseLevel, String studentName) {
-    error = CoolSuppliesFeatureSet8Controller.updateOrder(orderNumber, purchaseLevel, studentName);
+    callController(CoolSuppliesFeatureSet8Controller.updateOrder(orderNumber, purchaseLevel, studentName));
   }
 
   @When("the parent attempts to add an item {string} with quantity {string} to the order {string}")
