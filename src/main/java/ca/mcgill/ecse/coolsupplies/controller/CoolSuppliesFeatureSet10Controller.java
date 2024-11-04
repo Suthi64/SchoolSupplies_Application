@@ -66,10 +66,10 @@ public class CoolSuppliesFeatureSet10Controller {
  * @return An error message if the operation failed or an empty string if succesfull
  */
 
-  public static String payPenaltyOrder(String item, String penaltyAuthorizationCode, String authorizationCode) {
+  public static String payPenaltyOrder(String orderNumber, String penaltyAuthorizationCode, String authorizationCode) {
     
-    //Check if the item number exists
-	  int orderNumberInt = Integer.parseInt(item);
+    //Check if the order number exists
+	  int orderNumberInt = Integer.parseInt(orderNumber);
 	  Order order = Order.getWithNumber(orderNumberInt);
 	  if (order == null) {
 		  return String.format("Order %d does not exist", orderNumberInt);
