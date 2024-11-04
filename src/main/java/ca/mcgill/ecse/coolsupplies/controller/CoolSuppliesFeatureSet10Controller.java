@@ -47,24 +47,6 @@ public class CoolSuppliesFeatureSet10Controller {
 
     //Check if state is correct
     try {
-		  
-		  Status orderStatus = order.getStatus();
-
-		  if (orderStatus == Status.Paid) {
-			  return "The order is already paid";
-		  }
-
-      if (orderStatus == Status.Penalized) {
-			  return "Cannot pay for a penalized order";
-		  }
-
-      if (orderStatus == Status.Prepared) {
-			  return "Cannot pay for a prepared order";
-		  }
-
-      if (orderStatus == Status.PickedUp) {
-			  return "Cannot pay for a picked up order";
-		  }
 
 		  order.payOrder(authorizationCode);
 		  CoolsuppliesPersistence.save();
@@ -109,24 +91,6 @@ public class CoolSuppliesFeatureSet10Controller {
 
     
     try {
-		  
-		  Status orderStatus = order.getStatus();
-
-		  if (orderStatus == Status.Started) {
-			  return "Cannot pay penalty for a started order";
-		  }
-
-      if (orderStatus == Status.Paid) {
-			  return "Cannot pay penalty for a paid order";
-		  }
-
-      if (orderStatus == Status.Prepared) {
-			  return "Cannot pay penalty for a prepared order";
-		  }
-
-      if (orderStatus == Status.PickedUp) {
-			  return "Cannot pay penalty for a picked up order";
-		  }
 
 		  order.payPenaltyOrder(penaltyAuthorizationCode, authorizationCode);
 		  CoolsuppliesPersistence.save();
@@ -154,20 +118,6 @@ public class CoolSuppliesFeatureSet10Controller {
     
     
     try {
-		  
-		  Status orderStatus = order.getStatus();
-
-      if (orderStatus == Status.Penalized) {
-			  return "Cannot cancel a penalized order";
-		  }
-
-      if (orderStatus == Status.Prepared) {
-			  return "Cannot cancel a prepared order";
-		  }
-
-      if (orderStatus == Status.PickedUp) {
-			  return "Cannot cancel a picked up order";
-		  }
 
 		  order.cancelOrder();
 		  CoolsuppliesPersistence.save();
