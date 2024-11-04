@@ -190,7 +190,7 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * This method deletes the item from the order
+   * This method deletes the specified item from the order
    * 
    * @param item The item to be deleted from the order
    * @param orderNumber The number of the order
