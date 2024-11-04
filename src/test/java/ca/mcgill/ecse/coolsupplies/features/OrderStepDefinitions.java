@@ -20,56 +20,62 @@ public class OrderStepDefinitions {
   static String error = "";
   private List<TOOrder> toOrdersList = new ArrayList<>();
   private CoolSupplies coolSupplies = CoolSuppliesApplication.getCoolSupplies();
+
+  /**
+   * @author Brian Yang
+   */
   @Given("the following parent entities exist in the system")
   public void the_following_parent_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List[E], List[List[E]], List[Map[K,V]], Map[K,V] or
-    // Map[K, List[V]]. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for (var row : rows) {
+      String email = row.get("email");
+      String password = row.get("password");
+      String name = row.get("name");
+      int phoneNumber = Integer.parseInt(row.get("phoneNumber"));
+      coolSupplies.addParent(email, password, name, phoneNumber);
+    }
   }
 
+  /**
+   * @author Brian Yang
+   */
   @Given("the following grade entities exist in the system")
   public void the_following_grade_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List[E], List[List[E]], List[Map[K,V]], Map[K,V] or
-    // Map[K, List[V]]. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for (var row : rows) {
+      String level = row.get("level");
+      coolSupplies.addGrade(level);
+    }
   }
 
+  /**
+   * @author Brian Yang
+   */
   @Given("the following student entities exist in the system")
   public void the_following_student_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List[E], List[List[E]], List[Map[K,V]], Map[K,V] or
-    // Map[K, List[V]]. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for (var row : rows) {
+      String name = row.get("name");
+      Grade grade = Grade.getWithLevel(row.get("gradeLevel"));
+      coolSupplies.addStudent(name, grade);
+    }
   }
 
+  /**
+   * @author Brian Yang
+   */
   @Given("the following student entities exist for a parent in the system")
   public void the_following_student_entities_exist_for_a_parent_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List[E], List[List[E]], List[Map[K,V]], Map[K,V] or
-    // Map[K, List[V]]. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+    List<Map<String, String>> rows = dataTable.asMaps();
+    for (var row : rows) {
+      Student student = Student.getWithName(row.get("name"));
+      Parent parent = (Parent) User.getWithEmail(row.get("parentEmail"));
+      parent.addStudent(student);
+    }
   }
 
   @Given("the following item entities exist in the system")
@@ -118,14 +124,11 @@ public class OrderStepDefinitions {
   public void the_following_order_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
-    for (Map<String, String> order : rows)
-    {
-      new Order(Integer.parseInt(order.get("number")),
-              Date.valueOf(order.get("date")),
-              BundleItem.PurchaseLevel.valueOf(order.get("level")),
-              (Parent) Parent.getWithEmail(order.get("parentEmail")),
-              Student.getWithName(order.get("studentName")),
-              coolSupplies);
+    for (Map<String, String> order : rows) {
+      new Order(Integer.parseInt(order.get("number")), Date.valueOf(order.get("date")),
+          BundleItem.PurchaseLevel.valueOf(order.get("level")),
+          (Parent) Parent.getWithEmail(order.get("parentEmail")),
+          Student.getWithName(order.get("studentName")), coolSupplies);
     }
   }
 
@@ -183,7 +186,8 @@ public class OrderStepDefinitions {
   @When("the parent attempts to get from the system the order with number {string}")
   public void the_parent_attempts_to_get_from_the_system_the_order_with_number(String orderNumber) {
     TOOrder toOrder = CoolSuppliesFeatureSet11Controller.viewOrder(orderNumber);
-    if(toOrder != null) toOrdersList.add(toOrder);
+    if (toOrder != null)
+      toOrdersList.add(toOrder);
   }
 
 
@@ -320,10 +324,10 @@ public class OrderStepDefinitions {
       String student) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNumber));
     assertNotNull(order, "Could not find order " + orderNumber + " using Order.getWithNumber");
-    assertEquals(order.getLevel().name(), level,
-            "Expected Purchase Level: " + level + "\nActual Purchase Level: " + order.getLevel().name());
+    assertEquals(order.getLevel().name(), level, "Expected Purchase Level: " + level
+        + "\nActual Purchase Level: " + order.getLevel().name());
     assertEquals(order.getStudent().getName(), student,
-            "Expected Student: " + student + "\nActual Student: " + order.getStudent().getName());
+        "Expected Student: " + student + "\nActual Student: " + order.getStudent().getName());
   }
 
   /**
@@ -332,7 +336,8 @@ public class OrderStepDefinitions {
   @Given("order {string} is marked as {string}")
   public void order_is_marked_as(String orderNumber, String level) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNumber));
-    if(order != null) order.setLevel(BundleItem.PurchaseLevel.valueOf(level));
+    if (order != null)
+      order.setLevel(BundleItem.PurchaseLevel.valueOf(level));
   }
 
   @Then("the error {string} shall be raised")
@@ -349,35 +354,30 @@ public class OrderStepDefinitions {
       io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
     assertEquals(rows.size(), toOrdersList.size(),
-            "Expected toOrdersList.size(): " + (rows.size()) + "\nActual size: " + toOrdersList.size());
-    for (Map<String, String> toOrder : rows)
-    {
+        "Expected toOrdersList.size(): " + (rows.size()) + "\nActual size: " + toOrdersList.size());
+    for (Map<String, String> toOrder : rows) {
       TOOrder myTOOrder = null;
-      for(TOOrder order : toOrdersList) {
-        if(Objects.equals(toOrder.get("parentEmail"), order.getParentEmail()) &&
-                Objects.equals(toOrder.get("studentName"), order.getStudentName()) &&
-                Objects.equals(toOrder.get("status"), order.getStatus()) &&
-                Objects.equals(toOrder.get("number"), order.getNumber()) &&
-                Objects.equals(Date.valueOf(toOrder.get("date")), order.getDate()) &&
-                Objects.equals(toOrder.get("level"), order.getLevel()) &&
-                Objects.equals(toOrder.get("authorizationCode"), order.getAuthorizationCode()) &&
-                Objects.equals(toOrder.get("penaltyAuthorizationCode"), order.getPenaltyAuthorizationCode()) &&
-                Objects.equals(Double.parseDouble(toOrder.get("totalPrice")), order.getTotalPrice()))
-        {
+      for (TOOrder order : toOrdersList) {
+        if (Objects.equals(toOrder.get("parentEmail"), order.getParentEmail())
+            && Objects.equals(toOrder.get("studentName"), order.getStudentName())
+            && Objects.equals(toOrder.get("status"), order.getStatus())
+            && Objects.equals(toOrder.get("number"), order.getNumber())
+            && Objects.equals(Date.valueOf(toOrder.get("date")), order.getDate())
+            && Objects.equals(toOrder.get("level"), order.getLevel())
+            && Objects.equals(toOrder.get("authorizationCode"), order.getAuthorizationCode())
+            && Objects.equals(toOrder.get("penaltyAuthorizationCode"),
+                order.getPenaltyAuthorizationCode())
+            && Objects.equals(Double.parseDouble(toOrder.get("totalPrice")),
+                order.getTotalPrice())) {
           myTOOrder = order;
         }
       }
-      assertNotNull(myTOOrder,
-              "Could not find TOOrder in toOrdersList with" +
-                      "\nparentEmail: " + toOrder.get("parentEmail") +
-                      "\nstudentName: " + toOrder.get("studentName") +
-                      "\nstatus: " + toOrder.get("status") +
-                      "\nnumber: " + toOrder.get("number") +
-                      "\ndate: " + toOrder.get("date") +
-                      "\nlevel: " + toOrder.get("level") +
-                      "\nauthorizationCode: " + toOrder.get("authorizationCode") +
-                      "\npenaltyAuthorizationCode: " + toOrder.get("penaltyAuthorizationCode") +
-                      "\ntotalPrice: " + toOrder.get("totalPrice"));
+      assertNotNull(myTOOrder, "Could not find TOOrder in toOrdersList with" + "\nparentEmail: "
+          + toOrder.get("parentEmail") + "\nstudentName: " + toOrder.get("studentName")
+          + "\nstatus: " + toOrder.get("status") + "\nnumber: " + toOrder.get("number") + "\ndate: "
+          + toOrder.get("date") + "\nlevel: " + toOrder.get("level") + "\nauthorizationCode: "
+          + toOrder.get("authorizationCode") + "\npenaltyAuthorizationCode: "
+          + toOrder.get("penaltyAuthorizationCode") + "\ntotalPrice: " + toOrder.get("totalPrice"));
     }
 
   }
@@ -386,37 +386,36 @@ public class OrderStepDefinitions {
    * @author Doddy Yang Qiu
    */
   @Then("the following order items shall be presented for the order with number {string}")
-  public void the_following_order_items_shall_be_presented_for_the_order_with_number(String orderNumber,
-      io.cucumber.datatable.DataTable dataTable) {
+  public void the_following_order_items_shall_be_presented_for_the_order_with_number(
+      String orderNumber, io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
     // Find the specified TOOrder
     TOOrder myOrder = null;
-    for(TOOrder order : toOrdersList)if(order.getNumber().equals(orderNumber)) myOrder = order;
+    for (TOOrder order : toOrdersList)
+      if (order.getNumber().equals(orderNumber))
+        myOrder = order;
     assertNotNull(myOrder, "Could not find order with number " + orderNumber + " in toOrdersList");
 
     // Compare the number of OrderItems
-    assertEquals(rows.size(), myOrder.numberOfOrderItems(),
-            "Expected number of order Items: " + (rows.size()) + "\nActual number: " + myOrder.numberOfOrderItems());
-    for (Map<String, String> orderItem : rows)
-    {
+    assertEquals(rows.size(), myOrder.numberOfOrderItems(), "Expected number of order Items: "
+        + (rows.size()) + "\nActual number: " + myOrder.numberOfOrderItems());
+    for (Map<String, String> orderItem : rows) {
       TOOrderItem myItem = null;
-      for (TOOrderItem item : myOrder.getOrderItems())
-      {
-        if(item.getQuantity() == Integer.parseInt(orderItem.get("quantity")) &&
-                item.getItemName().equals(orderItem.get("itemName")) &&
-                item.getGradeBundleName().equals(orderItem.get("gradeBundleName")) &&
-                item.getPrice() == Integer.parseInt(orderItem.get("price")) &&
-                ((orderItem.get("discount").isEmpty() && item.getDiscount() == 0) || item.getDiscount() == Double.parseDouble(orderItem.get("discount"))))
-        {
+      for (TOOrderItem item : myOrder.getOrderItems()) {
+        if (item.getQuantity() == Integer.parseInt(orderItem.get("quantity"))
+            && item.getItemName().equals(orderItem.get("itemName"))
+            && item.getGradeBundleName().equals(orderItem.get("gradeBundleName"))
+            && item.getPrice() == Integer.parseInt(orderItem.get("price"))
+            && ((orderItem.get("discount").isEmpty() && item.getDiscount() == 0)
+                || item.getDiscount() == Double.parseDouble(orderItem.get("discount")))) {
           myItem = item;
         }
       }
-      assertNotNull(myItem, "Could not find TOOrderItem with" +
-              "\nquantity: " + orderItem.get("quantity") +
-              "\nitemName: " + orderItem.get("itemName") +
-              "\ngradeBundleName: " + orderItem.get("gradeBundleName") +
-              "\nprice: " + orderItem.get("price") +
-              "\ndiscount: " + orderItem.get("discount"));
+      assertNotNull(myItem,
+          "Could not find TOOrderItem with" + "\nquantity: " + orderItem.get("quantity")
+              + "\nitemName: " + orderItem.get("itemName") + "\ngradeBundleName: "
+              + orderItem.get("gradeBundleName") + "\nprice: " + orderItem.get("price")
+              + "\ndiscount: " + orderItem.get("discount"));
     }
   }
 
