@@ -4,7 +4,28 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+//Random Imports
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
+import ca.mcgill.ecse.coolsupplies.controller.CoolSuppliesFeatureSet12Controller;
+import ca.mcgill.ecse.coolsupplies.controller.CoolSuppliesFeatureSet9Controller;
+import ca.mcgill.ecse.coolsupplies.model.*;
+import ca.mcgill.ecse.coolsupplies.model.Order.Status;
+
+//Helper
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class OrderStepDefinitions {
+	
+	private CoolSupplies coolSupplies=CoolSuppliesApplication.getCoolSupplies();
+	private String error;
+	private int errorCntr;
+	  
   @Given("the following parent entities exist in the system")
   public void the_following_parent_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
@@ -70,17 +91,25 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
+  /**
+   * This method gets the grade bundle entities from the resources 
+   * 							and adds it to the cool supplies database
+   * 
+   * @author Moustapha El Zein
+   */
   @Given("the following grade bundle entities exist in the system")
   public void the_following_grade_bundle_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List[E], List[List[E]], List[Map[K,V]], Map[K,V] or
-    // Map[K, List[V]]. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+	  
+	  //Convert data table into a list of strings
+	  List<Map<String, String>> rows = dataTable.asMaps();
+	    
+	  for (var row : rows) {
+		  Grade gradeLevel = Grade.getWithLevel(row.get("gradeLevel"));
+		  String name = row.get("name");
+		  int discount = Integer.parseInt(row.get("discount"));
+		  coolSupplies.addBundle(name, discount, gradeLevel);
+		  }
   }
 
   @Given("the following bundle item entities exist in the system")
@@ -149,10 +178,17 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
+  /**
+   * This method deletes the item from the order
+   * 
+   * @param item The item to be deleted from the order
+   * @param orderNumber The number of the order
+   * 
+   * @author Moustapha El Zein
+   */
   @When("the parent attempts to delete an item {string} from the order {string}")
-  public void the_parent_attempts_to_delete_an_item_from_the_order(String string, String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_parent_attempts_to_delete_an_item_from_the_order(String item, String orderNumber) {
+	  callController(CoolSuppliesFeatureSet9Controller.deleteOrderItem(item, orderNumber));
   }
 
   @When("the parent attempts to get from the system the order with number {string}")
@@ -176,10 +212,16 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
+  /**
+   * This method starts the school year for a specified order
+   * 
+   * @param orderNumber The number of the order
+   * 
+   * @author Moustapha El Zein
+   */
   @When("the admin attempts to start a school year for the order {string}")
-  public void the_admin_attempts_to_start_a_school_year_for_the_order(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_admin_attempts_to_start_a_school_year_for_the_order(String orderNumber) {
+	  callController(CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber));
   }
 
   @When("the parent attempts to pay penalty for the order {string} with penalty authorization code {string} and authorization code {string}")
@@ -281,10 +323,18 @@ public class OrderStepDefinitions {
   }
 
 
+  /**
+   * This method checks if the actual number of orders is equals 
+   * 									to the expected number of orders
+   * 
+   * @param numOfOrders The number of orders in the cool supplies database
+   * 
+   * @author Moustapha El Zein
+   */
   @Then("the number of orders in the system shall be {string}")
-  public void the_number_of_orders_in_the_system_shall_be(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_number_of_orders_in_the_system_shall_be(String numOfOrders) {
+	  int number = Integer.parseInt(numOfOrders);
+	  assertEquals(number, coolSupplies.getOrders().size());
   }
 
   @Then("the order {string} shall contain level {string} and student {string}")
@@ -336,6 +386,15 @@ public class OrderStepDefinitions {
   public void no_order_entities_shall_be_presented() {
     // Write code here that turns the phrase above into concrete actions
     throw new io.cucumber.java.PendingException();
+  }
+  
+  
+  /** Calls controller and sets error and error counter **/
+  private void callController(String result) {
+    if (!result.isEmpty()) {
+      error += result;
+      errorCntr += 1;
+    }
   }
 
 }
