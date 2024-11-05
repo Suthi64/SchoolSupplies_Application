@@ -1,10 +1,5 @@
 package ca.mcgill.ecse.coolsupplies.features;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
 import ca.mcgill.ecse.coolsupplies.controller.*;
 import ca.mcgill.ecse.coolsupplies.model.*;
@@ -99,9 +94,6 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * This method gets the grade bundle entities from the resources 
-   * 							and adds it to the cool supplies database
-   * 
    * @author Moustapha El Zein
    */
   @Given("the following grade bundle entities exist in the system")
@@ -190,11 +182,6 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * This method deletes the specified item from the order
-   * 
-   * @param item The item to be deleted from the order
-   * @param orderNumber The number of the order
-   * 
    * @author Moustapha El Zein
    */
   @When("the parent attempts to delete an item {string} from the order {string}")
@@ -212,26 +199,26 @@ public class OrderStepDefinitions {
       toOrdersList.add(toOrder);
   }
 
-
+  /**
+   * @author Suthiesan Subramaniam
+   */
 
   @When("the parent attempts to cancel the order {string}")
-  public void the_parent_attempts_to_cancel_the_order(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
-  }
-
-  @When("the parent attempts to pay for the order {string} with authorization code {string}")
-  public void the_parent_attempts_to_pay_for_the_order_with_authorization_code(String string,
-      String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_parent_attempts_to_cancel_the_order(String orderNumber) {
+    callController(CoolSuppliesFeatureSet10Controller.cancelOrder(orderNumber));
   }
 
   /**
-   * This method starts the school year for a specified order
-   * 
-   * @param orderNumber The number of the order
-   * 
+   * @author Suthiesan Subramaniam
+   */
+
+  @When("the parent attempts to pay for the order {string} with authorization code {string}")
+  public void the_parent_attempts_to_pay_for_the_order_with_authorization_code(String orderNumber,
+      String authorizationCode) {
+        callController(CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, authorizationCode));
+  }
+
+  /**
    * @author Moustapha El Zein
    */
   @When("the admin attempts to start a school year for the order {string}")
@@ -239,11 +226,14 @@ public class OrderStepDefinitions {
 	  callController(CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber));
   }
 
+  /**
+   * @author Suthiesan Subramaniam
+   */
+
   @When("the parent attempts to pay penalty for the order {string} with penalty authorization code {string} and authorization code {string}")
   public void the_parent_attempts_to_pay_penalty_for_the_order_with_penalty_authorization_code_and_authorization_code(
-      String string, String string2, String string3) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+      String orderNumber, String authorizationCode, String penaltyAuthorizationCode) {
+    callController(CoolSuppliesFeatureSet10Controller.payPenaltyOrder(orderNumber, authorizationCode, penaltyAuthorizationCode));
   }
 
   @When("the student attempts to pickup the order {string}")
@@ -258,22 +248,30 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
-  @Then("the order {string} shall contain penalty authorization code {string}")
-  public void the_order_shall_contain_penalty_authorization_code(String string, String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
-  }
+  /**
+   * @author Suthiesan Subramaniam 
+   */
 
-  @Then("the order {string} shall not contain penalty authorization code {string}")
-  public void the_order_shall_not_contain_penalty_authorization_code(String string,
-      String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  @Then("the order {string} shall contain penalty authorization code {string}")
+  public void the_order_shall_contain_penalty_authorization_code(String orderNum, String penaltyAuthorizationCode) {
+    Order order = Order.getWithNumber(Integer.parseInt(orderNum));
+    boolean hasPenaltyAuthorizationCode = order.getPenaltyAuthorizationCode().equals(penaltyAuthorizationCode);
+    assertTrue(hasPenaltyAuthorizationCode);
   }
 
   /**
-   * @param orderNum This string represents the number of the order
-   * @param authorizationCode This string represents an authorization code
+   * @author Suthiesan Subramaniam 
+   */
+
+  @Then("the order {string} shall not contain penalty authorization code {string}")
+  public void the_order_shall_not_contain_penalty_authorization_code(String orderNum,
+      String penaltyAuthorizationCode) {
+    Order order = Order.getWithNumber(Integer.parseInt(orderNum));
+    boolean hasPenaltyAuthorizationCode = order.getPenaltyAuthorizationCode().equals(penaltyAuthorizationCode);
+    assertFalse(hasPenaltyAuthorizationCode);
+  }
+
+  /**
    * @author Baptiste Didier
    */
   @Then("the order {string} shall not contain authorization code {string}")
@@ -290,8 +288,6 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * @param orderNum This string represents the number of the order
-   * @param authorizationCode This string represents an authorization code
    * @author Baptiste Didier
    */
   @Then("the order {string} shall contain authorization code {string}")
@@ -308,8 +304,6 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * @param orderNum This string represents the number of the order
-   * @param itemName This string represents the name of an item
    * @author Baptiste Didier
    */
   @Then("the order {string} shall not contain {string}")
@@ -336,9 +330,6 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * @param orderNum This string represents the number of the order
-   * @param itemName This string represents the name of an item
-   * @param quantity This string represents the quantity of the item
    * @author Baptiste Didier
    */
   @Then("the order {string} shall not contain {string} with quantity {string}")
@@ -362,8 +353,6 @@ public class OrderStepDefinitions {
 
 
   /**
-   * @param orderNum This string represents the number of the order
-   * @param statusName This string represents the status of the order
    * @author Baptiste Didier
    */
   @Then("the order {string} shall be marked as {string}")
@@ -375,11 +364,6 @@ public class OrderStepDefinitions {
 
 
   /**
-   * This method checks if the actual number of orders is equals 
-   * 									to the expected number of orders
-   * 
-   * @param numOfOrders The number of orders in the cool supplies database
-   * 
    * @author Moustapha El Zein
    */
   @Then("the number of orders in the system shall be {string}")
@@ -413,7 +397,6 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * @param errorMessage The string represents the received error message 
    * @author Baptiste Didier
    */
   @Then("the error {string} shall be raised")
