@@ -420,7 +420,7 @@ public class OrderStepDefinitions {
         if (Objects.equals(toOrder.get("parentEmail"), order.getParentEmail())
             && Objects.equals(toOrder.get("studentName"), order.getStudentName())
             && Objects.equals(toOrder.get("status"), order.getStatus())
-            && Objects.equals(toOrder.get("number"), order.getNumber())
+            && Objects.equals(toOrder.get("number"), String.valueOf(order.getNumber()))
             && Objects.equals(Date.valueOf(toOrder.get("date")), order.getDate())
             && Objects.equals(toOrder.get("level"), order.getLevel())
             && Objects.equals(toOrder.get("authorizationCode"), order.getAuthorizationCode())
@@ -451,7 +451,7 @@ public class OrderStepDefinitions {
     // Find the specified TOOrder
     TOOrder myOrder = null;
     for (TOOrder order : toOrdersList)
-      if (order.getNumber().equals(orderNumber))
+      if (String.valueOf(order.getNumber()).equals(orderNumber))
         myOrder = order;
     assertNotNull(myOrder, "Could not find order with number " + orderNumber + " in toOrdersList");
 
