@@ -17,7 +17,7 @@ public class TOOrder
   private String parentEmail;
   private String studentName;
   private String status;
-  private String number;
+  private int number;
   private Date date;
   private String level;
   private String authorizationCode;
@@ -34,7 +34,7 @@ public class TOOrder
   // CONSTRUCTOR
   //------------------------
 
-  public TOOrder(String aParentEmail, String aStudentName, String aStatus, String aNumber, Date aDate, String aLevel, String aAuthorizationCode, String aPenaltyAuthorizationCode, double aTotalPrice, TOOrderItem... allOrderItems)
+  public TOOrder(String aParentEmail, String aStudentName, String aStatus, int aNumber, Date aDate, String aLevel, String aAuthorizationCode, String aPenaltyAuthorizationCode, double aTotalPrice, TOOrderItem... allOrderItems)
   {
     parentEmail = aParentEmail;
     studentName = aStudentName;
@@ -73,7 +73,7 @@ public class TOOrder
     return status;
   }
 
-  public String getNumber()
+  public int getNumber()
   {
     return number;
   }

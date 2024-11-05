@@ -45,7 +45,7 @@ class TOOrder{
   parentEmail;
   studentName;
   status;
-  number;
+  Integer number;
   Date date;
   level;
   authorizationCode;
