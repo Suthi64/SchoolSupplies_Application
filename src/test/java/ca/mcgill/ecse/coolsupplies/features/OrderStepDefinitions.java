@@ -1,10 +1,22 @@
 package ca.mcgill.ecse.coolsupplies.features;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
+import ca.mcgill.ecse.coolsupplies.controller.CoolSuppliesFeatureSet10Controller;
+import ca.mcgill.ecse.coolsupplies.model.*;
+import ca.mcgill.ecse.coolsupplies.model.Order.Status;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderStepDefinitions {
+
+  private String error;
+  private int errorCntr;
+
   @Given("the following parent entities exist in the system")
   public void the_following_parent_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
@@ -161,19 +173,28 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
-
+  /**
+   * This step defintion attemmpts to cancel the specified order
+   * @param orderNumber The order number of the order that need to be canceled
+   * @author Suthiesan Subramaniam
+   */
 
   @When("the parent attempts to cancel the order {string}")
-  public void the_parent_attempts_to_cancel_the_order(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_parent_attempts_to_cancel_the_order(String orderNumber) {
+    callController(CoolSuppliesFeatureSet10Controller.cancelOrder(orderNumber));
   }
 
+  /**
+   * This step defintion attempts to pay the specified order using the given authorization code
+   * @param orderNumber The order number of the order that need to be canceled
+   * @param authorizationCode The authorization code needed to complete the payment
+   * @author Suthiesan Subramaniam
+   */
+
   @When("the parent attempts to pay for the order {string} with authorization code {string}")
-  public void the_parent_attempts_to_pay_for_the_order_with_authorization_code(String string,
-      String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_parent_attempts_to_pay_for_the_order_with_authorization_code(String orderNumber,
+      String authorizationCode) {
+    callController(CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, authorizationCode));
   }
 
   @When("the admin attempts to start a school year for the order {string}")
@@ -182,11 +203,18 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
+  /**
+   * This step defintion attempts to pay penalty for the specified order using the given authorization code
+   * @param orderNumber The order number of the order that need to be canceled
+   * @param authorizationCode The authorization code needed to complete the payment
+   * @param penaltyAuthorizationCode The penalty authorization code needed to complete the penalty payment
+   * @author Suthiesan Subramaniam
+   */
+
   @When("the parent attempts to pay penalty for the order {string} with penalty authorization code {string} and authorization code {string}")
   public void the_parent_attempts_to_pay_penalty_for_the_order_with_penalty_authorization_code_and_authorization_code(
-      String string, String string2, String string3) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+      String orderNumber, String authorizationCode, String penaltyAuthorizationCode) {
+        callController(CoolSuppliesFeatureSet10Controller.payPenaltyOrder(orderNumber, authorizationCode, penaltyAuthorizationCode));
   }
 
   @When("the student attempts to pickup the order {string}")
@@ -201,17 +229,33 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
+  /**
+   * This step definition verifies that the specified order contain the specified penalty authorization code 
+   * @param orderNum The order number of the order to verify
+   * @param penaltyAuthorizationCode The penalty authorization code that the order must contain
+   * @author Suthiesan Subramaniam 
+   */
+
   @Then("the order {string} shall contain penalty authorization code {string}")
-  public void the_order_shall_contain_penalty_authorization_code(String string, String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_order_shall_contain_penalty_authorization_code(String orderNum, String penaltyAuthorizationCode) {
+    Order order = Order.getWithNumber(Integer.parseInt(orderNum));
+    boolean hasPenaltyAuthorizationCode = order.getPenaltyAuthorizationCode().equals(penaltyAuthorizationCode);
+    assertTrue(hasPenaltyAuthorizationCode);
   }
 
+  /**
+   * This step definition verifies that the specified order does not contain the specified penalty authorization code 
+   * @param orderNum The order number of the order to verify
+   * @param penaltyAuthorizationCode The penalty authorization code that the order must not contain
+   * @author Suthiesan Subramaniam 
+   */
+
   @Then("the order {string} shall not contain penalty authorization code {string}")
-  public void the_order_shall_not_contain_penalty_authorization_code(String string,
-      String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_order_shall_not_contain_penalty_authorization_code(String orderNum,
+      String penaltyAuthorizationCode) {
+    Order order = Order.getWithNumber(Integer.parseInt(orderNum));
+    boolean hasPenaltyAuthorizationCode = order.getPenaltyAuthorizationCode().equals(penaltyAuthorizationCode);
+    assertFalse(hasPenaltyAuthorizationCode);
   }
 
 
@@ -336,6 +380,14 @@ public class OrderStepDefinitions {
   public void no_order_entities_shall_be_presented() {
     // Write code here that turns the phrase above into concrete actions
     throw new io.cucumber.java.PendingException();
+  }
+
+  /** Calls controller and sets error and counter. */
+  private void callController(String result) {
+    if (!result.isEmpty()) {
+      error += result;
+      errorCntr += 1;
+    }
   }
 
 }
