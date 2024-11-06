@@ -111,17 +111,38 @@ public class OrderStepDefinitions {
 		  }
   }
 
+  /*
+   * @author Sanad Abu Baker
+   */
   @Given("the following bundle item entities exist in the system")
   public void the_following_bundle_item_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-    // Write code here that turns the phrase above into concrete actions
-    // For automatic transformation, change DataTable to one of
-    // E, List[E], List[List[E]], List[Map[K,V]], Map[K,V] or
-    // Map[K, List[V]]. E,K,V must be a String, Integer, Float,
-    // Double, Byte, Short, Long, BigInteger or BigDecimal.
-    //
-    // For other transformations you can register a DataTableType.
-    throw new io.cucumber.java.PendingException();
+        List<Map<String, String>> rows = dataTable.asMaps();
+
+        for (Map<String, String> bundleItems : rows) {
+        List<GradeBundle> gradeBundleList = coolSupplies.getBundles();
+        List<Item> items = coolSupplies.getItems();
+
+        GradeBundle bundle = null;
+        for(GradeBundle gb : gradeBundleList){
+          if(gb.getName().equals(bundleItems.get("gradeBundleName"))){
+            bundle = gb;
+            break;
+          }
+        }
+
+        Item item = null;
+        for(Item i : items){
+          if(i.getName().equals(bundleItems.get("itemName"))){
+            item = i;
+            break; 
+          }
+        }
+
+          coolSupplies.addBundleItem(Integer.parseInt(bundleItems.get("quantity")), 
+          BundleItem.PurchaseLevel.valueOf(bundleItems.get("level")),
+          bundle, item);
+        }
   }
 
   /**
@@ -152,10 +173,26 @@ public class OrderStepDefinitions {
     throw new io.cucumber.java.PendingException();
   }
 
+  /*
+   * @author Sanad Abu Baker
+   */
   @Given("the order {string} is marked as {string}")
-  public void the_order_is_marked_as(String string, String string2) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_order_is_marked_as(String orderNumber, String statusName) {
+    if (statusName == "Paid"){
+      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
+    }
+    else if (statusName == "Penalized"){
+      CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
+    }
+    else if (statusName == "Prepared"){
+      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
+      CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
+    }
+    if (statusName == "PickedUp"){
+      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
+      CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
+      CoolSuppliesFeatureSet12Controller.pickUpOrder(orderNumber);
+    }
   }
 
   /**
@@ -236,16 +273,20 @@ public class OrderStepDefinitions {
     callController(CoolSuppliesFeatureSet10Controller.payPenaltyOrder(orderNumber, authorizationCode, penaltyAuthorizationCode));
   }
 
+  /*
+   * @author Sanad Abu Baker
+   */
   @When("the student attempts to pickup the order {string}")
-  public void the_student_attempts_to_pickup_the_order(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_student_attempts_to_pickup_the_order(String orderNumber) {
+    callController(CoolSuppliesFeatureSet12Controller.pickUpOrder(orderNumber));
   }
 
+  /*
+   * @author Sanad Abu Baker
+   */
   @When("the school admin attempts to get from the system all orders")
   public void the_school_admin_attempts_to_get_from_the_system_all_orders() {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+    toOrdersList = CoolSuppliesFeatureSet11Controller.viewAllOrders();
   }
 
   /**
@@ -281,10 +322,12 @@ public class OrderStepDefinitions {
     assertFalse(hasAuthorizationCode);
   }
 
+  /*
+   * @author Sanad Abu Baker
+   */
   @Then("the order {string} shall not exist in the system")
-  public void the_order_shall_not_exist_in_the_system(String string) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_order_shall_not_exist_in_the_system(String orderNumber) {
+    assertNull(Order.getWithNumber(Integer.parseInt(orderNumber)));
   }
 
   /**
@@ -345,10 +388,20 @@ public class OrderStepDefinitions {
   }
 
 
+  /*
+   * @author Sanad Abu Baker
+   */
   @Then("the order {string} shall contain {string} with quantity {string}")
-  public void the_order_shall_contain_with_quantity(String string, String string2, String string3) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+  public void the_order_shall_contain_with_quantity(String orderNumber, String itemName, String quantity) {
+    Order order = Order.getWithNumber(Integer.parseInt(orderNumber));
+    assertNotNull(order, "Could not find order " + orderNumber + " using Order.getWithNumber");
+
+    Item item = (Item) InventoryItem.getWithName(itemName);
+    for (OrderItem orderItem : order.getOrderItems()){
+      if(orderItem.getItem().equals(item)){
+        assertEquals(orderItem.getQuantity(), Integer.parseInt(quantity));
+      }
+    }
   }
 
 
@@ -478,10 +531,12 @@ public class OrderStepDefinitions {
     }
   }
 
+  /*
+   * @author  Sanad Abu baker
+   */
   @Then("no order entities shall be presented")
   public void no_order_entities_shall_be_presented() {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+    assertTrue(toOrdersList.isEmpty(), "Expected no order entities, but the list is not empty)");
   }
   
   
