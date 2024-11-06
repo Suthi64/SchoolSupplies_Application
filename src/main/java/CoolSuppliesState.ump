@@ -142,7 +142,10 @@ private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
  */ 
 
    private void doPayOrder(String authorizationCode){
-     if (authorizationCode== null) {
+    if (this.getOrderItems().size()==0){
+      throw new RuntimeException("Order "+Integer.toString(number)+" has not items");
+    }
+    if (authorizationCode== null) {
        throw new RuntimeException("Authorization code is invalid");
      }
      if (authorizationCode.length()!=4) {
