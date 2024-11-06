@@ -56,7 +56,15 @@ class Order{
   pickUpOrder()/{rejectPickUpOrder("picked up");} -> PickedUp;       
     }
   } 
-   private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
+  
+/**
+ * Updates the purchase level and the student of an order
+ * author: Brian Yang 
+ * param: aLevel the new purchase level 
+ * param: aStudent the new student 
+ */ 
+  
+private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
     this.setLevel(aLevel);
     if (aStudent.getParent()==null) {
       throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getName()+".");
@@ -67,12 +75,27 @@ class Order{
      this.setStudent(aStudent);
   }
 
+/**
+ * Performs input validation and then adds a new OrderItem to   * CoolSupplies 
+ * author: Brian Yang 
+ * param: aItem an InventoryItem
+ * param: aQuantity the quantity of the OrderItem
+ */ 
+
    private void doAddOrderItem(InventoryItem aItem, int aQuantity){
      if (!(aQuantity>0)) {
        throw new RuntimeException("Quantity must be greater than 0.");
      }
     this.getCoolSupplies().addOrderItem(aQuantity, this, aItem);
   }
+
+/**
+ * Performs input validation and then updates the quantity of 
+ * an OrderItem 
+ * author: Brian Yang 
+ * param: aItem an InventoryItem
+ * param: newQuantity the new quantity of the OrderItem
+ */ 
 
    private void doUpdateOrderItemQuantity(InventoryItem aItem, int newQuantity){
      if (!(newQuantity>0)) {
@@ -91,6 +114,12 @@ class Order{
     }
   }
 
+/**
+ * Performs input validation and then deletes an OrderItem 
+ * author: Brian Yang 
+ * param: aItem an InventoryItem
+ */ 
+
    private void doDeleteItemOfOrder(InventoryItem aItem){
     boolean existsInOrder=false; 
     for(OrderItem aOrderItem: this.getCoolSupplies().getOrderItems()) {
@@ -105,8 +134,18 @@ class Order{
     }
   }
 
+/**
+ * Performs input validation and then updates the order with    
+ * the payment authorization code. 
+ * author: Brian Yang 
+ * param: authorizationCode the payment authorization code
+ */ 
+
    private void doPayOrder(String authorizationCode){
-     if (authorizationCode== null) {
+    if (this.getOrderItems().size()==0){
+      throw new RuntimeException("Order "+Integer.toString(number)+" has not items");
+    }
+    if (authorizationCode== null) {
        throw new RuntimeException("Authorization code is invalid");
      }
      if (authorizationCode.length()!=4) {
@@ -114,6 +153,15 @@ class Order{
      }
     this.setAuthorizationCode(authorizationCode);
   }
+
+/**
+ * Performs input validation and then updates the order with
+ * by setting the penalty authorization code and the payment 
+ * authorization code 
+ * author: Brian Yang 
+ * param: penaltyAuthCode the penalty authorization code
+ * param: authCode the payment authorization code 
+ */ 
 
    private void doPayPenaltyOrder(String penaltyAuthCode, String authCode){
      if (penaltyAuthCode== null) {
@@ -132,21 +180,56 @@ class Order{
     this.setPenaltyAuthorizationCode(penaltyAuthCode);
   }
 
+/**
+ * Throws a runtime exception indicating that updating an order 
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
+
    private void rejectUpdateOrder(String aState){
     throw new RuntimeException("Cannot update a "+aState+" order");
   }
+
+/**
+ * Throws a runtime exception indicating that adding an OrderItem
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
 
    private void rejectAddItemToOrder(String aState){
     throw new RuntimeException("Cannot add items to a "+aState+" order");
   }
 
+/**
+ * Throws a runtime exception indicating that updating the quantity of an OrderItem
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
+
    private void rejectUpdateOrderItemQuantity(String aState){
     throw new RuntimeException("Cannot update items to a "+aState+" order");
   }
 
+/**
+ * Throws a runtime exception indicating that deleting an OrderItem 
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
+
    private void rejectDeleteItemOfOrder(String aState){
     throw new RuntimeException("Cannot delete items from a "+aState+" order");
   }
+
+/**
+ * Throws a runtime exception indicating that paying for an order
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
 
    private void rejectPayOrder(String aState){
     if (aState.equals("paid")) {
@@ -155,17 +238,44 @@ class Order{
     throw new RuntimeException("Cannot pay for a "+aState+" order");
   }
 
+/**
+ * Throws a runtime exception indicating that canceling an order
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
+
    private void rejectCancelOrder(String aState){
     throw new RuntimeException("Cannot cancel a "+aState+" order");
   }
+
+/**
+ * Throws a runtime exception indicating that starting the school year for the order
+ * is not allowed in the current state
+ * author: Brian Yang 
+ */ 
 
    private void rejectStartSchoolYear(){
     throw new RuntimeException("The school year has already been started");
   }
 
+/**
+ * Throws a runtime exception indicating that paying the penalty for the order
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
+
    private void rejectPayPenaltyOrder(String aState){
     throw new RuntimeException("Cannot pay penalty for a "+aState+" order");
   }
+
+/**
+ * Throws a runtime exception indicating that picking up the order
+ * is not allowed in the current state
+ * author: Brian Yang 
+ * param: aState the current state
+ */ 
 
    private void rejectPickUpOrder(String aState){
     if (aState.equals("picked up")) {
