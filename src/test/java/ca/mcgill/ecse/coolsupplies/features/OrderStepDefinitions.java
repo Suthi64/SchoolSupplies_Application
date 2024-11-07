@@ -151,7 +151,7 @@ public class OrderStepDefinitions {
           CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
         }
         else if(Status.valueOf(order.get("status")).equals(Status.Prepared)){
-          if (order.get("penaltyAuthorizationCode").equals("")) {
+          if (order.get("penaltyAuthorizationCode") == null) {
             CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
             CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
           }
@@ -161,7 +161,7 @@ public class OrderStepDefinitions {
           }
         }
         else if(Status.valueOf(order.get("status")).equals(Status.PickedUp)){
-          if (order.get("penaltyAuthorizationCode").equals("")) {
+          if (order.get("penaltyAuthorizationCode") == null) {
             CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
             CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
           }
@@ -238,8 +238,8 @@ public class OrderStepDefinitions {
    * @author Jiaduo Xing
    */
   @When("the parent attempts to update an item {string} with quantity {string} in the order {string}")
-  public void the_parent_attempts_to_update_an_item_with_quantity_in_the_order(String orderNumber, String purchaseLevel, String studentName) {
-    callController(CoolSuppliesFeatureSet8Controller.updateOrder(orderNumber, purchaseLevel, studentName));
+  public void the_parent_attempts_to_update_an_item_with_quantity_in_the_order(String item, String quantity, String orderNumber) {
+    callController(CoolSuppliesFeatureSet9Controller.updateOrderItem(item, quantity, orderNumber));
   }
 
   /**
