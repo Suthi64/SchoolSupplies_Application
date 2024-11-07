@@ -202,17 +202,17 @@ public class OrderStepDefinitions {
       return;
     }
     else if (statusName.equals("Paid")){
-      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
+      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1111");
     }
     else if (statusName.equals("Penalized")){
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
     }
     else if (statusName.equals("Prepared")){
-      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
+      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1111");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
     }
     else if (statusName.equals("PickedUp")){
-      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
+      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1111");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
       CoolSuppliesFeatureSet12Controller.pickUpOrder(orderNumber);
     }
