@@ -238,8 +238,8 @@ public class OrderStepDefinitions {
    * @author Jiaduo Xing
    */
   @When("the parent attempts to update an item {string} with quantity {string} in the order {string}")
-  public void the_parent_attempts_to_update_an_item_with_quantity_in_the_order(String orderNumber, String purchaseLevel, String studentName) {
-    callController(CoolSuppliesFeatureSet8Controller.updateOrder(orderNumber, purchaseLevel, studentName));
+  public void the_parent_attempts_to_update_an_item_with_quantity_in_the_order(String item, String quantity, String orderNumber) {
+    callController(CoolSuppliesFeatureSet9Controller.updateOrderItem(item,Quantity,orderNumber));
   }
 
   /**
