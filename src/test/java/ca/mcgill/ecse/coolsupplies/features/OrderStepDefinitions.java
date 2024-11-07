@@ -438,7 +438,7 @@ public class OrderStepDefinitions {
     Order order = Order.getWithNumber(Integer.parseInt(orderNumber));
     assertNotNull(order, "Could not find order " + orderNumber + " using Order.getWithNumber");
 
-    Item item = (Item) InventoryItem.getWithName(itemName);
+    InventoryItem item = InventoryItem.getWithName(itemName);
     for (OrderItem orderItem : order.getOrderItems()){
       if(orderItem.getItem().equals(item)){
         assertEquals(Integer.parseInt(quantity), orderItem.getQuantity(), "Expected '" 
