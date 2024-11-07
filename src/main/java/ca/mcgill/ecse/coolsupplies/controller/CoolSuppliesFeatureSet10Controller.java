@@ -31,10 +31,6 @@ public class CoolSuppliesFeatureSet10Controller {
 
   public static String payOrder(String orderNumber,String authorizationCode) {
     
-    if (authorizationCode == null || authorizationCode.equals("")) {
-      return "Authorization code is invalid";
-    }
-    
     //Check if the order number exists
 	  int orderNumberInt = Integer.parseInt(orderNumber);
 	  Order order = Order.getWithNumber(orderNumberInt);
@@ -64,13 +60,6 @@ public class CoolSuppliesFeatureSet10Controller {
 
   public static String payPenaltyOrder(String orderNumber, String penaltyAuthorizationCode, String authorizationCode) {
     
-    if (authorizationCode == null || authorizationCode.equals("")) {
-      return "Authorization code is invalid";
-    }
-
-    if (penaltyAuthorizationCode == null || penaltyAuthorizationCode.equals("")) {
-      return "Penalty authorization code is invalid";
-    }
     //Check if the order number exists
 	  int orderNumberInt = Integer.parseInt(orderNumber);
 	  Order order = Order.getWithNumber(orderNumberInt);
