@@ -945,7 +945,7 @@ public class Order
    */
   // line 213 "../../../../../CoolSuppliesState.ump"
    private void rejectUpdateOrderItemQuantity(String aState){
-    throw new RuntimeException("Cannot update items to a "+aState+" order");
+    throw new RuntimeException("Cannot update items in a "+aState+" order");
   }
 
 
