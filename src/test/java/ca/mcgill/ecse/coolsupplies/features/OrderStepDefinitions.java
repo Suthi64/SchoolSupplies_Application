@@ -491,37 +491,37 @@ public class OrderStepDefinitions {
    */
   @Then("the following order entities shall be presented")
   public void the_following_order_entities_shall_be_presented(
-      io.cucumber.datatable.DataTable dataTable) {
+          io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
     assertEquals(rows.size(), toOrdersList.size(),
-        "Expected toOrdersList.size(): " + (rows.size()) + "\nActual size: " + toOrdersList.size());
+            "Expected toOrdersList.size(): " + (rows.size()) + "\nActual size: " + toOrdersList.size());
+    boolean found = false;
     for (Map<String, String> toOrder : rows) {
-      TOOrder myTOOrder = null;
       for (TOOrder order : toOrdersList) {
         if (Objects.equals(toOrder.get("parentEmail"), order.getParentEmail())
-            && Objects.equals(toOrder.get("studentName"), order.getStudentName())
-            && Objects.equals(toOrder.get("status"), order.getStatus())
-            && Objects.equals(toOrder.get("number"), String.valueOf(order.getNumber()))
-            && Objects.equals(Date.valueOf(toOrder.get("date")), order.getDate())
-            && Objects.equals(toOrder.get("level"), order.getLevel())
-            && Objects.equals(toOrder.get("authorizationCode"), order.getAuthorizationCode())
-            && Objects.equals(toOrder.get("penaltyAuthorizationCode"),
+                && Objects.equals(toOrder.get("studentName"), order.getStudentName())
+                && Objects.equals(toOrder.get("status"), order.getStatus())
+                && Objects.equals(toOrder.get("number"), String.valueOf(order.getNumber()))
+                && Objects.equals(Date.valueOf(toOrder.get("date")), order.getDate())
+                && Objects.equals(toOrder.get("level"), order.getLevel())
+                && Objects.equals(toOrder.get("authorizationCode"), order.getAuthorizationCode())
+                && Objects.equals(toOrder.get("penaltyAuthorizationCode"),
                 order.getPenaltyAuthorizationCode())
-            && Objects.equals(Double.parseDouble(toOrder.get("totalPrice")),
+                && Objects.equals(Double.parseDouble(toOrder.get("totalPrice")),
                 order.getTotalPrice())) {
-          myTOOrder = order;
+          found = true;
+          break;
         }
       }
-      assertNotNull(myTOOrder, "Could not find TOOrder in toOrdersList with" + "\nparentEmail: "
-          + toOrder.get("parentEmail") + "\nstudentName: " + toOrder.get("studentName")
-          + "\nstatus: " + toOrder.get("status") + "\nnumber: " + toOrder.get("number") + "\ndate: "
-          + toOrder.get("date") + "\nlevel: " + toOrder.get("level") + "\nauthorizationCode: "
-          + toOrder.get("authorizationCode") + "\npenaltyAuthorizationCode: "
-          + toOrder.get("penaltyAuthorizationCode") + "\ntotalPrice: " + toOrder.get("totalPrice"));
+      assertTrue(found, "Could not find TOOrder in toOrdersList with" + "\nparentEmail: "
+              + toOrder.get("parentEmail") + "\nstudentName: " + toOrder.get("studentName")
+              + "\nstatus: " + toOrder.get("status") + "\nnumber: " + toOrder.get("number") + "\ndate: "
+              + toOrder.get("date") + "\nlevel: " + toOrder.get("level") + "\nauthorizationCode: "
+              + toOrder.get("authorizationCode") + "\npenaltyAuthorizationCode: "
+              + toOrder.get("penaltyAuthorizationCode") + "\ntotalPrice: " + toOrder.get("totalPrice"));
     }
 
   }
-
   /**
    * @author Doddy Yang Qiu
    */
@@ -544,9 +544,9 @@ public class OrderStepDefinitions {
       for (TOOrderItem item : myOrder.getOrderItems()) {
         if (item.getQuantity() == Integer.parseInt(orderItem.get("quantity"))
             && item.getItemName().equals(orderItem.get("itemName"))
-            && item.getGradeBundleName().equals(orderItem.get("gradeBundleName"))
-            && item.getPrice() == Integer.parseInt(orderItem.get("price"))
-            && ((orderItem.get("discount").isEmpty() && item.getDiscount() == 0)
+                && (item.getGradeBundleName().equals(orderItem.get("gradeBundleName")) || (item.getGradeBundleName().isEmpty() && orderItem.get("gradeBundleName") == null))
+                && item.getPrice() == Integer.parseInt(orderItem.get("price"))
+                && ((orderItem.get("discount") == null && item.getDiscount() == 0)
                 || item.getDiscount() == Double.parseDouble(orderItem.get("discount")))) {
           myItem = item;
         }
