@@ -293,8 +293,8 @@ public class OrderStepDefinitions {
 
   @When("the parent attempts to pay penalty for the order {string} with penalty authorization code {string} and authorization code {string}")
   public void the_parent_attempts_to_pay_penalty_for_the_order_with_penalty_authorization_code_and_authorization_code(
-      String orderNumber, String authorizationCode, String penaltyAuthorizationCode) {
-    callController(CoolSuppliesFeatureSet10Controller.payPenaltyOrder(orderNumber, authorizationCode, penaltyAuthorizationCode));
+      String orderNumber, String penaltyAuthorizationCode, String authorizationCode) {
+    callController(CoolSuppliesFeatureSet10Controller.payPenaltyOrder(orderNumber, penaltyAuthorizationCode, authorizationCode));
   }
 
   /*
@@ -343,8 +343,8 @@ public class OrderStepDefinitions {
   public void the_order_shall_not_contain_authorization_code(String orderNum, String authorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     String orderCode = order.getAuthorizationCode();
-    assertNotEquals(authorizationCode, orderCode, "Authorization code should be '" 
-    + authorizationCode + "' but was '" + orderCode + "'");
+    assertNotEquals(authorizationCode, orderCode, "Authorization code should not be '" 
+    + authorizationCode + "'");
 
   }
 
@@ -402,7 +402,7 @@ public class OrderStepDefinitions {
   @Then("the number of order items in the system shall be {string}")
   public void the_number_of_order_items_in_the_system_shall_be(String expectedCount) {
     int actualCount = coolSupplies.getOrderItems().size();
-    assertEquals(actualCount, Integer.parseInt(expectedCount));
+    assertEquals(Integer.parseInt(expectedCount), actualCount);
   }
 
 /**
@@ -410,9 +410,8 @@ public class OrderStepDefinitions {
    */
   @Then("the order {string} shall contain {string} items")
   public void the_order_shall_contain_items(String orderNumber, String expectedQuantity) {
-    Order order = Order.getWithNumber(Integer.parseInt(orderNumber));
-    int actualQuantity = order.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
-    assertEquals(actualQuantity, Integer.parseInt(expectedQuantity));
+    int actualQuantity = Order.getWithNumber(Integer.parseInt(orderNumber)).getOrderItems().size();
+    assertEquals(Integer.parseInt(expectedQuantity), actualQuantity);
   }
 
   /**
