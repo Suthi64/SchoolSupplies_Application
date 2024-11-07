@@ -319,8 +319,9 @@ public class OrderStepDefinitions {
   @Then("the order {string} shall contain penalty authorization code {string}")
   public void the_order_shall_contain_penalty_authorization_code(String orderNum, String penaltyAuthorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    boolean hasPenaltyAuthorizationCode = order.getPenaltyAuthorizationCode().equals(penaltyAuthorizationCode);
-    assertTrue(hasPenaltyAuthorizationCode);
+    String orderCode = order.getAuthorizationCode();
+    assertEquals(penaltyAuthorizationCode, orderCode, "Authorization code should be '" 
+    + penaltyAuthorizationCode + "' but was '" + orderCode + "'");
   }
 
   /**
@@ -330,8 +331,9 @@ public class OrderStepDefinitions {
   public void the_order_shall_not_contain_penalty_authorization_code(String orderNum,
       String penaltyAuthorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    boolean hasPenaltyAuthorizationCode = order.getPenaltyAuthorizationCode().equals(penaltyAuthorizationCode);
-    assertFalse(hasPenaltyAuthorizationCode);
+    String orderCode = order.getAuthorizationCode();
+    assertNotEquals(penaltyAuthorizationCode, orderCode, "Authorization code should be '" 
+    + penaltyAuthorizationCode + "' but was '" + orderCode + "'");
   }
 
   /**
@@ -341,10 +343,8 @@ public class OrderStepDefinitions {
   public void the_order_shall_not_contain_authorization_code(String orderNum, String authorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     String orderCode = order.getAuthorizationCode();
-    assertNotNull(orderCode, "Authorization code is null");
-    boolean hasAuthorizationCode = orderCode.equals(authorizationCode);
-    assertFalse(hasAuthorizationCode, "Authorization code should be '" 
-    + authorizationCode + "' but was '" + order.getAuthorizationCode() + "'");
+    assertNotEquals(authorizationCode, orderCode, "Authorization code should be '" 
+    + authorizationCode + "' but was '" + orderCode + "'");
 
   }
 
@@ -363,10 +363,8 @@ public class OrderStepDefinitions {
   public void the_order_shall_contain_authorization_code(String orderNum, String authorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     String orderCode = order.getAuthorizationCode();
-    assertNotNull(orderCode, "Authorization code is null");
-    boolean hasAuthorizationCode = orderCode.equals(authorizationCode);
-    assertTrue(hasAuthorizationCode, "Authorization code should be '" 
-    + authorizationCode + "' but was '" + order.getAuthorizationCode() + "'");
+    assertEquals(authorizationCode, orderCode, "Authorization code should be '" 
+    + authorizationCode + "' but was '" + orderCode + "'");
   }
 
   /**
@@ -382,7 +380,7 @@ public class OrderStepDefinitions {
         targetItem = orderItem;
       }
     }
-    assertNotNull(targetItem);
+    assertNotNull(targetItem, "'" + itemName + "' not found in order '" + orderNum + "'");
   }
 
   /**
@@ -393,7 +391,7 @@ public class OrderStepDefinitions {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     Item item = (Item) InventoryItem.getWithName(itemName);
     for (OrderItem orderItem : order.getOrderItems()) {
-      assertFalse(orderItem.getItem().equals(item), "The order '"
+      assertNotEquals(item, orderItem.getItem(), "The order '"
       + orderNum + "' contains '" + itemName + "'");
     }
   }
@@ -404,7 +402,7 @@ public class OrderStepDefinitions {
   @Then("the number of order items in the system shall be {string}")
   public void the_number_of_order_items_in_the_system_shall_be(String expectedCount) {
     int actualCount = coolSupplies.getOrderItems().size();
-    assertEquals(Integer.parseInt(expectedCount), actualCount);
+    assertEquals(actualCount, Integer.parseInt(expectedCount));
   }
 
 /**
@@ -414,7 +412,7 @@ public class OrderStepDefinitions {
   public void the_order_shall_contain_items(String orderNumber, String expectedQuantity) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNumber));
     int actualQuantity = order.getOrderItems().stream().mapToInt(OrderItem::getQuantity).sum();
-    assertEquals(Integer.parseInt(expectedQuantity), actualQuantity);
+    assertEquals(actualQuantity, Integer.parseInt(expectedQuantity));
   }
 
   /**
@@ -478,10 +476,10 @@ public class OrderStepDefinitions {
       String student) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNumber));
     assertNotNull(order, "Could not find order " + orderNumber + " using Order.getWithNumber");
-    assertEquals(order.getLevel().name(), level, "Expected Purchase Level: " + level
+    assertEquals(level, order.getLevel().name(), "Expected Purchase Level: " + level
         + "\nActual Purchase Level: " + order.getLevel().name());
-    assertEquals(order.getStudent().getName(), student,
-        "Expected Student: " + student + "\nActual Student: " + order.getStudent().getName());
+    assertEquals(student, order.getStudent().getName(),
+                "Expected Student: " + student + "\nActual Student: " + order.getStudent().getName());
   }
 
   /**
