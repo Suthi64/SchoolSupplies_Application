@@ -340,7 +340,9 @@ public class OrderStepDefinitions {
   @Then("the order {string} shall not contain authorization code {string}")
   public void the_order_shall_not_contain_authorization_code(String orderNum, String authorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    boolean hasAuthorizationCode = order.getAuthorizationCode().equals(authorizationCode);
+    String orderCode = order.getAuthorizationCode();
+    assertNotNull(orderCode, "Authorization code is null");
+    boolean hasAuthorizationCode = orderCode.equals(authorizationCode);
     assertFalse(hasAuthorizationCode, "Authorization code should be '" 
     + authorizationCode + "' but was '" + order.getAuthorizationCode() + "'");
 
@@ -360,7 +362,9 @@ public class OrderStepDefinitions {
   @Then("the order {string} shall contain authorization code {string}")
   public void the_order_shall_contain_authorization_code(String orderNum, String authorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    boolean hasAuthorizationCode = order.getAuthorizationCode().equals(authorizationCode);
+    String orderCode = order.getAuthorizationCode();
+    assertNotNull(orderCode, "Authorization code is null");
+    boolean hasAuthorizationCode = orderCode.equals(authorizationCode);
     assertTrue(hasAuthorizationCode, "Authorization code should be '" 
     + authorizationCode + "' but was '" + order.getAuthorizationCode() + "'");
   }
@@ -372,9 +376,13 @@ public class OrderStepDefinitions {
   public void the_order_shall_contain_item(String orderNum, String itemName) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     Item item = (Item) InventoryItem.getWithName(itemName);
+    OrderItem targetItem = null;
     for (OrderItem orderItem : order.getOrderItems()) {
-      assertTrue(orderItem.getItem().equals(item));
+      if (orderItem.getItem().equals(item)) {
+        targetItem = orderItem;
+      }
     }
+    assertNotNull(targetItem);
   }
 
   /**
