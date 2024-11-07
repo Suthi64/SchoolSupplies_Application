@@ -99,10 +99,10 @@ public class OrderStepDefinitions {
   @Given("the following grade bundle entities exist in the system")
   public void the_following_grade_bundle_entities_exist_in_the_system(
       io.cucumber.datatable.DataTable dataTable) {
-	  
+
 	  //Convert data table into a list of strings
 	  List<Map<String, String>> rows = dataTable.asMaps();
-	    
+
 	  for (var row : rows) {
 		  Grade gradeLevel = Grade.getWithLevel(row.get("gradeLevel"));
 		  String name = row.get("name");
@@ -135,11 +135,11 @@ public class OrderStepDefinitions {
         for(Item i : items){
           if(i.getName().equals(bundleItems.get("itemName"))){
             item = i;
-            break; 
+            break;
           }
         }
 
-          coolSupplies.addBundleItem(Integer.parseInt(bundleItems.get("quantity")), 
+          coolSupplies.addBundleItem(Integer.parseInt(bundleItems.get("quantity")),
           BundleItem.PurchaseLevel.valueOf(bundleItems.get("level")),
           bundle, item);
         }
@@ -150,15 +150,43 @@ public class OrderStepDefinitions {
    */
   @Given("the following order entities exist in the system")
   public void the_following_order_entities_exist_in_the_system(
-      io.cucumber.datatable.DataTable dataTable) {
+          io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
     for (Map<String, String> order : rows) {
-      new Order(Integer.parseInt(order.get("number")), Date.valueOf(order.get("date")),
-          BundleItem.PurchaseLevel.valueOf(order.get("level")),
-          (Parent) Parent.getWithEmail(order.get("parentEmail")),
-          Student.getWithName(order.get("studentName")), coolSupplies);
+      Order myOrder = new Order(Integer.parseInt(order.get("number")), Date.valueOf(order.get("date")),
+              BundleItem.PurchaseLevel.valueOf(order.get("level")),
+              (Parent) Parent.getWithEmail(order.get("parentEmail")),
+              Student.getWithName(order.get("studentName")), coolSupplies);
+      if(order.containsKey("status")){
+        if(order.get("penaltyAuthorizationCode") != null)
+        {
+          myOrder.startSchoolYear();
+          myOrder.payPenaltyOrder(order.get("penaltyAuthorizationCode"), order.get("authorizationCode"));
+        }
+        if(Status.valueOf(order.get("status")).equals(Status.Paid)){
+          myOrder.payOrder(order.get("authorizationCode"));
+        }
+        else if(Status.valueOf(order.get("status")).equals(Status.Prepared)){
+          if(myOrder.getStatus().equals(Status.Started))
+          {
+            myOrder.payOrder(order.get("authorizationCode"));
+            myOrder.startSchoolYear();
+          }
+        }
+        else if(Status.valueOf(order.get("status")).equals(Status.PickedUp)){
+          if(myOrder.getStatus().equals(Status.Started)){
+            myOrder.payOrder(order.get("authorizationCode"));
+            myOrder.startSchoolYear();
+          }
+          myOrder.pickUpOrder();
+        }
+        else if(Status.valueOf(order.get("status")).equals(Status.Penalized)){
+          myOrder.startSchoolYear();
+        }
+      }
     }
   }
+
 
   @Given("the following order item entities exist in the system")
   public void the_following_order_item_entities_exist_in_the_system(
@@ -290,7 +318,7 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * @author Suthiesan Subramaniam 
+   * @author Suthiesan Subramaniam
    */
 
   @Then("the order {string} shall contain penalty authorization code {string}")
@@ -301,7 +329,7 @@ public class OrderStepDefinitions {
   }
 
   /**
-   * @author Suthiesan Subramaniam 
+   * @author Suthiesan Subramaniam
    */
 
   @Then("the order {string} shall not contain penalty authorization code {string}")
@@ -454,7 +482,7 @@ public class OrderStepDefinitions {
    */
   @Then("the error {string} shall be raised")
   public void the_error_shall_be_raised(String errorMessage) {
-    assertTrue(error.contains(errorMessage), "Expected error message '" 
+    assertTrue(error.contains(errorMessage), "Expected error message '"
     + errorMessage + "' not found in: " + error);
   }
 
@@ -538,8 +566,8 @@ public class OrderStepDefinitions {
   public void no_order_entities_shall_be_presented() {
     assertTrue(toOrdersList.isEmpty(), "Expected no order entities, but the list is not empty)");
   }
-  
-  
+
+
   /** Calls controller and sets error and error counter **/
   private void callController(String result) {
     if (!result.isEmpty()) {
