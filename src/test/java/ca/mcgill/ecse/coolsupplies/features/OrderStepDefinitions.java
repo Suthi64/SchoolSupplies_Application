@@ -319,7 +319,7 @@ public class OrderStepDefinitions {
   @Then("the order {string} shall contain penalty authorization code {string}")
   public void the_order_shall_contain_penalty_authorization_code(String orderNum, String penaltyAuthorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    String orderCode = order.getAuthorizationCode();
+    String orderCode = order.getPenaltyAuthorizationCode();
     assertEquals(penaltyAuthorizationCode, orderCode, "Authorization code should be '" 
     + penaltyAuthorizationCode + "' but was '" + orderCode + "'");
   }
@@ -331,7 +331,7 @@ public class OrderStepDefinitions {
   public void the_order_shall_not_contain_penalty_authorization_code(String orderNum,
       String penaltyAuthorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    String orderCode = order.getAuthorizationCode();
+    String orderCode = order.getPenaltyAuthorizationCode();
     assertNotEquals(penaltyAuthorizationCode, orderCode, "Authorization code should be '" 
     + penaltyAuthorizationCode + "' but was '" + orderCode + "'");
   }
