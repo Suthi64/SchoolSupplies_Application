@@ -89,8 +89,8 @@ public class OrderStepDefinitions {
     List<Map<String, String>> rows = dataTable.asMaps();
     for (var row : rows) {
       String itemName = row.get("name");
-      int quantity = Integer.parseInt(row.get("quantity"));
-      CoolSupplies.addItem(itemName, quantity);
+      int price = Integer.parseInt(row.get("price"));
+      coolSupplies.addItem(itemName, price);
 
     }
   }
@@ -122,25 +122,8 @@ public class OrderStepDefinitions {
         List<Map<String, String>> rows = dataTable.asMaps();
 
         for (Map<String, String> bundleItems : rows) {
-        List<GradeBundle> gradeBundleList = coolSupplies.getBundles();
-        List<Item> items = coolSupplies.getItems();
-
-        GradeBundle bundle = null;
-        for(GradeBundle gb : gradeBundleList){
-          if(gb.getName().equals(bundleItems.get("gradeBundleName"))){
-            bundle = gb;
-            break;
-          }
-        }
-
-        Item item = null;
-        for(Item i : items){
-          if(i.getName().equals(bundleItems.get("itemName"))){
-            item = i;
-            break;
-          }
-        }
-
+          GradeBundle bundle = (GradeBundle) InventoryItem.getWithName(bundleItems.get("gradeBundleName"));
+          Item item = (Item) InventoryItem.getWithName(bundleItems.get("itemName"));
           coolSupplies.addBundleItem(Integer.parseInt(bundleItems.get("quantity")),
           BundleItem.PurchaseLevel.valueOf(bundleItems.get("level")),
           bundle, item);
@@ -155,40 +138,42 @@ public class OrderStepDefinitions {
           io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
     for (Map<String, String> order : rows) {
-      Order myOrder = new Order(Integer.parseInt(order.get("number")), Date.valueOf(order.get("date")),
+      coolSupplies.addOrder(Integer.parseInt(order.get("number")), Date.valueOf(order.get("date")),
               BundleItem.PurchaseLevel.valueOf(order.get("level")),
               (Parent) Parent.getWithEmail(order.get("parentEmail")),
-              Student.getWithName(order.get("studentName")), coolSupplies);
+              Student.getWithName(order.get("studentName")));
+
       if(order.containsKey("status")){
-        if(order.get("penaltyAuthorizationCode") != null)
-        {
-          myOrder.startSchoolYear();
-          myOrder.payPenaltyOrder(order.get("penaltyAuthorizationCode"), order.get("authorizationCode"));
-        }
         if(Status.valueOf(order.get("status")).equals(Status.Paid)){
-          myOrder.payOrder(order.get("authorizationCode"));
+          CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
+        }
+        else if(Status.valueOf(order.get("status")).equals(Status.Penalized)){
+          CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
         }
         else if(Status.valueOf(order.get("status")).equals(Status.Prepared)){
-          if(myOrder.getStatus().equals(Status.Started))
-          {
-            myOrder.payOrder(order.get("authorizationCode"));
-            myOrder.startSchoolYear();
+          if (order.get("penaltyAuthorizationCode").equals("")) {
+            CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
+            CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
+          }
+          else {
+            CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
+            CoolSuppliesFeatureSet10Controller.payPenaltyOrder(order.get("number"), order.get("penaltyAuthorizationCode"), order.get("authorizationCode"));
           }
         }
         else if(Status.valueOf(order.get("status")).equals(Status.PickedUp)){
-          if(myOrder.getStatus().equals(Status.Started)){
-            myOrder.payOrder(order.get("authorizationCode"));
-            myOrder.startSchoolYear();
+          if (order.get("penaltyAuthorizationCode").equals("")) {
+            CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
+            CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
           }
-          myOrder.pickUpOrder();
-        }
-        else if(Status.valueOf(order.get("status")).equals(Status.Penalized)){
-          myOrder.startSchoolYear();
+          else {
+            CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
+            CoolSuppliesFeatureSet10Controller.payPenaltyOrder(order.get("number"), order.get("penaltyAuthorizationCode"), order.get("authorizationCode"));
+          }
+          CoolSuppliesFeatureSet12Controller.pickUpOrder(order.get("number"));
         }
       }
     }
   }
-
 
   /**
    * @author Jiaduo Xing
@@ -198,18 +183,14 @@ public class OrderStepDefinitions {
       io.cucumber.datatable.DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps();
 
-    for (Map<String, String> orderitems : rows) {
-        List<Order> orders = orders.getOrders();
-        List<Item> items = coolSupplies.getItems();
-
-        Order order = null;
-    for (Order o : orders) {
-      if (o.getNumber() == Integer.parseInt(orderItems.get("orderNumber"))) {
-        order = o;
-        break;
-      }
+    for (Map<String, String> orderItem : rows) {
+      int myQuantity = Integer.parseInt(orderItem.get("quantity"));
+      Order myOrder = Order.getWithNumber(Integer.parseInt(orderItem.get("orderNumber"))); 
+      InventoryItem myInventoryItem = InventoryItem.getWithName(orderItem.get("itemName"));
+      coolSupplies.addOrderItem(myQuantity, myOrder, myInventoryItem);
     }
-
+  }
+  
   /*
    * @author Sanad Abu Baker
    */
@@ -225,12 +206,13 @@ public class OrderStepDefinitions {
       CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
     }
-    if (statusName.equals("PickedUp")){
+    else if (statusName.equals("PickedUp")){
       CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
       CoolSuppliesFeatureSet12Controller.pickUpOrder(orderNumber);
     }
   }
+
   /**
    * @author Doddy Yang Qiu
    */
@@ -254,7 +236,6 @@ public class OrderStepDefinitions {
   public void the_parent_attempts_to_update_an_item_with_quantity_in_the_order(String orderNumber, String purchaseLevel, String studentName) {
     callController(CoolSuppliesFeatureSet8Controller.updateOrder(orderNumber, purchaseLevel, studentName));
   }
-
 
   /**
    * @author Moustapha El Zein
@@ -330,7 +311,6 @@ public class OrderStepDefinitions {
   /**
    * @author Suthiesan Subramaniam
    */
-
   @Then("the order {string} shall contain penalty authorization code {string}")
   public void the_order_shall_contain_penalty_authorization_code(String orderNum, String penaltyAuthorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
@@ -341,7 +321,6 @@ public class OrderStepDefinitions {
   /**
    * @author Suthiesan Subramaniam
    */
-
   @Then("the order {string} shall not contain penalty authorization code {string}")
   public void the_order_shall_not_contain_penalty_authorization_code(String orderNum,
       String penaltyAuthorizationCode) {
@@ -406,16 +385,15 @@ public class OrderStepDefinitions {
     }
   }
 
-
-
   /**
    * @author Jiaduo Xing
    */
   @Then("the number of order items in the system shall be {string}")
   public void the_number_of_order_items_in_the_system_shall_be(String expectedCount) {
-    int actualCount = coolSupplies.getAllOrderItems().size();
+    int actualCount = coolSupplies.getOrderItems().size();
     assertEquals(Integer.parseInt(expectedCount), actualCount);
   }
+
 /**
    * @author Jiaduo Xing
    */
@@ -442,7 +420,6 @@ public class OrderStepDefinitions {
     }
   }
 
-
   /*
    * @author Sanad Abu Baker
    */
@@ -459,18 +436,15 @@ public class OrderStepDefinitions {
     }
   }
 
-
   /**
    * @author Baptiste Didier
    */
   @Then("the order {string} shall be marked as {string}")
-  public void the_order_shall_be_marked_as(String orderNum, String statusName) {
+  public void the_order_shall_be_marked_as(String orderNum, String status) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    Status status = Order.Status.valueOf(statusName);
-    assertEquals(order.getStatus(), status, "The order '" + orderNum + 
-    "' was marked as '" + status + "' but expected '" + statusName + "'");
+    assertEquals(order.getStatusFullName(), status, "The order '" + orderNum + 
+    "' was marked as '" + order.getStatusFullName() + "' but expected '" + status + "'");
   }
-
 
   /**
    * @author Moustapha El Zein
@@ -594,7 +568,6 @@ public class OrderStepDefinitions {
   public void no_order_entities_shall_be_presented() {
     assertTrue(toOrdersList.isEmpty(), "Expected no order entities, but the list is not empty)");
   }
-
 
   /** Calls controller and sets error and error counter **/
   private void callController(String result) {
