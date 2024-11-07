@@ -196,7 +196,12 @@ public class OrderStepDefinitions {
    */
   @Given("the order {string} is marked as {string}")
   public void the_order_is_marked_as(String orderNumber, String statusName) {
-    if (statusName.equals("Paid")){
+    Status orderStatus = Order.getWithNumber(Integer.parseInt(orderNumber)).getStatus();
+    Status expectedStatus = Order.Status.valueOf(statusName);
+    if (orderStatus.equals(expectedStatus)) {
+      return;
+    }
+    else if (statusName.equals("Paid")){
       CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
     }
     else if (statusName.equals("Penalized")){
@@ -337,7 +342,7 @@ public class OrderStepDefinitions {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     boolean hasAuthorizationCode = order.getAuthorizationCode().equals(authorizationCode);
     assertFalse(hasAuthorizationCode, "Authorization code should be '" 
-    + order.getAuthorizationCode() + "' but was '" + authorizationCode + "'");
+    + authorizationCode + "' but was '" + order.getAuthorizationCode() + "'");
 
   }
 
@@ -431,7 +436,9 @@ public class OrderStepDefinitions {
     Item item = (Item) InventoryItem.getWithName(itemName);
     for (OrderItem orderItem : order.getOrderItems()){
       if(orderItem.getItem().equals(item)){
-        assertEquals(orderItem.getQuantity(), Integer.parseInt(quantity));
+        assertEquals(Integer.parseInt(quantity), orderItem.getQuantity(), "Expected '" 
+        + Integer.parseInt(quantity) + "' '" + itemName + "' but was '"
+        + orderItem.getQuantity() + "' '" + orderItem.getItem().getName() + "'\n");
       }
     }
   }
