@@ -30,6 +30,10 @@ public class CoolSuppliesFeatureSet10Controller {
 
   public static String payOrder(String orderNumber,String authorizationCode) {
     
+    if (authorizationCode == null || authorizationCode.equals("")) {
+      return "Incorrect authorization code";
+    }
+    
     //Check if the authorization code is valid
     int authorizationCodeInt = Integer.parseInt(authorizationCode);
     Order authorization = Order.getWithNumber(authorizationCodeInt);
@@ -45,7 +49,6 @@ public class CoolSuppliesFeatureSet10Controller {
 		  return String.format("Order %d does not exist", orderNumberInt);
 	  }
 
-    //Check if state is correct
     try {
 
 		  order.payOrder(authorizationCode);
@@ -68,6 +71,13 @@ public class CoolSuppliesFeatureSet10Controller {
 
   public static String payPenaltyOrder(String orderNumber, String penaltyAuthorizationCode, String authorizationCode) {
     
+    if (authorizationCode == null || authorizationCode.equals("")) {
+      return "Incorrect authorization code";
+    }
+
+    if (penaltyAuthorizationCode == null || penaltyAuthorizationCode.equals("")) {
+      return "Incorrect penalty authorization code";
+    }
     //Check if the order number exists
 	  int orderNumberInt = Integer.parseInt(orderNumber);
 	  Order order = Order.getWithNumber(orderNumberInt);
