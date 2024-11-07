@@ -3,6 +3,7 @@ package ca.mcgill.ecse.coolsupplies.controller;
 import java.util.ArrayList;
 import java.util.List;
 import ca.mcgill.ecse.coolsupplies.application.CoolSuppliesApplication;
+import ca.mcgill.ecse.coolsupplies.model.BundleItem.PurchaseLevel;
 import ca.mcgill.ecse.coolsupplies.model.CoolSupplies;
 import ca.mcgill.ecse.coolsupplies.model.Order;
 import ca.mcgill.ecse.coolsupplies.model.Order.Status;
@@ -31,17 +32,9 @@ public class CoolSuppliesFeatureSet10Controller {
   public static String payOrder(String orderNumber,String authorizationCode) {
     
     if (authorizationCode == null || authorizationCode.equals("")) {
-      return "Incorrect authorization code";
-    }
-    
-    //Check if the authorization code is valid
-    int authorizationCodeInt = Integer.parseInt(authorizationCode);
-    Order authorization = Order.getWithNumber(authorizationCodeInt);
-    if (authorization == null) {
       return "Authorization code is invalid";
     }
-
-
+    
     //Check if the order number exists
 	  int orderNumberInt = Integer.parseInt(orderNumber);
 	  Order order = Order.getWithNumber(orderNumberInt);
@@ -72,11 +65,11 @@ public class CoolSuppliesFeatureSet10Controller {
   public static String payPenaltyOrder(String orderNumber, String penaltyAuthorizationCode, String authorizationCode) {
     
     if (authorizationCode == null || authorizationCode.equals("")) {
-      return "Incorrect authorization code";
+      return "Authorization code is invalid";
     }
 
     if (penaltyAuthorizationCode == null || penaltyAuthorizationCode.equals("")) {
-      return "Incorrect penalty authorization code";
+      return "Penalty authorization code is invalid";
     }
     //Check if the order number exists
 	  int orderNumberInt = Integer.parseInt(orderNumber);
@@ -85,21 +78,6 @@ public class CoolSuppliesFeatureSet10Controller {
 		  return String.format("Order %d does not exist", orderNumberInt);
 	  }
 
-    //Check if the penalty authorization code is valid
-    int penaltyAuthorizationCodeInt = Integer.parseInt(authorizationCode);
-    Order penaltyAuthorization = Order.getWithNumber(penaltyAuthorizationCodeInt);
-    if (penaltyAuthorization == null) {
-      return "Penalty authorization code is invalid";
-    }
-    
-    //Check if the authorization code is valid
-    int authorizationCodeInt = Integer.parseInt(authorizationCode);
-    Order authorization = Order.getWithNumber(authorizationCodeInt);
-    if (authorization == null) {
-      return "Authorization code is invalid";
-    }
-
-    
     try {
 
 		  order.payPenaltyOrder(penaltyAuthorizationCode, authorizationCode);
