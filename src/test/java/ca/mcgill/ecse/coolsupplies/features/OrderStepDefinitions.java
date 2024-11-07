@@ -346,7 +346,9 @@ public class OrderStepDefinitions {
   public void the_order_shall_not_contain_authorization_code(String orderNum, String authorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     boolean hasAuthorizationCode = order.getAuthorizationCode().equals(authorizationCode);
-    assertFalse(hasAuthorizationCode);
+    assertFalse(hasAuthorizationCode, "Authorization code should be '" 
+    + order.getAuthorizationCode() + "' but was '" + authorizationCode + "'");
+
   }
 
   /*
@@ -364,7 +366,8 @@ public class OrderStepDefinitions {
   public void the_order_shall_contain_authorization_code(String orderNum, String authorizationCode) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     boolean hasAuthorizationCode = order.getAuthorizationCode().equals(authorizationCode);
-    assertTrue(hasAuthorizationCode);
+    assertTrue(hasAuthorizationCode, "Authorization code should be '" 
+    + authorizationCode + "' but was '" + order.getAuthorizationCode() + "'");
   }
 
   @Then("the order {string} shall contain {string} item")
@@ -381,7 +384,8 @@ public class OrderStepDefinitions {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     Item item = (Item) InventoryItem.getWithName(itemName);
     for (OrderItem orderItem : order.getOrderItems()) {
-      assertFalse(orderItem.getItem().equals(item));
+      assertFalse(orderItem.getItem().equals(item), "The order '"
+      + orderNum + "' contains '" + itemName + "'");
     }
   }
 
@@ -409,7 +413,8 @@ public class OrderStepDefinitions {
     int number = Integer.parseInt(quantity);
     for (OrderItem orderItem : order.getOrderItems()) {
       if (orderItem.getItem().equals(item)) {
-        assertNotEquals(orderItem.getQuantity(), number);
+        assertNotEquals(orderItem.getQuantity(), number, "The order '" + orderNum +
+        "' contains '" + itemName + "' with quantity '" + quantity + "'");
       }
     }
   }
@@ -439,7 +444,8 @@ public class OrderStepDefinitions {
   public void the_order_shall_be_marked_as(String orderNum, String statusName) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
     Status status = Order.Status.valueOf(statusName);
-    assertEquals(order.getStatus(), status);
+    assertEquals(order.getStatus(), status, "The order '" + orderNum + 
+    "' was marked as '" + status + "' but expected '" + statusName + "'");
   }
 
 
