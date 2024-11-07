@@ -206,23 +206,22 @@ public class OrderStepDefinitions {
    */
   @Given("the order {string} is marked as {string}")
   public void the_order_is_marked_as(String orderNumber, String statusName) {
-    if (statusName == "Paid"){
+    if (statusName.equals("Paid")){
       CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
     }
-    else if (statusName == "Penalized"){
+    else if (statusName.equals("Penalized")){
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
     }
-    else if (statusName == "Prepared"){
+    else if (statusName.equals("Prepared")){
       CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
     }
-    if (statusName == "PickedUp"){
+    if (statusName.equals("PickedUp")){
       CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1234");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
       CoolSuppliesFeatureSet12Controller.pickUpOrder(orderNumber);
     }
   }
-
   /**
    * @author Doddy Yang Qiu
    */
