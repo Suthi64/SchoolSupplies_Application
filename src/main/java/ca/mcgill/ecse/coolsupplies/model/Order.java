@@ -294,7 +294,7 @@ public class Order
         break;
       case PickedUp:
         // line 50 "../../../../../CoolSuppliesState.ump"
-        rejectUpdateOrderItemQuantity("pickedUp");
+        rejectUpdateOrderItemQuantity("picked up");
         setStatus(Status.PickedUp);
         wasEventProcessed = true;
         break;

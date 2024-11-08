@@ -47,7 +47,7 @@ class Order{
     PickedUp{
           updateOrder(PurchaseLevel aLevel, Student aStudent) /{rejectUpdateOrder("picked up");}-> PickedUp;
      addItemToOrder(InventoryItem aItem, int aQuantity)/{rejectAddItemToOrder("picked up");} -> PickedUp;   
-     updateOrderItemQuantity(InventoryItem aItem, int newQuantity)/{rejectUpdateOrderItemQuantity("pickedUp");} -> PickedUp;
+     updateOrderItemQuantity(InventoryItem aItem, int newQuantity)/{rejectUpdateOrderItemQuantity("picked up");} -> PickedUp;
     deleteItemOfOrder(InventoryItem aItem)/{rejectDeleteItemOfOrder("picked up");} -> PickedUp;   
    payOrder(String authorizationCode)/{rejectPayOrder("picked up");} -> PickedUp;     
      cancelOrder()/{rejectCancelOrder("picked up");} -> PickedUp;  
