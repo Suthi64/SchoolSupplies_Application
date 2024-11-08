@@ -64,13 +64,13 @@ class Order{
  * param: aStudent the new student 
  */ 
   
-private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
+   private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
     this.setLevel(aLevel);
     if (aStudent.getParent()==null) {
-      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getName()+".");
+      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getEmail()+".");
     }
-    if (!(this.getParent().getName().equals(aStudent.getParent().getName()))) {
-      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getName()+".");
+    if (!(this.parent.getEmail().equals(aStudent.getParent().getEmail()))) {
+      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getEmail()+".");
     }
      this.setStudent(aStudent);
   }
