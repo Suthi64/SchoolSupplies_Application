@@ -373,7 +373,7 @@ public class OrderStepDefinitions {
   @Then("the order {string} shall contain {string} item")
   public void the_order_shall_contain_item(String orderNum, String itemName) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    Item item = (Item) InventoryItem.getWithName(itemName);
+    InventoryItem item = InventoryItem.getWithName(itemName);
     OrderItem targetItem = null;
     for (OrderItem orderItem : order.getOrderItems()) {
       if (orderItem.getItem().equals(item)) {
@@ -389,7 +389,7 @@ public class OrderStepDefinitions {
   @Then("the order {string} shall not contain {string}")
   public void the_order_shall_not_contain(String orderNum, String itemName) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    Item item = (Item) InventoryItem.getWithName(itemName);
+    InventoryItem item = InventoryItem.getWithName(itemName);
     for (OrderItem orderItem : order.getOrderItems()) {
       assertNotEquals(item, orderItem.getItem(), "The order '"
       + orderNum + "' contains '" + itemName + "'");
@@ -420,7 +420,7 @@ public class OrderStepDefinitions {
   @Then("the order {string} shall not contain {string} with quantity {string}")
   public void the_order_shall_not_contain_with_quantity(String orderNum, String itemName, String quantity) {
     Order order = Order.getWithNumber(Integer.parseInt(orderNum));
-    Item item = (Item) InventoryItem.getWithName(itemName);
+    InventoryItem item = InventoryItem.getWithName(itemName);
     int number = Integer.parseInt(quantity);
     for (OrderItem orderItem : order.getOrderItems()) {
       if (orderItem.getItem().equals(item)) {
