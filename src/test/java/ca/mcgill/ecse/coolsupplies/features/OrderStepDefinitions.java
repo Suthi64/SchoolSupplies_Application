@@ -187,7 +187,7 @@ public class OrderStepDefinitions {
       int myQuantity = Integer.parseInt(orderItem.get("quantity"));
       Order myOrder = Order.getWithNumber(Integer.parseInt(orderItem.get("orderNumber"))); 
       InventoryItem myInventoryItem = InventoryItem.getWithName(orderItem.get("itemName"));
-      CoolSuppliesFeatureSet8Controller.addOrderItem(myInverntoryItem, myQuantity, myOrder);
+      coolSupplies.addOrderItem(myQuantity, myOrder, myInventoryItem);
     }
   }
   
