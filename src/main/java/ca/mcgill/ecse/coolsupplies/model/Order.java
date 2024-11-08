@@ -894,10 +894,10 @@ public class Order
   // line 167 "../../../../../CoolSuppliesState.ump"
    private void doPayPenaltyOrder(String penaltyAuthCode, String authCode){
     if (penaltyAuthCode== null) {
-       throw new RuntimeException("Authorization code is invalid");
+       throw new RuntimeException("Penalty authorization code is invalid");
      }
      if (penaltyAuthCode.length()!=4) {
-       throw new RuntimeException("Authorization code is invalid");
+       throw new RuntimeException("Penalty authorization code is invalid");
      }
      if (authCode== null) {
        throw new RuntimeException("Authorization code is invalid");
