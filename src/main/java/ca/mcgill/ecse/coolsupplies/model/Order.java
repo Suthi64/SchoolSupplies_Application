@@ -870,7 +870,7 @@ public class Order
   // line 145 "../../../../../CoolSuppliesState.ump"
    private void doPayOrder(String authorizationCode){
     if (this.getOrderItems().size()==0){
-      throw new RuntimeException("Order "+Integer.toString(number)+" has not items");
+      throw new RuntimeException("Order "+Integer.toString(number)+" has no items");
     }
     if (authorizationCode== null) {
        throw new RuntimeException("Authorization code is invalid");
