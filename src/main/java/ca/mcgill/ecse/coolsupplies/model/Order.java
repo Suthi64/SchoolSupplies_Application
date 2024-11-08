@@ -869,9 +869,6 @@ public class Order
    */
   // line 145 "../../../../../CoolSuppliesState.ump"
    private void doPayOrder(String authorizationCode){
-    if (this.getOrderItems().size()==0){
-      throw new RuntimeException("Order "+Integer.toString(number)+" has no items");
-    }
     if (authorizationCode== null) {
        throw new RuntimeException("Authorization code is invalid");
      }
@@ -891,7 +888,7 @@ public class Order
    * param: penaltyAuthCode the penalty authorization code
    * param: authCode the payment authorization code
    */
-  // line 167 "../../../../../CoolSuppliesState.ump"
+  // line 164 "../../../../../CoolSuppliesState.ump"
    private void doPayPenaltyOrder(String penaltyAuthCode, String authCode){
     if (penaltyAuthCode== null) {
        throw new RuntimeException("Penalty authorization code is invalid");
@@ -917,7 +914,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 191 "../../../../../CoolSuppliesState.ump"
+  // line 188 "../../../../../CoolSuppliesState.ump"
    private void rejectUpdateOrder(String aState){
     throw new RuntimeException("Cannot update a "+aState+" order");
   }
@@ -930,7 +927,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 202 "../../../../../CoolSuppliesState.ump"
+  // line 199 "../../../../../CoolSuppliesState.ump"
    private void rejectAddItemToOrder(String aState){
     throw new RuntimeException("Cannot add items to a "+aState+" order");
   }
@@ -943,7 +940,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 213 "../../../../../CoolSuppliesState.ump"
+  // line 210 "../../../../../CoolSuppliesState.ump"
    private void rejectUpdateOrderItemQuantity(String aState){
     throw new RuntimeException("Cannot update items in a "+aState+" order");
   }
@@ -956,7 +953,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 224 "../../../../../CoolSuppliesState.ump"
+  // line 221 "../../../../../CoolSuppliesState.ump"
    private void rejectDeleteItemOfOrder(String aState){
     throw new RuntimeException("Cannot delete items from a "+aState+" order");
   }
@@ -969,7 +966,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 235 "../../../../../CoolSuppliesState.ump"
+  // line 232 "../../../../../CoolSuppliesState.ump"
    private void rejectPayOrder(String aState){
     if (aState.equals("paid")) {
       throw new RuntimeException("The order is already paid");
@@ -985,7 +982,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 249 "../../../../../CoolSuppliesState.ump"
+  // line 246 "../../../../../CoolSuppliesState.ump"
    private void rejectCancelOrder(String aState){
     throw new RuntimeException("Cannot cancel a "+aState+" order");
   }
@@ -997,7 +994,7 @@ public class Order
    * is not allowed in the current state
    * author: Brian Yang
    */
-  // line 259 "../../../../../CoolSuppliesState.ump"
+  // line 256 "../../../../../CoolSuppliesState.ump"
    private void rejectStartSchoolYear(){
     throw new RuntimeException("The school year has already been started");
   }
@@ -1010,7 +1007,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 270 "../../../../../CoolSuppliesState.ump"
+  // line 267 "../../../../../CoolSuppliesState.ump"
    private void rejectPayPenaltyOrder(String aState){
     throw new RuntimeException("Cannot pay penalty for a "+aState+" order");
   }
@@ -1023,7 +1020,7 @@ public class Order
    * author: Brian Yang 
    * param: aState the current state
    */
-  // line 281 "../../../../../CoolSuppliesState.ump"
+  // line 278 "../../../../../CoolSuppliesState.ump"
    private void rejectPickUpOrder(String aState){
     if (aState.equals("picked up")) {
       throw new RuntimeException("The order is already picked up");

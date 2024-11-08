@@ -142,9 +142,6 @@ class Order{
  */ 
 
    private void doPayOrder(String authorizationCode){
-    if (this.getOrderItems().size()==0){
-      throw new RuntimeException("Order "+Integer.toString(number)+" has no items");
-    }
     if (authorizationCode== null) {
        throw new RuntimeException("Authorization code is invalid");
      }
