@@ -786,10 +786,10 @@ public class Order
    private void doUpdateOrder(PurchaseLevel aLevel, Student aStudent){
     this.setLevel(aLevel);
     if (aStudent.getParent()==null) {
-      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getName()+".");
+      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getEmail()+".");
     }
-    if (!(this.getParent().getName().equals(aStudent.getParent().getName()))) {
-      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getName()+".");
+    if (!(this.parent.getEmail().equals(aStudent.getParent().getEmail()))) {
+      throw new RuntimeException("Student "+aStudent.getName()+" is not a child of the parent "+this.getParent().getEmail()+".");
     }
      this.setStudent(aStudent);
   }
@@ -894,10 +894,10 @@ public class Order
   // line 167 "../../../../../CoolSuppliesState.ump"
    private void doPayPenaltyOrder(String penaltyAuthCode, String authCode){
     if (penaltyAuthCode== null) {
-       throw new RuntimeException("Authorization code is invalid");
+       throw new RuntimeException("Penalty authorization code is invalid");
      }
      if (penaltyAuthCode.length()!=4) {
-       throw new RuntimeException("Authorization code is invalid");
+       throw new RuntimeException("Penalty authorization code is invalid");
      }
      if (authCode== null) {
        throw new RuntimeException("Authorization code is invalid");
