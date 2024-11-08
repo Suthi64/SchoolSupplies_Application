@@ -371,9 +371,16 @@ public class OrderStepDefinitions {
    * @author Jiaduo Xing
    */
   @Then("the order {string} shall contain {string} item")
-  public void the_order_shall_contain_item(String orderNumber, String expectedQuantity) {
-    int actualQuantity = Order.getWithNumber(Integer.parseInt(orderNumber)).getOrderItems().size();
-    assertEquals(Integer.parseInt(expectedQuantity), actualQuantity);
+  public void the_order_shall_contain_item(String orderNum, String itemName) {
+    Order order = Order.getWithNumber(Integer.parseInt(orderNum));
+    InventoryItem item = InventoryItem.getWithName(itemName);
+    OrderItem targetItem = null;
+    for (OrderItem orderItem : order.getOrderItems()) {
+      if (orderItem.getItem().equals(item)) {
+        targetItem = orderItem;
+      }
+    }
+    assertNotNull(targetItem, "'" + itemName + "' not found in order '" + orderNum + "'");
   }
 
   /**
