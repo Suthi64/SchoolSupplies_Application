@@ -31,6 +31,9 @@ public class CoolSuppliesFeatureSet10Controller {
 
   public static String payOrder(String orderNumber,String authorizationCode) {
     
+    if(Order.getWithNumber(Integer.parseInt(orderNumber)).getOrderItems().isEmpty()) {
+      return "Order " + orderNumber + " has no items";
+    }
     //Check if the order number exists
 	  int orderNumberInt = Integer.parseInt(orderNumber);
 	  Order order = Order.getWithNumber(orderNumberInt);
