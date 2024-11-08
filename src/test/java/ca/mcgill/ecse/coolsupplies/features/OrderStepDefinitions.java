@@ -145,14 +145,16 @@ public class OrderStepDefinitions {
 
       if(order.containsKey("status")){
         if(Status.valueOf(order.get("status")).equals(Status.Paid)){
-          CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
+          Order aOrder = Order.getWithNumber(Integer.parseInt(order.get("number")));
+          aOrder.payOrder(order.get("authorizationCode"));
         }
         else if(Status.valueOf(order.get("status")).equals(Status.Penalized)){
           CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
         }
         else if(Status.valueOf(order.get("status")).equals(Status.Prepared)){
           if (order.get("penaltyAuthorizationCode") == null) {
-            CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
+            Order aOrder = Order.getWithNumber(Integer.parseInt(order.get("number")));
+            aOrder.payOrder(order.get("authorizationCode"));
             CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
           }
           else {
@@ -162,7 +164,8 @@ public class OrderStepDefinitions {
         }
         else if(Status.valueOf(order.get("status")).equals(Status.PickedUp)){
           if (order.get("penaltyAuthorizationCode") == null) {
-            CoolSuppliesFeatureSet10Controller.payOrder(order.get("number"), order.get("authorizationCode"));
+            Order aOrder = Order.getWithNumber(Integer.parseInt(order.get("number")));
+            aOrder.payOrder(order.get("authorizationCode"));
             CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(order.get("number"));
           }
           else {
@@ -202,17 +205,20 @@ public class OrderStepDefinitions {
       return;
     }
     else if (statusName.equals("Paid")){
-      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1111");
+      Order aOrder = Order.getWithNumber(Integer.parseInt(orderNumber));
+      aOrder.payOrder("1111");
     }
     else if (statusName.equals("Penalized")){
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
     }
     else if (statusName.equals("Prepared")){
-      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1111");
+      Order aOrder = Order.getWithNumber(Integer.parseInt(orderNumber));
+      aOrder.payOrder("1111");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
     }
     else if (statusName.equals("PickedUp")){
-      CoolSuppliesFeatureSet10Controller.payOrder(orderNumber, "1111");
+      Order aOrder = Order.getWithNumber(Integer.parseInt(orderNumber));
+      aOrder.payOrder("1111");
       CoolSuppliesFeatureSet12Controller.startSchoolYearForOrder(orderNumber);
       CoolSuppliesFeatureSet12Controller.pickUpOrder(orderNumber);
     }
