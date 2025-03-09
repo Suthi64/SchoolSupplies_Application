@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="132.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.coolsupplies.javafx.fxml.controllers.PickUpOrderPageController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.333251953125" minWidth="10.0" prefWidth="54.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints />
+    <RowConstraints maxHeight="129.33331298828125" minHeight="10.0" prefHeight="60.66665267944336" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="249.0000025431315" minHeight="0.0" prefHeight="62.66665458679199" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="332.0" minHeight="10.0" prefHeight="59.33334541320801" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Button fx:id="pickUpSelectedOrderButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#pickUpSelectedOrderClicked" prefHeight="25.0" prefWidth="92.0" text="Pick UP Selected Order" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+      <ChoiceBox fx:id="OrderChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="92.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+      <Label alignment="CENTER" prefHeight="17.0" prefWidth="113.0" text="Order :" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+   </children>
+</GridPane>

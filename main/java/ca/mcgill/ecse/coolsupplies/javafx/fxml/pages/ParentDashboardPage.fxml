@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.coolsupplies.javafx.fxml.controllers.ParentDashboardController">
+
+    <Label text="Parent Dashboard" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+    <VBox spacing="5">
+        <Label text="View All Parents" />
+        <TableView fx:id="parentTable" prefHeight="200" prefWidth="600">
+            <columns>
+                <TableColumn text="Email" fx:id="emailColumn" />
+                <TableColumn text="Name" fx:id="nameColumn" />
+                <TableColumn text="Phone Number" fx:id="phoneNumberColumn" />
+            </columns>
+        </TableView>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Manage Parent" />
+        <GridPane hgap="10" vgap="10">
+            <Label text="Email:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <TextField fx:id="parentEmailTextField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+            
+            <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <TextField fx:id="parentPasswordTextField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+            
+            <Label text="Name:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+            <TextField fx:id="parentNameTextField" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+            
+            <Label text="Phone Number:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            <TextField fx:id="parentPhoneNumberTextField" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button text="Register New Parent" onAction="#registerParentClicked" />
+            <Button text="Update Selected Parent" onAction="#updateParentClicked" />
+            <Button text="Delete Selected Parent" onAction="#deleteParentClicked" />
+        </HBox>
+    </VBox>
+</VBox>
+

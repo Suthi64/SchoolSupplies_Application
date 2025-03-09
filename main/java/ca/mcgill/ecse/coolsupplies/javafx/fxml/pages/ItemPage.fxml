@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.coolsupplies.javafx.fxml.controllers.ItemPageController">
+
+    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Item Dashboard" />
+
+    <!-- Section to View All Items -->
+    <VBox spacing="5">
+        <Label text="View All Items" />
+        <TableView fx:id="itemTable" prefHeight="200" prefWidth="600">
+            <columns>
+                <TableColumn fx:id="itemNameColumn" text="Item Name" />
+                <TableColumn fx:id="itemPriceColumn" text="Item Price" />
+            </columns>
+        </TableView>
+    </VBox>
+
+    <!-- Section to Manage Items -->
+    <VBox spacing="5">
+        <Label text="Manage Items" />
+        <GridPane hgap="10" vgap="10">
+            <Label text="Item Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="itemNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            
+            <Label text="Item Price:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="itemPriceTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button onAction="#addItemClicked" text="Add Item" />
+            <Button onAction="#updateItemClicked" text="Update Selected Item" />
+            <Button onAction="#deleteItemClicked" text="Delete Selected Item" />
+        </HBox>
+    </VBox>
+</VBox>

@@ -1,0 +1,92 @@
+namespace ca.mcgill.ecse.coolsupplies.controller;
+
+class TOParent {
+   immutable;
+   String email;
+   String password;
+   String name;
+   Integer phoneNumber;
+   @Override public String toString() {
+    return "email: "+ email;
+  }
+}
+
+class TOStudent {
+   immutable;
+   String name;
+   String gradeLevel;
+   @Override public String toString() {
+    return "Name: "+ name;
+  }
+}
+
+class TOItem {
+   immutable;
+   String name;
+   Integer price;
+   @Override public String toString() {
+    return "Name: "+ name;
+  }
+}
+
+class TOGradeBundle {
+   immutable;
+   String name;
+   Integer discount;
+   String gradeLevel;
+   @Override public String toString() {
+    return "Name: "+ name;
+  }
+}
+
+class TOBundleItem {
+   immutable;
+   Integer quantity;
+   String level;
+   String itemName;
+   String gradeBundleName;
+   @Override public String toString() {
+    return "Quantity"+ quantity + ","+ "Level: "+ level +","+ "Item Name"+ itemName + ","+ "Grade Bundle Name: "+
+    gradeBundleName;
+  }
+}
+
+class TOGrade {
+   immutable;
+   String level;
+   @Override public String toString() {
+    return "Level: "+ level;
+  }
+}
+
+class TOOrder{
+  immutable;
+  parentEmail;
+  studentName;
+  status;
+  Integer number;
+  Date date;
+  level;
+  authorizationCode;
+  penaltyAuthorizationCode;
+  Double totalPrice;
+  1 -> * TOOrderItem orderItems;
+  @Override public String toString() {
+    return "Number: "+ number;
+  }
+}
+
+class TOOrderItem{
+  immutable ;
+  Integer quantity;
+  itemName;
+  gradeBundleName;
+  Integer price;
+  Double discount;
+  @Override public String toString() {
+    return "Quantity: "+ quantity +","+"Item Name: "+itemName + "Grade Bundle: "+ gradeBundleName+
+    ","+"Price: "+price+","+"Discount:"+discount;
+  }
+}
+strictness allow 36; 
+

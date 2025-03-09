@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+
+<VBox id="root" maxHeight="-Infinity" maxWidth="-Infinity" 
+      minHeight="-Infinity" minWidth="-Infinity" 
+      prefHeight="400.0" prefWidth="600.0" 
+      xmlns="http://javafx.com/javafx/22" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      stylesheets="@style.css"
+      styleClass="root">
+   <children>
+      <HBox id="header" spacing="10" alignment="CENTER_LEFT" styleClass="header">
+         <children>
+            <ImageView fx:id="logo" fitHeight="40" fitWidth="40" preserveRatio="true" />
+            <Label text="CoolSupplies application" styleClass="header-title" />
+         </children>
+      </HBox>
+
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" >
+         <tabs>
+            <!-- Dashboard Tab -->
+            <Tab text="ParentDashboard" styleClass="main-tab">
+               <content>
+                  <VBox>
+                     <fx:include source="pages/ParentDashboardPage.fxml" />
+                  </VBox>
+               </content>
+            </Tab>
+
+          <Tab text="StudentDashboard" styleClass="main-tab">
+               <content>
+                  <VBox>
+                     <fx:include source="pages/StudentDashboardPage.fxml" />
+                  </VBox>
+               </content>
+            </Tab>  
+
+            <!-- Admin Tab -->
+            <Tab text="Admin" styleClass="main-tab">
+               <content>
+                  <VBox>
+                     <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+                        <tabs>
+                           <Tab text="Update Admin" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/UpdateAdminPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="Start School Year" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/StartSchoolYearPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                        </tabs>
+                     </TabPane>
+                  </VBox>
+               </content>
+            </Tab>
+
+            <!-- Parent Tab -->
+            <Tab text="Parent" styleClass="main-tab">
+               <content>
+                  <VBox>
+                     <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+                        <tabs>
+                           <Tab text="Manage Parent" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ParentPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="View All Parents" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ViewParentsPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                        </tabs>
+                     </TabPane>
+                  </VBox>
+               </content>
+            </Tab>
+
+            <!-- Student Tab -->
+            <Tab text="Student" styleClass="main-tab">
+               <content>
+                  <VBox>
+                     <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+                        <tabs>
+                           <Tab text="Manage Student" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/StudentPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="View Students" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ViewStudents.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="Students of Parent" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/StudentParentPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                        </tabs>
+                     </TabPane>
+                  </VBox>
+               </content>
+            </Tab>
+
+            <!-- Items Tab -->
+            <Tab text="Items" styleClass="main-tab">
+               <content>
+                  <VBox>
+                     <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+                        <tabs>
+                           <Tab text="Manage Item" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ItemPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="View Items" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ViewItemsPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="Manage Bundles" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/BundlePage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="View Bundles" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ViewAllBundlesPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="Manage Bundle Items" styleClass="tab">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ItemBundlePage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                        </tabs>
+                     </TabPane>
+                  </VBox>
+               </content>
+            </Tab>
+
+            <!-- Orders Tab -->
+            <Tab text="Orders" styleClass="main-tab">
+               <content>
+                  <VBox>
+                     <TabPane tabClosingPolicy="UNAVAILABLE">
+                        <tabs>
+                           <Tab text="Create Order">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/OrderPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="Pick Up Order">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/PickUpOrderPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="Pay Order">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/PayOrderPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="View All Orders">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ViewAllOrdersPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                           <Tab text="View Order Items">
+                              <content>
+                                 <VBox>
+                                    <fx:include source="pages/ViewAllOrderItemsPage.fxml" />
+                                 </VBox>
+                              </content>
+                           </Tab>
+                        </tabs>
+                     </TabPane>
+                  </VBox>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</VBox>

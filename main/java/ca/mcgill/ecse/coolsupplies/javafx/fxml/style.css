@@ -1,0 +1,61 @@
+.root {
+    -fx-background-color: lightBlue;
+    -fx-font-family: "Arial, sans-serif";
+    -fx-padding: 10;
+}
+
+.main-tab {
+    -fx-background-color: #007acc;
+    -fx-text-fill: white; /* Ensure white text contrasts well */
+    -fx-font-weight: bold;
+}
+
+.tab-pane {
+    -fx-tab-max-height: 30px;
+    -fx-tab-max-width: 150px;
+    -fx-background-color: #e6f7ff; /* Light blue for contrast */
+    -fx-border-color: #007acc;
+    -fx-border-width: 2px;
+}
+
+.tab {
+    -fx-background-color: #007acc;
+    -fx-text-fill: white; /* Ensure white text contrasts with the blue */
+    -fx-alignment: center-left;
+    -fx-padding: 5;
+    -fx-font-weight: bold;
+}
+
+.tab:selected {
+    -fx-background-color: #005999; /* Darker blue for the selected tab */
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: #007acc;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5 10;
+}
+
+.button:hover {
+    -fx-background-color: #005999; /* Darker blue on hover */
+}
+
+.header {
+    -fx-background-color: #007acc;
+    -fx-padding: 10;
+}
+
+.header-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white; /* White text for header title */
+}
+
+.label {
+    -fx-text-fill: #003366; /* Dark blue for labels to contrast lightBlue background */
+    -fx-font-weight: bold;
+    -fx-padding: 5;
+}

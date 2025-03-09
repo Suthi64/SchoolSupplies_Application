@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ca.mcgill.ecse.coolsupplies.javafx.fxml.controllers.StudentDashboardController"
+      spacing="20" alignment="CENTER" style="-fx-padding: 20;">
+    
+    <Text text="Student Dashboard" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <VBox spacing="5">
+        <Label text="View All Students" />
+        <TableView fx:id="studentTable" prefHeight="200" prefWidth="600">
+            <columns>
+                <TableColumn text="Name" fx:id="nameColumn" />
+                <TableColumn text="Grade Level" fx:id="gradeColumn" />
+                <TableColumn text="Assigned Parent" fx:id="parentColumn" />
+            </columns>
+        </TableView>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Manage Student" />
+        <GridPane hgap="10" vgap="10">
+            <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <TextField fx:id="studentNameTextField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+            
+            <Label text="Grade" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <ChoiceBox fx:id="studentGradeLevelChoiceBox" prefWidth="150.0" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+            
+            <Label text="Parent:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+            <ChoiceBox fx:id="selectParentChoiceBox" prefWidth="150.0" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button text="Register New Student" onAction="#registerStudentClicked" />
+            <Button text="Update Selected Student" onAction="#updateStudentClicked" />
+            <Button text="Delete Selected Student" onAction="#deleteStudentClicked" />
+        </HBox>
+    </VBox>
+
+</VBox>

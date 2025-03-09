@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.coolsupplies.javafx.fxml.controllers.ItemBundlePageController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="105.0" text="Item:" GridPane.columnIndex="2" />
+      <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="100.0" text="Bundle Item:" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+      <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="101.0" text="Quantity:" GridPane.columnIndex="4" />
+      <ChoiceBox fx:id="itemTypeChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+      <Button fx:id="addItemButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addItemClicked" text="Add Item" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <Button fx:id="updateItemButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#updateItemClicked" text="Update Item" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <Button fx:id="deleteItemButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteItemClicked" text="Delete Item" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <ChoiceBox fx:id="gradeBundleChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+      <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="105.0" text="Grade Bundle:" />
+      <ChoiceBox fx:id="bundleItemChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+      <TextField fx:id="itemQuantityTextField" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" />
+      <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="101.0" text="Item Type:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <ChoiceBox fx:id="itemChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" />
+      <Button fx:id="setGradeBundleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setGradeBundleClicked" text="Set Bundle" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+   </children>
+</GridPane>
